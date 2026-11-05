@@ -40,7 +40,7 @@
     <h3 class="widget-titulo">Projetos em destaque</h3>
     <ul class="lista-projetos-mini">
       {% for p in projetos %}{% if p.destaque %}
-      <li><a href="{{ p.url }}"><small>{{ p.rotulo }}</small><span>{{ p.titulo }}</span></a></li>
+      <li><a href="{{ p.url }}" target="_blank" rel="noopener"><small>{{ p.rotulo }}</small><span>{{ p.titulo }}</span></a></li>
       {% endif %}{% endfor %}
     </ul>
     <a class="link-seta" href="/projetos/">Todos os projetos →</a>

@@ -135,7 +135,7 @@
     <p class="secao-intro">{{ L.projIntro }}</p>
     <div class="grade-projetos">
       {% for p in projetos %}
-      <a class="projeto-card" href="{{ p.url }}"><div class="projeto-topo"><span class="projeto-rotulo">{{ p.label_en if en else p.rotulo }}</span></div><h3>{{ p.titulo }}</h3><p>{{ p.description_en if en else p.descricao }}</p><span class="link-seta">{{ L.abrir }} →</span></a>
+      <a class="projeto-card" href="{{ p.url }}" target="_blank" rel="noopener"><div class="projeto-topo"><span class="projeto-rotulo">{{ p.label_en if en else p.rotulo }}</span></div><h3>{{ p.titulo }}</h3><p>{{ p.description_en if en else p.descricao }}</p><span class="link-seta">{{ L.abrir }} ↗</span></a>
       {% endfor %}
     </div>
   </div>
