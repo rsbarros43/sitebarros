@@ -1,0 +1,13 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for item in collections.all %}{% if item.url and not item.data.eleventyExcludeFromCollections and not item.url.endsWith('.json') and not item.url.endsWith('.xml') %}
+  <url><loc>{{ site.url }}{{ item.url }}</loc><lastmod>{{ item.date | dataISO }}</lastmod></url>
+{%- endif %}{% endfor %}
+{%- for p in projetos %}
+  <url><loc>{{ site.url }}{{ p.url }}</loc></url>
+{%- endfor %}
+</urlset>

@@ -1,0 +1,36 @@
+---
+layout: layouts/pagina.njk
+title: Contato
+kicker: Vamos conversar?
+descricao: Oportunidades, consultoria, dúvidas sobre algum post ou sugestão de tema — escolha o canal que preferir.
+permalink: /contato/
+---
+<div class="container">
+  <div class="grade-contato">
+    <a class="contato-card" href="mailto:{{ site.autor.email }}">
+      <span class="contato-ico">✉</span>
+      <strong>E-mail</strong>
+      <span>{{ site.autor.email }}</span>
+    </a>
+    <a class="contato-card" href="https://wa.me/{{ site.autor.whatsapp }}?text=Ol%C3%A1%20Renato%2C%20vi%20seu%20site%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener">
+      <span class="contato-ico">◉</span>
+      <strong>WhatsApp</strong>
+      <span>+55 11 97082-3355</span>
+    </a>
+    <a class="contato-card" href="{{ site.autor.linkedin }}" target="_blank" rel="noopener">
+      <span class="contato-ico">in</span>
+      <strong>LinkedIn</strong>
+      <span>/in/renatotitelecom</span>
+    </a>
+    <a class="contato-card" href="{{ site.autor.github }}" target="_blank" rel="noopener">
+      <span class="contato-ico">⌥</span>
+      <strong>GitHub</strong>
+      <span>@rsbarros43</span>
+    </a>
+  </div>
+  <div class="cartao contato-nota">
+    <h2>Disponibilidade</h2>
+    <p>{{ cv.pt.contact_text }}</p>
+    <p>Prefere um documento? <a href="/CV_Renato_Barros_2026.pdf" download>Currículo em PDF (PT)</a> · <a href="/CV_Renato_Barros_2026_EN.pdf" download>Resume in PDF (EN)</a></p>
+  </div>
+</div>

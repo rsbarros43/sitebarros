@@ -1,0 +1,20 @@
+---
+layout: layouts/pagina.njk
+pagination:
+  data: collections.listaTags
+  size: 1
+  alias: grupo
+permalink: "/tags/{{ grupo.slug }}/"
+eleventyComputed:
+  title: "#{{ grupo.nome }}"
+  descricao: "{{ grupo.posts.length }} publicação(ões) com a tag {{ grupo.nome }}."
+kicker: Tag
+---
+{% set posts = grupo.posts %}
+<div class="container layout-com-sidebar">
+  <div class="coluna-principal">
+    <div class="lista-posts">{% for post in posts %}{% include "partials/post-card.njk" %}{% endfor %}</div>
+    <p><a class="link-seta" href="/tags/">← Todas as tags</a></p>
+  </div>
+  {% include "partials/sidebar.njk" %}
+</div>

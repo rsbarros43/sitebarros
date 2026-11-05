@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Oracle Cloud Migrations Interactive Training Center v11 Enterprise</title>
+<style>
+:root{--bg:#090b10;--panel:#111827;--line:#263349;--text:#e5eefc;--muted:#94a3b8;--oracle:#c74634;--ok:#22c55e;--blue:#38bdf8;--danger:#ef4444;--shadow:0 20px 60px rgba(0,0,0,.35);--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#1f2937 0,#090b10 38%,#05070b 100%);color:var(--text)}
+.wrap{max-width:1420px;margin:0 auto;padding:28px}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:24px;margin-bottom:24px}
+.heroBox{background:linear-gradient(135deg,rgba(199,70,52,.16),rgba(56,189,248,.08)),var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;position:relative;overflow:hidden}
+.heroBox:after{content:"OCM";position:absolute;right:22px;bottom:-28px;font-weight:900;font-size:112px;color:rgba(255,255,255,.035)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(199,70,52,.45);background:rgba(199,70,52,.12);color:#fecaca;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700}
+.hero h1{font-size:42px;line-height:1.05;margin:18px 0 12px}.hero p{color:var(--muted);font-size:16px;line-height:1.65;margin:0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.stat strong{display:block;font-size:30px}.stat span{color:var(--muted);font-size:13px}
+.student{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:24px;display:grid;grid-template-columns:1fr 170px;gap:14px;align-items:end}
+.student input{width:100%;height:48px;background:#0b1220;border:1px solid #334155;color:var(--text);border-radius:12px;padding:14px;font-size:16px}
+.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;color:white;background:linear-gradient(135deg,var(--oracle),#8b1d12);box-shadow:0 10px 22px rgba(199,70,52,.18);min-height:48px}
+.btn.secondary{background:#1f2937;border:1px solid #334155}.btn.good{background:linear-gradient(135deg,#16a34a,#15803d)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.grid{display:none;grid-template-columns:340px 1fr;gap:24px}.grid.started{display:grid}
+.sidebar{position:sticky;top:18px;align-self:start;background:rgba(17,24,39,.86);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);backdrop-filter:blur(10px);max-height:calc(100vh - 36px);overflow:auto}
+.progressWrap{height:12px;background:#0b1220;border-radius:999px;overflow:hidden;border:1px solid #223047;margin:12px 0 16px}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--oracle),var(--blue),var(--ok));transition:.3s}
+.navBtn{width:100%;text-align:left;background:#0b1220;border:1px solid #233149;color:var(--text);padding:12px;border-radius:12px;margin:8px 0;cursor:pointer;display:flex;gap:10px;align-items:center}.navBtn.active{border-color:var(--blue);background:rgba(56,189,248,.1)}.navBtn.done{border-color:rgba(34,197,94,.55)}.navBtn.locked{opacity:.38;cursor:not-allowed}
+.badge{min-width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;font-size:12px;font-weight:900}
+.module{display:none;background:rgba(17,24,39,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.module.active{display:block}.moduleHead{padding:24px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(199,70,52,.12),rgba(15,23,42,.65))}.moduleHead h2{margin:0 0 8px;font-size:28px}.moduleHead p{margin:0;color:var(--muted);line-height:1.55}.moduleBody{padding:24px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}.card{background:#0b1220;border:1px solid #243149;border-radius:16px;padding:18px}.card h3{margin:0 0 10px;color:#fff}.card p{color:var(--muted);line-height:1.55}
+.stepList{display:flex;flex-direction:column;gap:12px;margin:18px 0}.step{border-left:4px solid var(--oracle);background:#0b1220;border-radius:14px;padding:16px 18px;color:#cbd5e1;cursor:pointer;transition:.2s}.step:hover{transform:translateX(4px);border-left-color:var(--blue);background:#111827}.step strong{color:#fff}
+.screenshotFlow{display:flex;flex-direction:column;gap:24px;margin:22px 0}.screen{background:#0b1220;border:1px solid #243149;border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.22);scroll-margin-top:20px}.screen img{width:100%;display:block;background:#111827}.screenCaption{padding:18px 20px;border-top:1px solid #243149;background:linear-gradient(135deg,#0b1220,#111827)}.screenCaption h4{margin:0 0 8px;color:#fff;font-size:18px}.screenCaption p{margin:0;color:#cbd5e1;line-height:1.7;font-size:15px}
+.imageSlot{border:1px dashed #475569;border-radius:16px;background:linear-gradient(135deg,#0b1220,#111827);padding:22px;text-align:center;margin:16px 0}
+.terminal{background:#030712;border:1px solid #243149;border-radius:16px;overflow:hidden;margin-top:16px}.termTop{background:#111827;border-bottom:1px solid #243149;padding:10px 14px;color:#cbd5e1;font-size:13px}.termBody{font-family:Consolas,Monaco,monospace;color:#86efac;padding:16px;white-space:pre-wrap;min-height:104px}
+.quiz{margin-top:18px;background:#0b1220;border:1px solid #243149;border-radius:16px;padding:18px}.qBox{border:1px solid #243149;border-radius:14px;padding:14px;margin:14px 0;background:#08111f}.qBox h4{margin:0 0 10px}.opt{display:block;margin:8px 0;padding:10px 12px;border:1px solid #334155;border-radius:12px;color:#cbd5e1;cursor:pointer}.opt.correct{border-color:var(--ok);background:rgba(34,197,94,.12);color:#bbf7d0}.opt.wrong{border-color:var(--danger);background:rgba(239,68,68,.12);color:#fecaca}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.resultBox{margin-top:12px;padding:12px;border-radius:12px;background:#111827;border:1px solid #334155;color:#cbd5e1}
+.finalPanel{display:none;background:#0b1220;border:1px solid #243149;border-radius:18px;padding:22px;margin:20px 0}.finalPanel.good{border-color:rgba(34,197,94,.6);background:rgba(34,197,94,.08)}.finalPanel.bad{border-color:rgba(239,68,68,.6);background:rgba(239,68,68,.08)}
+.cert{display:none;background:#f8fafc;color:#0f172a;border-radius:20px;padding:36px;border:10px solid #c74634;text-align:center;margin-top:18px}.cert h2{font-size:34px;margin:0;color:#7f1d1d}.cert .name{font-size:30px;font-weight:900;margin:22px 0;color:#111827}.cert p{font-size:16px;color:#334155}
+.small{font-size:12px;color:var(--muted)}.footer{color:#64748b;text-align:center;padding:26px}.pill{display:inline-flex;align-items:center;gap:7px;background:#0b1220;border:1px solid #334155;border-radius:999px;padding:7px 10px;color:#cbd5e1;font-size:12px;margin:4px}
+@media(max-width:950px){.hero,.grid{grid-template-columns:1fr}.student{grid-template-columns:1fr}.sidebar{position:relative;top:auto;max-height:none}.cards{grid-template-columns:1fr}.hero h1{font-size:32px}}
+@media print{body{background:white}.wrap>*:not(.printArea){display:none!important}.cert{display:block!important;box-shadow:none}.printArea{display:block!important}}
+
+.enterpriseBox{background:#0b1220;border:1px solid #334155;border-radius:16px;padding:18px;margin:18px 0}
+.checkItem{display:block;margin:8px 0;padding:10px;border:1px solid #334155;border-radius:10px}
+.medalBox{padding:16px;border-radius:14px;background:#111827;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="heroBox">
+<span class="eyebrow">☁️ Oracle Cloud Infrastructure • Cloud Migrations</span>
+<h1>Oracle Cloud Migrations<br/>Interactive Training Center</h1>
+<p>Laboratório guiado para migração de VMs AWS ou VMware para OCI: pré-requisitos, discovery, asset source, replication, RMS Stack, deploy, validação e troubleshooting.</p>
+<div style="margin-top:18px"><span class="pill">✔ Passos clicáveis</span><span class="pill">✔ Prints explicados</span><span class="pill">✔ 5 perguntas por módulo</span><span class="pill">✔ Aprovação 75%</span></div>
+</div>
+<div class="stats">
+<div class="stat"><strong id="statModules">14</strong><span>Módulos interativos</span></div>
+<div class="stat"><strong id="statProgress">0%</strong><span>Progresso concluído</span></div>
+<div class="stat"><strong id="statScore">0%</strong><span>Nota geral</span></div>
+<div class="stat"><strong>75%</strong><span>Mínimo para certificado</span></div>
+</div>
+</section>
+
+<section class="student">
+<div>
+<h2 style="margin:0 0 8px">Identificação do aluno</h2>
+<p style="margin:0 0 12px;color:var(--muted)">Digite o nome para liberar o treinamento. Sem o nome, os módulos ficam bloqueados.</p>
+<input id="studentName" placeholder="Digite seu nome completo para iniciar"/>
+</div>
+<button class="btn" onclick="startTraining()">Iniciar treinamento</button>
+</section>
+
+<section class="grid" id="trainingArea">
+<aside class="sidebar">
+<h3 style="margin:4px 0 0">Trilha OCM</h3>
+<div class="small" id="studentLabel">Aluno: não informado</div>
+<div class="progressWrap"><div class="progress" id="progress"></div></div>
+<div id="nav"></div>
+<button class="btn good" id="certBtn" onclick="showCertificate()" disabled style="width:100%;margin-top:12px">Emitir certificado</button>
+<button class="btn secondary" id="sidebarRetryBtn" onclick="resetAll()" style="width:100%;margin-top:10px;display:none">Tentar novamente</button>
+</aside>
+<main class="content" id="modules"></main>
+</section>
+
+<section class="finalPanel" id="finalPanel"></section>
+
+<section class="printArea">
+<div class="cert" id="certificate">
+<h2>🏆 Certificado Premium de Conclusão</h2>
+<p>Certificamos que</p>
+<div class="name" id="certName">Nome do Aluno</div>
+<p>concluiu com sucesso a trilha <strong>Oracle Cloud Migrations - Interactive Training Center</strong>.</p>
+<p>Conteúdo: pré-requisitos, discovery, asset source, replication, RMS Stack, deploy, validação e troubleshooting.</p>
+<p><strong>Nota final:</strong> <span id="certScore"></span> • <strong>Conclusão:</strong> <span id="certDate"></span></p>
+<p style="margin-top:28px">Renato Barros<br/><strong>Database Engineer Specialist</strong></p>
+</div>
+</section>
+<div class="footer">Projeto educacional independente para estudo prático de Oracle Cloud Migrations.</div>
+</div>
+
+<script>
+const modules = [{"id": "intro", "title": "Introdução ao Oracle Cloud Migrations", "goal": "Entender o que é o OCM e o fluxo completo de migração de VMs para OCI.", "steps": ["Entender o papel do Oracle Cloud Migrations.", "Conhecer o fluxo Discovery, Replication, RMS Stack e Deploy.", "Identificar os principais recursos envolvidos."], "imgs": [{"src": "image01.avif", "title": "Acessando o Oracle Cloud Migrations", "desc": "Como chegar: no menu principal da OCI, acesse Migration & Disaster Recovery e selecione Cloud Migrations. Esta é a tela inicial usada para preparar o ambiente, consultar fontes de descoberta e acompanhar projetos de migração. Antes de qualquer migração, confirme se você está na região correta e no compartment esperado."}], "questions": [{"q": "Qual é o objetivo principal do Oracle Cloud Migrations?", "options": ["Migrar VMs de ambientes externos para OCI", "Criar somente usuários IAM", "Gerar relatórios AWR"], "answer": 0}, {"q": "Quais origens são citadas no fluxo do OCM?", "options": ["AWS e VMware", "Somente Exadata", "Somente Autonomous Database"], "answer": 0}, {"q": "O que acontece antes da replicação?", "options": ["Discovery dos assets", "Deploy da instância final", "Exclusão do bucket"], "answer": 0}, {"q": "O que a RMS Stack ajuda a fazer?", "options": ["Materializar a VM migrada como recurso OCI", "Criar usuário AWS", "Abrir chamado Oracle"], "answer": 0}, {"q": "Qual validação deve ocorrer no final?", "options": ["Testes de acesso e comparação origem/destino", "Apagar todos os recursos", "Ignorar logs"], "answer": 0}]}, {"id": "prereq", "title": "Criação dos Pré-Requisitos", "goal": "Criar compartments, bucket, vault, policies e dynamic groups necessários ao OCM.", "steps": ["Abrir Cloud Migrations.", "Clicar em Create prerequisites.", "Aceitar termos de uso.", "Selecionar compartment e bucket.", "Validar recursos criados."], "imgs": [{"src": "image02.avif", "title": "Iniciando a criação dos pré-requisitos", "desc": "Como chegar: dentro de Cloud Migrations, clique em Create prerequisites. Essa ação abre o assistente responsável por criar os recursos mínimos para o OCM operar. Essa etapa é comum para origens AWS e VMware, por isso deve ser feita antes do Discovery."}, {"src": "image03.avif", "title": "Aceitando os termos de uso", "desc": "Como chegar: após clicar em Create prerequisites, revise os Oracle Terms of Use, marque a opção de aceite e avance. Sem essa confirmação, o assistente não permite continuar. Essa etapa formaliza o uso dos recursos automatizados do serviço."}, {"src": "image04.avif", "title": "Selecionando o compartment base", "desc": "Como chegar: na etapa seguinte do assistente, selecione o compartment onde os recursos de migração serão preparados. Esse ponto é importante porque o OCM criará estruturas como compartments filhos, policies, bucket e vault relacionados a esse escopo."}, {"src": "image05.avif", "title": "Configurando destino e solução de migração", "desc": "Como chegar: preencha o compartment de destino das migrações, escolha as soluções que serão usadas, como AWS ou VMware, e selecione o bucket quando solicitado. Essa configuração orienta onde os dados replicados serão armazenados e quais integrações serão preparadas."}, {"src": "image06.avif", "title": "Revisando a configuração", "desc": "Como chegar: antes de finalizar, revise todos os dados informados no assistente. Valide compartment, solução selecionada, bucket e demais parâmetros. Essa revisão evita que recursos de segurança e armazenamento sejam criados no local errado."}, {"src": "image07.avif", "title": "Executando a criação dos recursos", "desc": "Como chegar: clique em Create para iniciar o job. O OCI executará a criação dos pré-requisitos em segundo plano. Aguarde alguns minutos e acompanhe o status do job até a conclusão."}, {"src": "image08.avif", "title": "Validando os recursos provisionados", "desc": "Como chegar: após o job concluir, valide os recursos criados. Normalmente serão criados os compartments Migration e MigrationSecrets, além do Object Storage Bucket, Vault, Policies e Dynamic Groups necessários para a automação."}, {"src": "image09.avif", "title": "Conferindo o bucket de replicação", "desc": "Como chegar: acesse Object Storage dentro do compartment Migration e verifique o bucket criado. Esse bucket funciona como repositório dos dados replicados das VMs antes da materialização final como instância Compute na OCI."}, {"src": "image10.avif", "title": "Conferindo o Vault", "desc": "Como chegar: acesse Vault no compartment MigrationSecrets. O Vault será usado para armazenar com segurança segredos e credenciais da origem, como Access Key e Secret Access Key da AWS."}, {"src": "image11.avif", "title": "Validando policies e dynamic groups", "desc": "Como chegar: acesse Identity & Security para revisar Policies e Dynamic Groups criados. Esses recursos autorizam serviços OCI a executar ações automatizadas, como acessar bucket, vault e recursos de migração."}, {"src": "image12.avif", "title": "Pré-requisitos concluídos", "desc": "Como chegar: retorne ao Cloud Migrations. Uma notificação ou status de sucesso indica que os pré-requisitos foram criados. A partir daqui o ambiente está pronto para configurar Discovery e Asset Source."}], "questions": [{"q": "Qual botão inicia o assistente de pré-requisitos?", "options": ["Create prerequisites", "Run discovery", "Deploy RMS stack"], "answer": 0}, {"q": "Qual compartment normalmente armazena segredos?", "options": ["MigrationSecrets", "ComputeOnly", "DefaultNetwork"], "answer": 0}, {"q": "Qual recurso armazena dados de replicação?", "options": ["Object Storage Bucket", "IAM User", "Load Balancer"], "answer": 0}, {"q": "Qual recurso protege credenciais sensíveis?", "options": ["Vault", "Route Table", "Internet Gateway"], "answer": 0}, {"q": "Policies e Dynamic Groups servem para quê?", "options": ["Permitir ações automatizadas dos serviços OCI", "Alterar senha AWS", "Criar DNS público"], "answer": 0}]}, {"id": "discovery", "title": "Discovery AWS", "goal": "Criar a origem de descoberta AWS para identificar VMs migráveis.", "steps": ["Acessar Discovery.", "Criar Asset Source.", "Selecionar AWS.", "Informar Account ID e Region.", "Preparar usuário e credenciais AWS."], "imgs": [{"src": "image13.avif", "title": "Acessando o menu Discovery", "desc": "Como chegar: no Oracle Cloud Migrations, acesse Discovery. É neste menu que você cria o Asset Source, ou seja, a origem externa onde as VMs serão identificadas."}, {"src": "image14.avif", "title": "Criando o Asset Source", "desc": "Como chegar: dentro de Discovery, clique em Create asset source. Confirme que você está no compartment Migration, pois é nele que os recursos preparados pelo assistente normalmente ficam disponíveis."}, {"src": "image15.avif", "title": "Selecionando AWS como origem", "desc": "Como chegar: no formulário Create asset source, selecione AWS como tipo de origem. Isso informa ao OCM que a descoberta será feita usando APIs e credenciais da Amazon Web Services."}, {"src": "image16.avif", "title": "Informando Account ID e Region", "desc": "Como chegar: na seção Asset source information, informe o Account ID da AWS e a Region onde as instâncias estão. Esses dados podem ser conferidos diretamente no console AWS."}, {"src": "image17.avif", "title": "Criando conexão remota", "desc": "Como chegar: role a tela até Remote connections source environment e selecione Create new. Essa conexão representa o caminho lógico que o OCM usará para se comunicar com o ambiente de origem."}, {"src": "image18.avif", "title": "Definindo a credencial de descoberta", "desc": "Como chegar: no campo Discovery credential, selecione Create secret. Essa credencial será usada pelo OCM para autenticar na AWS e listar recursos durante o Discovery."}], "questions": [{"q": "Onde é criado o Asset Source?", "options": ["Discovery", "Compute Instances", "Billing"], "answer": 0}, {"q": "O que representa o Account ID?", "options": ["A conta AWS de origem", "A tenancy OCI", "O bucket de destino"], "answer": 0}, {"q": "Por que a Region é importante?", "options": ["Porque indica onde estão as instâncias AWS", "Porque define a senha do usuário", "Porque remove policies"], "answer": 0}, {"q": "O Discovery inicialmente faz o quê?", "options": ["Identifica recursos", "Migra imediatamente", "Apaga volumes"], "answer": 0}, {"q": "Qual origem foi usada no exemplo?", "options": ["AWS", "Azure Files", "Oracle APEX"], "answer": 0}]}, {"id": "secrets", "title": "Vault, Secrets e Credenciais", "goal": "Configurar secret com credenciais AWS usando Vault e MigrationSecrets.", "steps": ["Selecionar Create secret.", "Usar compartment MigrationSecrets.", "Selecionar Vault e Master Encryption Key.", "Obter Access Key na AWS.", "Finalizar Asset Source."], "imgs": [{"src": "image19.avif", "title": "Criando Secret no compartment correto", "desc": "Como chegar: ao criar o Secret, selecione o compartment MigrationSecrets. Esse compartment foi criado para separar e proteger credenciais sensíveis usadas pelo serviço."}, {"src": "image20.avif", "title": "Selecionando Vault e chave de criptografia", "desc": "Como chegar: em Vault in e Master encryption Key, selecione o Vault e a chave localizados no compartment MigrationSecrets. Isso garante que a credencial fique armazenada de forma criptografada."}, {"src": "image21.avif", "title": "Obtendo Access Key na AWS", "desc": "Como chegar: no console AWS, acesse IAM > Users > usuário de migração > Security credentials > Access Keys. Se não existir chave válida, crie uma nova Access Key do tipo Other e salve Access Key e Secret Access Key."}, {"src": "image22.avif", "title": "Finalizando o Asset Source", "desc": "Como chegar: depois de informar os dados AWS, conexão remota e Secret, clique em Create asset source. O OCM iniciará a criação da origem de descoberta."}, {"src": "image23.avif", "title": "Acompanhando progresso do Asset Source", "desc": "Como chegar: na tela inicial do Asset Source, acompanhe a barra de progresso. Se houver falha, abra os detalhes do Work Request para identificar erro de permissão, credencial ou região."}], "questions": [{"q": "Onde ficam as credenciais no OCI?", "options": ["Vault/Secrets", "VCN", "Boot Volume"], "answer": 0}, {"q": "Onde obter Access Key na AWS?", "options": ["IAM > Users > Security credentials", "EC2 > Volumes", "CloudWatch > Logs"], "answer": 0}, {"q": "Qual informação acompanha a Access Key?", "options": ["Secret Access Key", "CIDR Block", "Shape Name"], "answer": 0}, {"q": "Por que usar MigrationSecrets?", "options": ["Para separar e proteger credenciais", "Para criar subnets", "Para alterar região OCI"], "answer": 0}, {"q": "Qual componente criptografa o secret?", "options": ["Master Encryption Key", "Security List", "Internet Gateway"], "answer": 0}]}, {"id": "run_discovery", "title": "Executando Run Discovery", "goal": "Executar a descoberta e validar assets encontrados.", "steps": ["Abrir o Asset Source.", "Executar Run discovery.", "Confirmar a execução.", "Acompanhar Work Request.", "Validar assets descobertos."], "imgs": [{"src": "image24.avif", "title": "Asset Source disponível", "desc": "Como chegar: quando a criação concluir, o Asset Source aparecerá disponível dentro de Discovery. Isso indica que ele já pode ser usado para executar Run discovery."}, {"src": "image25.avif", "title": "Executando Run discovery", "desc": "Como chegar: clique no Asset Source criado e selecione Run discovery. Essa ação inicia a busca de recursos na AWS. O processo ainda não replica nem migra; ele apenas descobre os assets."}, {"src": "image26.avif", "title": "Confirmando a execução do Discovery", "desc": "Como chegar: confirme a execução na janela exibida. Essa confirmação evita disparos acidentais e inicia a comunicação do OCM com a origem AWS."}, {"src": "image27.avif", "title": "Monitorando Work Request do Discovery", "desc": "Como chegar: clique em Asset source work request details. Essa tela mostra status, progresso e mensagens técnicas da descoberta, sendo essencial para troubleshooting."}, {"src": "image28.avif", "title": "Visualizando os assets descobertos", "desc": "Como chegar: após a conclusão, retorne ao Asset Source e acesse Asset source details. No campo Assets serão listados os recursos identificados na AWS."}], "questions": [{"q": "Qual ação inicia a descoberta?", "options": ["Run discovery", "Replicate", "Generate RMS Stack"], "answer": 0}, {"q": "O que o Work Request mostra?", "options": ["Status, progresso e detalhes técnicos", "Preço de licenças", "Senha do usuário"], "answer": 0}, {"q": "Discovery concluído apresenta o quê?", "options": ["Assets identificados", "Certificado final", "Backup RMAN"], "answer": 0}, {"q": "Run discovery replica dados?", "options": ["Não, apenas descobre recursos", "Sim, sempre replica", "Sim, e já cria Compute"], "answer": 0}, {"q": "Onde ver os assets identificados?", "options": ["Asset source details", "Identity Domains", "VCN Wizard"], "answer": 0}]}, {"id": "project", "title": "Migration Project", "goal": "Criar o projeto que organiza a migração.", "steps": ["Acessar Migration projects.", "Criar projeto.", "Selecionar projeto único.", "Nomear o projeto.", "Validar criação."], "imgs": [{"src": "image29.avif", "title": "Acessando Migration Projects", "desc": "Como chegar: no menu Oracle Cloud Migrations, acesse Migrations e selecione Migration projects. O projeto será o agrupador lógico da migração."}, {"src": "image30.avif", "title": "Criando Migration Project", "desc": "Como chegar: clique em Create migration project. Esse projeto centraliza planos, assets e execuções relacionados a uma onda ou aplicação de migração."}, {"src": "image31.avif", "title": "Selecionando projeto único", "desc": "Como chegar: selecione Create a single migration project e prossiga. Esse modelo atende bem a laboratórios e migrações controladas por aplicação ou grupo de VMs."}, {"src": "image32.avif", "title": "Nomeando o projeto", "desc": "Como chegar: informe um nome claro para o projeto e clique em Create. Recomenda-se usar nomes que indiquem origem, aplicação e ambiente, como aws-app01-to-oci."}], "questions": [{"q": "Para que serve Migration Project?", "options": ["Organizar assets e planos", "Criar senha AWS", "Configurar DNS externo"], "answer": 0}, {"q": "Onde acessar essa opção?", "options": ["Migrations > Migration projects", "Compute > Images", "Networking > DNS"], "answer": 0}, {"q": "Qual boa prática de nome?", "options": ["Indicar origem, aplicação e destino", "Usar nome aleatório sem padrão", "Usar somente números"], "answer": 0}, {"q": "O projeto substitui o Discovery?", "options": ["Não, ele organiza a etapa de migração", "Sim, substitui totalmente", "Sim, apaga o Asset Source"], "answer": 0}, {"q": "Um projeto pode agrupar o quê?", "options": ["Planos e assets", "Somente usuários", "Somente chaves SSH"], "answer": 0}]}, {"id": "plan", "title": "Migration Plan", "goal": "Definir estratégia e ambiente de destino da migração.", "steps": ["Abrir Migration plans.", "Criar plano.", "Definir dados básicos.", "Configurar Target Environment.", "Aguardar Work Request."], "imgs": [{"src": "image33.avif", "title": "Criando Migration Plan", "desc": "Como chegar: dentro dos detalhes do projeto, acesse Migration plans e clique em Create migration plan. O plano define como o asset será transformado em instância OCI."}, {"src": "image34.avif", "title": "Configurando informações do plano", "desc": "Como chegar: preencha Display name, Target compartment, Resource type e Strategy type. Esses campos definem o comportamento da migração e o local de destino."}, {"src": "image35.avif", "title": "Configurando Target Environment", "desc": "Como chegar: em Target environment, escolha shape, compartment da VCN e demais recursos de rede. É aqui que você define onde a instância migrada será criada na OCI."}, {"src": "image36.avif", "title": "Aguardando criação do plano", "desc": "Como chegar: após clicar em Create migration plan, acompanhe Work request details até a conclusão. Só avance para assets depois que o plano estiver criado com sucesso."}], "questions": [{"q": "Onde definir shape de destino?", "options": ["Target environment", "IAM Users", "Object Lifecycle"], "answer": 0}, {"q": "O plano define o quê?", "options": ["Como o asset será reimplantado na OCI", "Senha do banco", "Política de e-mail"], "answer": 0}, {"q": "Qual item é essencial no plano?", "options": ["Target compartment", "Access Analyzer", "Spam Filter"], "answer": 0}, {"q": "Antes de avançar, o plano deve estar:", "options": ["Criado com sucesso", "Sem nome", "Excluído"], "answer": 0}, {"q": "Resource type e Strategy type ficam em qual etapa?", "options": ["Create migration plan", "Create Vault", "Create VCN Wizard"], "answer": 0}]}, {"id": "assets", "title": "Migration Assets", "goal": "Adicionar VMs descobertas ao projeto e configurar replicação.", "steps": ["Abrir Migration assets.", "Clicar em Add migration assets.", "Usar OCM Inventory se necessário.", "Selecionar asset.", "Configurar Default replication location."], "imgs": [{"src": "image37.jpeg", "title": "Adicionando Migration Assets", "desc": "Como chegar: dentro do projeto, acesse Migration assets no Resource Menu e clique em Add migration assets. Essa etapa associa as VMs descobertas ao projeto."}, {"src": "image38.avif", "title": "Selecionando assets do OCM Inventory", "desc": "Como chegar: se nenhum asset aparecer diretamente, use Add from OCM inventory. Essa opção busca os recursos previamente descobertos pelo Run discovery."}, {"src": "image39.avif", "title": "Confirmando assets selecionados", "desc": "Como chegar: selecione as VMs desejadas e clique em Add migration assets. Assets já usados em teste anterior podem não aparecer novamente."}, {"src": "image40.avif", "title": "Avançando no assistente de assets", "desc": "Como chegar: na próxima tela, selecione o recurso adicionado e clique em Next. Essa etapa prepara a configuração de replicação específica do asset."}, {"src": "image41.avif", "title": "Configurando Default replication location", "desc": "Como chegar: selecione Availability Domain, compartment de replicação e bucket onde os dados serão armazenados. Essa configuração é obrigatória antes de replicar o asset."}, {"src": "image42.avif", "title": "Submetendo assets", "desc": "Como chegar: revise os dados e clique em Submit. O asset passa a fazer parte do projeto e fica pronto para ser replicado."}], "questions": [{"q": "Onde adicionar os recursos que serão migrados?", "options": ["Migration assets", "Billing reports", "Cloud Guard"], "answer": 0}, {"q": "Se a lista estiver vazia, usar:", "options": ["Add from OCM inventory", "Delete project", "Create DNS"], "answer": 0}, {"q": "Default replication location define o quê?", "options": ["AD, compartment e bucket de replicação", "Senha do root", "Nome do usuário AWS"], "answer": 0}, {"q": "O asset precisa estar associado a quê?", "options": ["Migration Project", "Customer Support", "Email Group"], "answer": 0}, {"q": "Um asset já migrado em teste pode:", "options": ["Não aparecer novamente", "Virar policy automaticamente", "Apagar o bucket"], "answer": 0}]}, {"id": "replication", "title": "Replicação", "goal": "Replicar dados da VM de origem para OCI.", "steps": ["Abrir o Migration Asset.", "Clicar em Replicate.", "Confirmar replicação.", "Monitorar progresso e Work Requests.", "Aguardar 100%."], "imgs": [{"src": "image43.avif", "title": "Asset pronto dentro do projeto", "desc": "Como chegar: retorne ao Migration projects, abra o projeto e visualize o asset em Migration assets. A partir desta tela você poderá abrir o asset e iniciar a replicação."}, {"src": "image44.avif", "title": "Abrindo detalhes do Migration Asset", "desc": "Como chegar: clique no nome da instância ou asset dentro de Migration assets. Essa tela mostra detalhes do recurso e disponibiliza ações como Replicate."}, {"src": "image45.avif", "title": "Iniciando Replicate", "desc": "Como chegar: na tela de detalhes do asset, clique em Replicate. Essa ação inicia a cópia dos dados da VM para a OCI usando o bucket configurado."}, {"src": "image46.avif", "title": "Confirmando replicação", "desc": "Como chegar: confirme a ação de replicação na janela exibida. Após confirmar, o OCM inicia o processo e passa a exibir notificações e progresso."}, {"src": "image47.avif", "title": "Replicação iniciada", "desc": "Como chegar: observe as notificações no console após iniciar a replicação. O tempo total depende do tamanho da VM, largura de banda e condições do ambiente de origem."}, {"src": "image48.avif", "title": "Acompanhando progresso da replicação", "desc": "Como chegar: na própria tela do asset, acompanhe o percentual de replicação. Aguarde até atingir 100% antes de gerar a RMS Stack."}], "questions": [{"q": "Qual botão inicia a replicação?", "options": ["Replicate", "Create user", "Open billing"], "answer": 0}, {"q": "O tempo de replicação depende de quê?", "options": ["Tamanho da VM e largura de banda", "Cor do tema", "Nome do projeto"], "answer": 0}, {"q": "Quando avançar para RMS Stack?", "options": ["Depois da replicação atingir 100%", "Antes do Discovery", "Antes de criar asset"], "answer": 0}, {"q": "Onde investigar falhas de replicação?", "options": ["Work Requests", "Oracle University", "Appearance settings"], "answer": 0}, {"q": "A replicação usa qual recurso como apoio?", "options": ["Bucket de replicação", "Dashboard de custos", "DNS privado"], "answer": 0}]}, {"id": "rms", "title": "RMS Stack", "goal": "Gerar a stack do Resource Manager para criar a instância migrada.", "steps": ["Retornar ao projeto.", "Abrir Migration plans.", "Acessar Target assets > Configure se precisar mudar shape ou rede.", "Clicar em Generate RMS stack.", "Aguardar stack gerada."], "imgs": [], "questions": [{"q": "Antes de gerar a stack, onde alterar shape se necessário?", "options": ["Target assets > Configure", "Vault > Keys", "Billing > Usage"], "answer": 0}, {"q": "Generate RMS stack cria o quê?", "options": ["Stack do Oracle Resource Manager", "Usuário AWS", "Nova tenancy"], "answer": 0}, {"q": "Qual serviço executa a stack?", "options": ["Oracle Resource Manager", "Oracle APEX", "Data Pump"], "answer": 0}, {"q": "A stack serve para quê?", "options": ["Implantar recursos de destino na OCI", "Criar chamado", "Excluir discovery"], "answer": 0}, {"q": "O que revisar antes do deploy?", "options": ["Shape, rede e parâmetros do target asset", "Somente idioma do navegador", "Senha do e-mail"], "answer": 0}]}, {"id": "deploy", "title": "Deploy da Instância Migrada", "goal": "Executar Deploy RMS Stack e validar o ORM Job.", "steps": ["Clicar em Deploy RMS stack.", "Aguardar criação do RMS job.", "Abrir stack.", "Abrir ormjob.", "Verificar logs do deploy."], "imgs": [], "questions": [{"q": "Qual botão executa a implantação?", "options": ["Deploy RMS stack", "Run discovery", "Create secret"], "answer": 0}, {"q": "Onde ver detalhes do deploy?", "options": ["ORM Job", "IAM Passwords", "Bucket Metrics"], "answer": 0}, {"q": "Falha no deploy pode envolver:", "options": ["Rede, shape, volume ou permissão", "Cor do certificado", "Nome do navegador"], "answer": 0}, {"q": "Após deploy concluído, validar em:", "options": ["Compute > Instances", "Vault > Secrets", "Identity > Domains"], "answer": 0}, {"q": "O deploy cria principalmente:", "options": ["Instância Compute na OCI", "Usuário AWS", "Novo blog"], "answer": 0}]}, {"id": "validation", "title": "Validação Final", "goal": "Executar testes pós-migração e double-check entre origem e destino.", "steps": ["Acessar Compute > Instances.", "Confirmar instância Running.", "Validar VNIC, subnet, IP e regras de segurança.", "Testar SSH ou aplicação.", "Comparar origem AWS/VMware com destino OCI."], "imgs": [], "questions": [{"q": "Onde ver a instância migrada?", "options": ["Compute > Instances", "Object Storage > Buckets", "IAM > Groups"], "answer": 0}, {"q": "Qual status esperado?", "options": ["Running", "Deleted", "Unknown forever"], "answer": 0}, {"q": "O que testar após migração?", "options": ["SSH, aplicação, rede e volumes", "Somente cor do console", "Apenas nome do usuário"], "answer": 0}, {"q": "Por que fazer double-check?", "options": ["Para comparar origem e destino", "Para reduzir senha", "Para apagar evidências"], "answer": 0}, {"q": "Qual regra pode impactar acesso?", "options": ["Security List ou NSG", "Tag de cor", "Nome do certificado"], "answer": 0}]}, {"id": "trouble", "title": "Troubleshooting", "goal": "Aprender pontos comuns de falha no processo OCM.", "steps": ["Analisar Work Requests.", "Validar credenciais AWS.", "Validar Vault e Secrets.", "Validar bucket e permissões.", "Validar stack, shape e rede."], "imgs": [], "questions": [{"q": "Primeiro local para investigar jobs?", "options": ["Work Requests", "Página inicial do navegador", "Editor de texto"], "answer": 0}, {"q": "Discovery Failed pode indicar:", "options": ["Credencial, permissão ou região incorreta", "Certificado vencido do aluno", "Erro de fonte"], "answer": 0}, {"q": "Secret Error deve levar à validação de:", "options": ["Vault, Key e MigrationSecrets", "VCN apenas", "Compute Shape apenas"], "answer": 0}, {"q": "Replication Failed pode envolver:", "options": ["Conectividade, bucket ou permissão", "Apenas nome do projeto", "Somente idioma"], "answer": 0}, {"q": "RMS Failed pode envolver:", "options": ["Variáveis, rede, shape ou permissões", "Quiz respondido", "Tema escuro"], "answer": 0}]}, {"id": "interview", "title": "Interview Mode", "goal": "Revisar conceitos em formato de entrevista técnica.", "steps": ["Explique o que é OCM.", "Explique Asset Source.", "Explique Migration Plan.", "Explique Replication.", "Explique RMS Stack e Deploy."], "imgs": [], "questions": [{"q": "Asset Source representa:", "options": ["Ambiente externo de origem", "Certificado final", "Usuário do navegador"], "answer": 0}, {"q": "Migration Asset representa:", "options": ["Recurso selecionado para migração", "Bucket vazio", "Policy root"], "answer": 0}, {"q": "Migration Plan representa:", "options": ["Plano de reimplantação no destino", "Conta de e-mail", "Chave SSH local"], "answer": 0}, {"q": "RMS Stack representa:", "options": ["Infraestrutura para deploy no Resource Manager", "Painel de billing", "Rota pública"], "answer": 0}, {"q": "Fluxo correto do OCM:", "options": ["Prerequisites → Discovery → Project/Plan → Replication → RMS/Deploy", "Deploy → Discovery → Secrets", "Certificado → Bucket → AWR"], "answer": 0}]}];
+let student='';
+let unlocked=false;
+let current=0;
+let answers = JSON.parse(localStorage.getItem('ocmAnswersV6')||'{}');
+let finalChecked = localStorage.getItem('ocmFinalCheckedV6') === 'true';
+let finalScore = Number(localStorage.getItem('ocmFinalScoreV6')||0);
+
+function totalQuestions(){return modules.reduce((a,m)=>a+m.questions.length,0);}
+function answeredQuestions(){
+ let count=0;
+ modules.forEach((m,mi)=>m.questions.forEach((q,qi)=>{ if(answers[`q-${mi}-${qi}`] !== undefined) count++; }));
+ return count;
+}
+function allAnswered(){return answeredQuestions()===totalQuestions();}
+
+function goTo(id){const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});}
+
+function renderScreens(m, mi){
+ if(!m.imgs || m.imgs.length===0){
+  return `<div class="imageSlot"><div style="font-size:42px">🖼️</div><b>Área reservada para prints complementares</b><br><span class="small">Quando você enviar novas telas desta etapa, elas entram aqui.</span></div>`;
+ }
+ return `<div class="screenshotFlow">` + m.imgs.map((item,idx)=>`
+  <div class="screen" id="m${mi}-img${idx}">
+    <img src="images/${item.src}" alt="${item.title}">
+    <div class="screenCaption"><h4>${item.title}</h4><p>${item.desc}</p></div>
+  </div>`).join('') + `</div>`;
+}
+
+function renderSteps(m, mi){
+ return `<div class="stepList">` + m.steps.map((s,idx)=>{
+   const target = m.imgs && m.imgs[idx] ? `m${mi}-img${idx}` : `module-${mi}`;
+   return `<div class="step" onclick="goTo('${target}')"><strong>Passo ${idx+1}:</strong> ${s} <span class="small"> — clicar para ir à tela</span></div>`;
+ }).join('') + `</div>`;
+}
+
+function renderQuiz(m, mi){
+ return `<div class="quiz"><h3>Validação do módulo</h3><p class="small">Responda as 5 perguntas e avance. A correção será exibida somente no final do treinamento.</p>` +
+ m.questions.map((q,qi)=>`
+  <div class="qBox" id="qbox-${mi}-${qi}">
+   <h4>${qi+1}. ${q.q}</h4>
+   ${q.options.map((o,oi)=>`<label class="opt" id="opt-${mi}-${qi}-${oi}"><input type="radio" name="q-${mi}-${qi}" value="${oi}" onchange="saveAnswer(${mi},${qi},${oi})" ${answers[`q-${mi}-${qi}`]===oi?'checked':''}> ${o}</label>`).join('')}
+  </div>`).join('') +
+ `<div class="actions"><button class="btn secondary" onclick="nextModule()">Próximo</button></div><div class="resultBox" id="result-${mi}">Responda as perguntas e avance. A correção geral será feita no final.</div></div>`;
+}
+
+function render(){
+ const nav=document.getElementById('nav');
+ const mods=document.getElementById('modules');
+ nav.innerHTML='';
+ mods.innerHTML='';
+
+ modules.forEach((m,i)=>{
+   const answered = m.questions.every((q,qi)=>answers[`q-${i}-${qi}`] !== undefined);
+   const locked=!unlocked;
+   const b=document.createElement('button');
+   b.className='navBtn '+(i===current?'active ':'')+(answered?'done ':'')+(locked?'locked':'');
+   b.disabled=locked;
+   b.onclick=()=>{current=i;render();window.scrollTo({top:document.getElementById('trainingArea').offsetTop-20,behavior:'smooth'})};
+   b.innerHTML=`<span class="badge">${answered?'✓':i+1}</span><span>${m.title}</span>`;
+   nav.appendChild(b);
+
+   const sec=document.createElement('section');
+   sec.className='module '+(i===current?'active':'');
+   sec.id=`module-${i}`;
+   sec.innerHTML=`<div class="moduleHead"><h2>${m.title}</h2><p>${m.goal}</p></div>
+   <div class="moduleBody">
+    <div class="cards"><div class="card"><h3>Objetivo do módulo</h3><p>${m.goal}</p></div><div class="card"><h3>Como usar</h3><p>Clique em cada passo para navegar diretamente até a tela correspondente e leia a explicação abaixo do print.</p></div></div>
+    ${renderSteps(m,i)}
+    ${renderScreens(m,i)}
+    <div class="terminal"><div class="termTop">Simulador OCM</div><div class="termBody">ocm> module ${String(i+1).padStart(2,'0')} status\n[OK] Passos carregados\n[OK] Telas vinculadas\n[OK] Validação disponível</div></div>
+    ${renderEnterpriseContent(m.id)}${renderQuiz(m,i)}
+   </div>`;
+   mods.appendChild(sec);
+ });
+
+ restoreQuizMarks();
+ updateProgress();
+}
+
+function saveAnswer(mi, qi, oi){
+ answers[`q-${mi}-${qi}`] = oi;
+ localStorage.setItem('ocmAnswersV6', JSON.stringify(answers));
+ updateProgress();
+ renderFinalPanel();
+}
+
+function startTraining(){
+ const v=document.getElementById('studentName').value.trim();
+ if(v.length<3){alert('Digite seu nome completo para liberar o treinamento.');return;}
+ student=v;
+ unlocked=true;
+ localStorage.setItem('ocmStudentV6',student);
+ document.getElementById('studentLabel').textContent='Aluno: '+student;
+ document.getElementById('trainingArea').classList.add('started');
+ render();
+ renderFinalPanel();
+ window.scrollTo({top:document.getElementById('trainingArea').offsetTop-20,behavior:'smooth'});
+}
+
+function nextModule(){
+ if(current<modules.length-1){
+   current++;
+   render();
+   window.scrollTo({top:document.getElementById('trainingArea').offsetTop-20,behavior:'smooth'});
+ } else {
+   renderFinalPanel();
+   document.getElementById('finalPanel').scrollIntoView({behavior:'smooth'});
+ }
+}
+
+function correctAll(){
+ if(!allAnswered()){
+   const missing = totalQuestions() - answeredQuestions();
+   alert(`Ainda faltam ${missing} pergunta(s) para responder antes da correção final.`);
+   return;
+ }
+ let correct=0;
+ modules.forEach((m,mi)=>{
+   m.questions.forEach((q,qi)=>{
+     const selected = answers[`q-${mi}-${qi}`];
+     if(Number(selected)===q.answer) correct++;
+   });
+ });
+ finalScore=Math.round((correct/totalQuestions())*100);
+ finalChecked=true;
+ localStorage.setItem('ocmFinalCheckedV6','true');
+ localStorage.setItem('ocmFinalScoreV6',String(finalScore));
+ render();
+ renderFinalPanel();
+ document.getElementById('finalPanel').scrollIntoView({behavior:'smooth'});
+}
+
+function restoreQuizMarks(){
+ document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+ if(!finalChecked) return;
+ modules.forEach((m,mi)=>{
+   m.questions.forEach((q,qi)=>{
+     const selected=answers[`q-${mi}-${qi}`];
+     q.options.forEach((_,oi)=>{
+       const lab=document.getElementById(`opt-${mi}-${qi}-${oi}`);
+       if(!lab) return;
+       if(oi===q.answer) lab.classList.add('correct');
+       if(selected!==undefined && oi===Number(selected) && Number(selected)!==q.answer) lab.classList.add('wrong');
+     });
+   });
+ });
+}
+
+function updateProgress(){
+ const pct=Math.round((answeredQuestions()/totalQuestions())*100);
+ document.getElementById('progress').style.width=pct+'%';
+ document.getElementById('statProgress').textContent=pct+'%';
+ document.getElementById('statScore').textContent=(finalChecked ? finalScore : 0)+'%';
+ document.getElementById('certBtn').disabled=!(unlocked && finalChecked && allAnswered() && finalScore>=75);
+ const retry=document.getElementById('sidebarRetryBtn');
+ if(retry) retry.style.display = finalChecked ? 'block' : 'none';
+}
+
+function renderFinalPanel(){
+ const panel=document.getElementById('finalPanel');
+ if(!unlocked){panel.style.display='none';return;}
+ const answered=answeredQuestions();
+ const total=totalQuestions();
+
+ if(!allAnswered()){
+   panel.style.display='block';
+   panel.className='finalPanel';
+   panel.innerHTML=`<h2>Resultado parcial</h2><p>Você respondeu <strong>${answered}</strong> de <strong>${total}</strong> perguntas. Continue avançando pelos módulos. A correção geral será liberada no final.</p>`;
+   return;
+ }
+
+ if(!finalChecked){
+   panel.style.display='block';
+   panel.className='finalPanel';
+   panel.innerHTML=`<h2>Correção final disponível</h2><p>Você respondeu todas as <strong>${total}</strong> perguntas. Clique abaixo para corrigir tudo de uma vez e visualizar as respostas em verde e vermelho.</p><button class="btn good" onclick="correctAll()">Corrigir prova e ver resultado</button>`;
+   return;
+ }
+
+ panel.style.display='block';
+ panel.className='finalPanel '+(finalScore>=75?'good':'bad');
+ if(finalScore>=75){
+   panel.innerHTML=`<h2>✅ Aprovado</h2><p>Você concluiu todos os módulos com <strong>${finalScore}%</strong> de aproveitamento. As respostas certas ficaram em verde e as erradas em vermelho. Você pode navegar pelos módulos para revisar antes de emitir o certificado.</p><div class="actions"><button class="btn good" onclick="showCertificate()">Emitir certificado</button><button class="btn secondary" onclick="resetAll()">Tentar novamente</button></div>`;
+ } else {
+   panel.innerHTML=`<h2>❌ Ainda não aprovado</h2><p>Você concluiu todos os módulos com <strong>${finalScore}%</strong>. O mínimo para aprovação é <strong>75%</strong>. Revise as respostas marcadas em verde e vermelho e depois tente novamente.</p><div class="actions"><button class="btn" onclick="resetAll()">Tentar novamente</button></div>`;
+ }
+}
+
+function resetAll(){
+ if(!confirm('Deseja limpar todas as respostas e tentar novamente?')) return;
+ answers={};
+ finalChecked=false;
+ finalScore=0;
+ current=0;
+ localStorage.removeItem('ocmAnswersV6');
+ localStorage.removeItem('ocmFinalCheckedV6');
+ localStorage.removeItem('ocmFinalScoreV6');
+ render();
+ renderFinalPanel();
+ const area=document.getElementById('trainingArea');
+ if(area){
+   area.scrollIntoView({behavior:'smooth', block:'start'});
+ }
+}
+
+function showCertificate(){
+ if(!(finalChecked && allAnswered() && finalScore>=75)){
+   alert('Para emitir o certificado, responda todas as perguntas, corrija a prova e atinja no mínimo 75%.');
+   return;
+ }
+ document.getElementById('certName').textContent=student||localStorage.getItem('ocmStudentV6')||'Aluno';
+ document.getElementById('certScore').textContent=finalScore+'%';
+ document.getElementById('certDate').textContent=new Date().toLocaleDateString('pt-BR');
+ document.getElementById('certificate').style.display='block';
+ document.getElementById('certificate').scrollIntoView({behavior:'smooth'});
+ setTimeout(()=>window.print(),700);
+}
+
+(function init(){
+ const s=localStorage.getItem('ocmStudentV6');
+ if(s){
+   student=s;
+   unlocked=true;
+   document.getElementById('studentName').value=s;
+   document.getElementById('studentLabel').textContent='Aluno: '+s;
+   document.getElementById('trainingArea').classList.add('started');
+ }
+ render();
+ renderFinalPanel();
+})();
+
+function renderEnterpriseContent(id){
+if(id==='rms'){
+return `<div class="enterpriseBox"><h3>RMS Stack Deep Dive</h3><pre>AWS VM
+  ↓
+Discovery
+  ↓
+Migration Asset
+  ↓
+Replication
+  ↓
+Generate RMS Stack
+  ↓
+Oracle Resource Manager
+  ↓
+OCI Compute Instance</pre><p>O RMS Stack gera os recursos Terraform usados pelo Oracle Resource Manager para criar a instância migrada na OCI.</p></div>`;
+}
+if(id==='deploy'){
+return `<div class="enterpriseBox"><h3>Deploy Simulator</h3><pre>[██████████] 100%
+✓ RMS Stack Generated
+✓ Compute Created
+✓ Boot Volume Created
+✓ VNIC Created
+✓ Instance Running</pre><p>Use Work Requests e ORM Jobs para validar cada etapa do deploy.</p></div>`;
+}
+if(id==='validation'){
+return `<div class="enterpriseBox"><h3>Validation Center</h3>
+<label class='checkItem'><input type='checkbox'> Compute Created</label>
+<label class='checkItem'><input type='checkbox'> Instance Running</label>
+<label class='checkItem'><input type='checkbox'> SSH Access</label>
+<label class='checkItem'><input type='checkbox'> Application Validation</label>
+<label class='checkItem'><input type='checkbox'> NSG Validation</label>
+<label class='checkItem'><input type='checkbox'> Security List Validation</label>
+</div>`;
+}
+if(id==='trouble'){
+return `<div class="enterpriseBox"><h3>Troubleshooting Center</h3>
+<ul><li><b>Discovery Failed</b> - validar credenciais e região.</li>
+<li><b>Replication Failed</b> - validar bucket e conectividade.</li>
+<li><b>RMS Failed</b> - validar shape, quota e rede.</li>
+<li><b>Deploy Failed</b> - validar NSG, Security Lists e imagem.</li></ul></div>`;
+}
+if(id==='interview'){
+return `<div class="enterpriseBox"><h3>Interview Mode Premium</h3><ol>
+<li>O que é Asset Source?</li><li>O que é Migration Asset?</li><li>O que é Discovery?</li><li>O que é RMS Stack?</li><li>Quando usar Run Discovery?</li>
+<li>O que é Replication?</li><li>Como validar ORM Job?</li><li>Como validar Compute?</li><li>Como funciona Target Assets?</li><li>Como alterar Shape?</li>
+<li>O que é Migration Plan?</li><li>O que é Migration Project?</li><li>Como validar bucket?</li><li>O que é Vault?</li><li>O que é Secret?</li>
+<li>O que é Work Request?</li><li>Como validar NSG?</li><li>Como validar Security Lists?</li><li>Principais erros RMS?</li><li>Fluxo completo OCM?</li>
+</ol></div>`;
+}
+return '';
+}
+</script>
+</body>
+</html>

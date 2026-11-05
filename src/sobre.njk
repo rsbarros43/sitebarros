@@ -1,0 +1,72 @@
+---
+layout: layouts/base.njk
+title: Sobre mim
+descricao: Quem é Renato Barros — trajetória, o que faço hoje, o que escrevo neste blog e como entrar em contato.
+permalink: /sobre/
+---
+<section class="sobre-hero">
+  <div class="container sobre-grid">
+    <div class="sobre-foto">
+      <img src="{{ site.autor.fotoAmbiente }}" alt="Renato Barros" width="1086" height="1448">
+    </div>
+    <div class="sobre-texto prosa">
+      <span class="kicker">Sobre mim</span>
+      <h1>Renato Barros</h1>
+      <p class="hero-cargo">{{ cv.pt.hero.role }} · {{ site.autor.local }}</p>
+
+      {#- ✏️ EDITE À VONTADE: este texto é a sua apresentação pessoal. -#}
+      <p>Sou profissional de Tecnologia da Informação há mais de 25 anos. Comecei em 1991 como micro operador, passei pelo suporte, pelas redes e segurança da informação, e há muitos anos me dedico a <strong>bancos de dados de missão crítica</strong> — principalmente Oracle Database e Exadata.</p>
+      <p>No caminho, atuei em empresas como Oracle do Brasil (Global CSS), Accenture, DB Master (atual Sky.One), Gama Saúde/Qualicorp e TIVIT, lidando com incidentes Sev1, migrações para Cloud, performance tuning, alta disponibilidade e automação.</p>
+      <p>Criei este espaço para <strong>organizar e compartilhar o que aprendo</strong>: scripts que uso no dia a dia, análises de problemas reais (sem expor clientes), guias passo a passo e materiais de estudo. Se algum conteúdo te ajudar, já valeu a pena.</p>
+      <div class="hero-acoes">
+        <a class="btn btn-primario" href="/curriculo/">Ver currículo completo</a>
+        <a class="btn" href="/contato/">Fale comigo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="container">
+    <div class="grade-3">
+      <div class="cartao">
+        <span class="cartao-ico">🗄️</span>
+        <h3>O que eu faço</h3>
+        <p>Administração, arquitetura e sustentação de Oracle RAC/Exadata, Data Guard, GoldenGate e RMAN, além de SQL Server, PostgreSQL e MySQL, em ambientes on-premises e Cloud (OCI, AWS e Azure).</p>
+      </div>
+      <div class="cartao">
+        <span class="cartao-ico">✍️</span>
+        <h3>O que escrevo aqui</h3>
+        <p><a href="/blog/">Blog</a> com dicas rápidas e notas do dia a dia, e <a href="/artigos/">Artigos</a> mais aprofundados sobre alta disponibilidade, performance, migrações e automação.</p>
+      </div>
+      <div class="cartao">
+        <span class="cartao-ico">🎓</span>
+        <h3>Formação contínua</h3>
+        <p>52 certificações Oracle ao longo da carreira, CCNA/CCNP e CCSA/CCSE, e Bacharelado em Engenharia de Software em andamento (conclusão prevista para 2027).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="container container-estreito">
+    <h2 class="secao-titulo">Minha trajetória</h2>
+    <ol class="linha-tempo-simples">
+      {% for job in cv.pt.jobs %}
+      <li><span class="lt-periodo">{{ job.period }}</span><strong>{{ job.company }}</strong><span>{{ job.role }}</span></li>
+      {% endfor %}
+      {% for h in cv.pt.history %}
+      {% set partes = h.role.split(" | ") %}
+      <li><span class="lt-periodo">{{ partes[1] }}</span><strong>{{ h.company }}</strong><span>{{ partes[0] }}</span></li>
+      {% endfor %}
+    </ol>
+    <p><a class="link-seta" href="/curriculo/#experiencia">Detalhes de cada experiência no currículo →</a></p>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="container">
+    <h2 class="secao-titulo">Tecnologias com que trabalho</h2>
+    <div class="chips">{% for s in cv.pt.skills %}<span class="chip">{{ s }}</span>{% endfor %}</div>
+  </div>
+</section>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="5">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Gerenciando projetos</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(5)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>06. Gerenciando projetos no OpenShift</h2>
+<p>Em OpenShift, um projeto é a camada lógica usada para organizar aplicações, permissões, quotas, pipelines e objetos Kubernetes. Neste laboratório você vai criar e administrar o namespace principal do projeto: <b>tekton-lab</b>.</p>
+<div class="callout"><b>Fundamento:</b> no Kubernetes chamamos de namespace. No OpenShift, o conceito aparece para o usuário como Project, com integrações de segurança, RBAC e console.</div>
+<h3>Objetivos do capítulo</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>Criar projeto:</b> usar <code>oc new-project</code> para iniciar um ambiente isolado.</div>
+<div class="lesson-item"><b>Alternar contexto:</b> usar <code>oc project</code> para trabalhar no namespace correto.</div>
+<div class="lesson-item"><b>Validar recursos:</b> listar pods, services, routes e permissões do projeto.</div>
+<div class="lesson-item"><b>Preparar CI/CD:</b> deixar o projeto pronto para Flask, Tekton e Triggers.</div>
+</div>
+<h3>Abreviações que você vai ver nos comandos</h3><p>Ao longo do laboratório usamos os nomes abreviados dos objetos — é assim que profissionais de OpenShift/Kubernetes trabalham no dia a dia, para digitar menos:</p><div class="lesson-list"><div class="lesson-item"><code>po</code> = <b>pods</b> — <code>oc get po</code> equivale a <code>oc get pods</code>.</div><div class="lesson-item"><code>svc</code> = <b>services</b> — <code>oc get svc</code>.</div><div class="lesson-item"><code>deploy</code> = <b>deployments</b> — <code>oc get deploy</code>.</div><div class="lesson-item"><code>rs</code> = <b>replicasets</b>, <code>rc</code> = <b>replicationcontrollers</b>.</div><div class="lesson-item"><code>ns</code> = <b>namespaces</b> (no OpenShift, equivalente a projects).</div><div class="lesson-item"><code>cm</code> = <b>configmaps</b>, <code>sa</code> = <b>serviceaccounts</b>.</div><div class="lesson-item">Para ver a lista completa de abreviações disponíveis no seu cluster, rode <code>oc api-resources</code> — ele mostra o nome completo, a abreviação e o Kind de cada tipo de objeto.</div></div>
+<h3>Laboratório guiado</h3>
+<p><b>1. Criar o projeto principal</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc new-project tekton-lab`)" title="Clique para enviar este comando para a linha do terminal">oc new-project tekton-lab</div><div class="run-row"><button class="btn" onclick="runStep('oc new-project tekton-lab',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Selecionar o projeto</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc project tekton-lab`)" title="Clique para enviar este comando para a linha do terminal">oc project tekton-lab</div><div class="run-row"><button class="btn" onclick="runStep('oc project tekton-lab',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Listar todos os projetos disponíveis</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get projects`)" title="Clique para enviar este comando para a linha do terminal">oc get projects</div><div class="run-row"><button class="btn" onclick="runStep('oc get projects',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Validar recursos do projeto</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get all`)" title="Clique para enviar este comando para a linha do terminal">oc get all</div><div class="run-row"><button class="btn" onclick="runStep('oc get all',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<h3>Boas práticas</h3>
+<div class="okbox">Use nomes claros para projetos: <b>dev</b>, <b>homolog</b>, <b>prod</b>, <b>tekton-lab</b>. Em ambiente real, combine Project + RBAC + ResourceQuota + LimitRange.</div>
+<h3>Troubleshooting rápido</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>Forbidden:</b> usuário sem permissão para criar projeto.</div>
+<div class="lesson-item"><b>AlreadyExists:</b> projeto já existe; use <code>oc project tekton-lab</code>.</div>
+<div class="lesson-item"><b>No resources found:</b> projeto criado, mas ainda sem aplicação.</div>
+</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+crc setup
+crc start
+crc console
+oc login
+oc whoami
+oc get projects
+oc get pods
+oc get nodes
+oc get all
+oc new-project tekton-lab
+oc apply -f openshift/deployment.yaml
+tkn pipelinerun logs flask-app-run -f
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc new-project tekton-lab\')">oc new-project tekton-lab</button><button onclick="fillCommand(\'oc project tekton-lab\')">oc project tekton-lab</button><button onclick="fillCommand(\'oc get projects\')">oc get projects</button><button onclick="fillCommand(\'oc get all\')">oc get all</button></div></div></div></div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

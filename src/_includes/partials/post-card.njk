@@ -1,0 +1,23 @@
+{#- Espera a variável `post` -#}
+<article class="post-card">
+  <a class="post-card-capa" href="{{ post.url }}" tabindex="-1" aria-hidden="true">
+    {% if post.data.capa %}
+      <img src="{{ post.data.capa }}" alt="" loading="lazy">
+    {% else %}
+      <span class="capa-gerada" data-cat="{{ post.data.categoria | slug }}"><span>{{ post.data.categoria or "Blog" }}</span></span>
+    {% endif %}
+  </a>
+  <div class="post-card-corpo">
+    <div class="post-meta">
+      <span class="selo selo-{{ post.data.tipo or 'blog' }}">{{ "Artigo" if post.data.tipo == "artigo" else "Blog" }}</span>
+      {% if post.data.categoria %}<a class="meta-cat" href="/categorias/{{ post.data.categoria | slug }}/">{{ post.data.categoria }}</a>{% endif %}
+    </div>
+    <h3 class="post-card-titulo"><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+    <p class="post-card-resumo">{{ post | resumo }}</p>
+    <div class="post-meta post-meta-rodape">
+      <time datetime="{{ post.date | dataISO }}">{{ post.date | dataCurta }}</time>
+      <span>·</span>
+      <span>{{ post.content | tempoLeitura }} min de leitura</span>
+    </div>
+  </div>
+</article>

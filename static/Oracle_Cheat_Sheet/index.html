@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Oracle Database — DBA Cheat Sheet Completo · Renato Barros</title>
+<!-- Fontes: system monospace stack — sem dependências externas -->
+<style>
+  /* Monospace system stack: SF Mono (macOS), Cascadia Code (Win11), Consolas (Win), Menlo (macOS), monospace (Linux) */
+  :root {
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Cascadia Mono', 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+    --font-ui: system-ui, -apple-system, 'Segoe UI', Ubuntu, sans-serif;
+  }
+</style>
+<style>
+:root {
+  --bg: #1a1a1a;
+  --bg2: #232323;
+  --bg3: #2c2c2c;
+  --bg4: #333;
+  --green: #4CAF50;
+  --green2: #66BB6A;
+  --green3: #81C784;
+  --green-dim: #2e7d32;
+  --orange: #FF9800;
+  --orange2: #FFB74D;
+  --red: #F44336;
+  --red2: #EF9A9A;
+  --yellow: #FFEB3B;
+  --yellow2: #FFF176;
+  --cyan: #00BCD4;
+  --cyan2: #80DEEA;
+  --purple: #CE93D8;
+  --blue: #64B5F6;
+  --text: #E0E0E0;
+  --text2: #BDBDBD;
+  --text3: #9E9E9E;
+  --border: #3a3a3a;
+  --border2: #4a4a4a;
+  --prompt: #4CAF50;
+  --user: #FF9800;
+  --host: #64B5F6;
+  --shadow: 0 4px 20px rgba(0,0,0,0.5);
+  --nav-h: 56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ═══════════ HEADER ═══════════ */
+header {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2332 40%, #0f2027 100%);
+  border-bottom: 2px solid var(--green-dim);
+  padding: 48px 24px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 24px,
+    rgba(76,175,80,0.03) 24px, rgba(76,175,80,0.03) 25px
+  );
+  pointer-events: none;
+}
+
+.header-badge {
+  display: inline-block;
+  background: var(--green-dim);
+  color: var(--green3);
+  font-size: 11px;
+  padding: 3px 12px;
+  border-radius: 2px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  border: 1px solid var(--green);
+}
+
+header h1 {
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+header h1 span { color: var(--text3); font-weight: 300; }
+
+header .subtitle {
+  font-size: 13px;
+  color: var(--text3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.stat {
+  background: rgba(76,175,80,0.08);
+  border: 1px solid rgba(76,175,80,0.25);
+  border-radius: 4px;
+  padding: 8px 18px;
+  text-align: center;
+}
+
+.stat .val {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+}
+
+.stat .lbl {
+  display: block;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Terminal prompt simulation */
+.prompt-line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 16px;
+}
+
+.prompt-line .user { color: var(--user); }
+.prompt-line .at { color: var(--text3); }
+.prompt-line .host { color: var(--host); }
+.prompt-line .colon { color: var(--text3); }
+.prompt-line .path { color: var(--cyan); }
+.prompt-line .dollar { color: var(--green); }
+.prompt-line .cmd { color: var(--text); }
+
+/* ═══════════ SECTION INDEX ═══════════ */
+.index-bar {
+  background: #0d1117;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.index-bar a {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.index-bar a:hover, .index-bar a.active {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green3);
+}
+
+/* ═══════════ NAV ═══════════ */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #0d1117;
+  border-bottom: 2px solid var(--green-dim);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding: 0 16px;
+  gap: 2px;
+  scrollbar-width: none;
+}
+
+nav::-webkit-scrollbar { display: none; }
+
+nav .brand {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 700;
+  padding-right: 16px;
+  border-right: 1px solid var(--border2);
+  margin-right: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+nav a {
+  color: var(--text3);
+  text-decoration: none;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 3px;
+  transition: all .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+}
+
+nav a:hover {
+  background: rgba(76,175,80,0.1);
+  border-color: rgba(76,175,80,0.3);
+  color: var(--green3);
+}
+
+nav a.level-basic { color: var(--green3); }
+nav a.level-inter { color: var(--orange2); }
+nav a.level-adv { color: var(--red2); }
+nav a.level-expert { color: var(--purple); }
+
+/* ═══════════ MAIN ═══════════ */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+/* ═══════════ SECTIONS ═══════════ */
+.section {
+  margin-bottom: 48px;
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.level-basic .section-num { background: rgba(76,175,80,0.15); color: var(--green); border: 1px solid var(--green-dim); }
+.level-inter .section-num { background: rgba(255,152,0,0.15); color: var(--orange); border: 1px solid #e65100; }
+.level-adv .section-num { background: rgba(244,67,54,0.15); color: var(--red); border: 1px solid #b71c1c; }
+.level-expert .section-num { background: rgba(206,147,216,0.15); color: var(--purple); border: 1px solid #6a1b9a; }
+
+.section-title {
+  flex: 1;
+}
+
+.section-title h2 {
+  font-family: var(--font-mono);
+  font-size: clamp(16px, 2.5vw, 22px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.level-basic .section-title h2 { color: var(--green); }
+.level-inter .section-title h2 { color: var(--orange); }
+.level-adv .section-title h2 { color: var(--red); }
+.level-expert .section-title h2 { color: var(--purple); }
+
+.section-title .pct {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+
+.level-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.level-basic .level-tag { background: rgba(76,175,80,0.15); color: var(--green3); border: 1px solid var(--green-dim); }
+.level-inter .level-tag { background: rgba(255,152,0,0.15); color: var(--orange2); border: 1px solid #e65100; }
+.level-adv .level-tag { background: rgba(244,67,54,0.15); color: var(--red2); border: 1px solid #b71c1c; }
+.level-expert .level-tag { background: rgba(206,147,216,0.15); color: var(--purple); border: 1px solid #6a1b9a; }
+
+/* ═══════════ GRID ═══════════ */
+.grid { display: grid; gap: 16px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.grid-full { grid-template-columns: 1fr; }
+
+/* ═══════════ CARDS ═══════════ */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: var(--bg3);
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-header .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot-orange { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+.dot-red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+.dot-cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.dot-yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+.dot-blue { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+
+.card-body { padding: 16px; }
+
+/* ═══════════ TERMINAL BLOCKS ═══════════ */
+.term {
+  background: #0d1117;
+  border: 1px solid #2a3540;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.term-bar {
+  background: #1c2533;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #2a3540;
+}
+
+.term-bar .dot-close { width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
+.term-bar .dot-min   { width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e; }
+.term-bar .dot-max   { width: 10px; height: 10px; border-radius: 50%; background: #27c93f; }
+.term-bar .term-title { font-size: 11px; color: var(--text3); margin-left: 8px; }
+
+.term-body {
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  line-height: 1.8;
+}
+
+.term-body .p { color: var(--green); } /* prompt $ */
+.term-body .cmd { color: var(--text); }
+.term-body .arg { color: var(--cyan2); }
+.term-body .flag { color: var(--yellow2); }
+.term-body .out { color: var(--text3); }
+.term-body .cmt { color: #4a5568; font-style: italic; }
+.term-body .file { color: var(--orange2); }
+.term-body .dir { color: var(--blue); }
+.term-body .err { color: var(--red2); }
+.term-body .ok { color: var(--green3); }
+.term-body .str { color: var(--green2); }
+.term-body .num { color: var(--purple); }
+.term-body .kw { color: var(--orange); }
+
+/* ═══════════ TABLES ═══════════ */
+.tbl-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+th {
+  background: var(--bg3);
+  color: var(--text2);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border2);
+}
+
+td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+td:first-child { font-family: var(--font-mono); color: var(--cyan2); white-space: nowrap; }
+td:first-child code { color: var(--cyan2); }
+
+/* ═══════════ INLINE CODE ═══════════ */
+code {
+  font-family: var(--font-mono);
+  background: rgba(76,175,80,0.1);
+  border: 1px solid rgba(76,175,80,0.2);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 12px;
+  color: var(--green3);
+}
+
+/* ═══════════ BULLET LISTS ═══════════ */
+ul.ref {
+  list-style: none;
+  padding: 0;
+}
+
+ul.ref li {
+  padding: 5px 0 5px 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+  color: var(--text2);
+}
+
+ul.ref li:last-child { border-bottom: none; }
+
+ul.ref li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+}
+
+ul.ref li strong { color: var(--text); }
+ul.ref li code { font-size: 11px; }
+
+/* ═══════════ WARNING / TIP / NOTE ═══════════ */
+.callout {
+  border-left: 3px solid;
+  padding: 10px 14px;
+  border-radius: 0 4px 4px 0;
+  margin: 12px 0;
+  font-size: 12.5px;
+}
+
+.callout-warn { border-color: var(--orange); background: rgba(255,152,0,0.06); color: var(--orange2); }
+.callout-tip  { border-color: var(--green); background: rgba(76,175,80,0.06); color: var(--green3); }
+.callout-info { border-color: var(--cyan); background: rgba(0,188,212,0.06); color: var(--cyan2); }
+.callout-danger { border-color: var(--red); background: rgba(244,67,54,0.06); color: var(--red2); }
+
+.callout strong { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+/* ═══════════ BADGE ═══════════ */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.badge-green { background: rgba(76,175,80,0.2); color: var(--green3); border: 1px solid var(--green-dim); }
+.badge-orange { background: rgba(255,152,0,0.2); color: var(--orange2); border: 1px solid #e65100; }
+.badge-red { background: rgba(244,67,54,0.2); color: var(--red2); border: 1px solid #b71c1c; }
+.badge-purple { background: rgba(206,147,216,0.2); color: var(--purple); border: 1px solid #6a1b9a; }
+.badge-cyan { background: rgba(0,188,212,0.2); color: var(--cyan2); border: 1px solid #006064; }
+
+/* ═══════════ PERMISSION VISUAL ═══════════ */
+.perm-grid {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.perm-block { display: flex; gap: 2px; }
+.perm-char { width: 22px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 3px; font-size: 14px; font-weight: 700; }
+.perm-r { background: rgba(76,175,80,0.2); color: var(--green); border: 1px solid var(--green-dim); }
+.perm-w { background: rgba(255,152,0,0.2); color: var(--orange); border: 1px solid #e65100; }
+.perm-x { background: rgba(100,181,246,0.2); color: var(--blue); border: 1px solid #1565c0; }
+.perm-dash { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.perm-sep { width: 8px; }
+.perm-type { background: rgba(206,147,216,0.2); color: var(--purple); border: 1px solid #6a1b9a; }
+.perm-lbl { font-size: 10px; color: var(--text3); margin-left: 8px; }
+
+/* ═══════════ FOOTER ═══════════ */
+footer {
+  background: #0d1117;
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+footer .brand { color: var(--green); font-weight: 700; }
+
+/* ═══════════ SCROLLBAR ═══════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green-dim); }
+
+/* ═══════════ DIVIDER ═══════════ */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+  margin: 32px 0;
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+/* ── RESPONSIVIDADE COMPLETA ── */
+
+/* Tablet largo (≤1024px) */
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  main { padding: 24px 14px 60px; }
+}
+
+/* Tablet (≤768px) */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  header { padding: 28px 14px 24px; }
+  header h1 { font-size: clamp(22px, 6vw, 34px); }
+  .stats-bar { flex-wrap: wrap; }
+  .stat { min-width: 80px; padding: 10px 6px; }
+  .stat .val { font-size: 16px; }
+  nav { padding: 0 8px; gap: 0; height: auto; min-height: 48px; flex-wrap: nowrap; overflow-x: auto; }
+  nav .brand { font-size: 11px; padding-right: 8px; margin-right: 4px; }
+  nav a { font-size: 9px; padding: 5px 7px; }
+  .section-header { flex-wrap: wrap; gap: 8px; }
+  .level-tag { margin-left: 0; }
+  .tbl-wrap { font-size: 12px; }
+  th, td { padding: 7px 10px; }
+  .term-body { font-size: 11.5px; padding: 10px 12px; }
+  .card-body { padding: 12px; }
+  .index-bar { display: none; } /* esconde index bar em mobile — nav sticky basta */
+  .perm-grid { flex-wrap: wrap; gap: 6px; }
+  /* compat bar quebra em coluna */
+  .compat-bar { flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 14px; }
+}
+
+/* Mobile (≤480px) */
+@media (max-width: 480px) {
+  header h1 { font-size: 20px; letter-spacing: -0.5px; }
+  header { padding: 20px 12px 18px; }
+  .subtitle { font-size: 11px; }
+  .header-badge { font-size: 9px; }
+  .stats-bar .stat { min-width: 60px; padding: 8px 4px; }
+  .stats-bar .val { font-size: 14px; }
+  .stats-bar .lbl { font-size: 8px; }
+  nav a { font-size: 8.5px; padding: 4px 5px; }
+  nav .brand { display: none; } /* esconde brand em telas muito pequenas */
+  main { padding: 16px 10px 48px; }
+  .section-num { font-size: 10px; padding: 3px 8px; }
+  .section-header h2 { font-size: 15px; }
+  .pct { font-size: 10px; }
+  .term-body { font-size: 11px; padding: 8px 10px; }
+  th { font-size: 9px; padding: 6px 8px; }
+  td { font-size: 11px; padding: 6px 8px; }
+  td:first-child { font-size: 11px; }
+  .card-header { font-size: 10px; }
+}
+
+/* Telas muito pequenas (≤360px) */
+@media (max-width: 360px) {
+  nav a { font-size: 8px; padding: 3px 4px; }
+  header h1 { font-size: 17px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="header-badge">Oracle Database · DBA · Guia Completo · Curso Prático</div>
+  <h1><span>SQL&gt;</span> Oracle <span>--</span>dba<span>-</span>cheat<span>-</span>sheet</h1>
+  <div class="subtitle">Do básico ao expert · Administração · RMAN · Tuning · RAC · Data Guard · Cloud</div>
+  <div class="stats-bar">
+    <div class="stat"><span class="val">12</span><span class="lbl">Módulos</span></div>
+    <div class="stat"><span class="val">250+</span><span class="lbl">Comandos</span></div>
+    <div class="stat"><span class="val">4</span><span class="lbl">Níveis</span></div>
+    <div class="stat"><span class="val">19c</span><span class="lbl">Base</span></div>
+    <div class="stat"><span class="val">23ai</span><span class="lbl">Atual</span></div>
+    <div class="stat"><span class="val">DBA</span><span class="lbl">Prático</span></div>
+  </div>
+  <div class="prompt-line">
+    <span class="user">renato</span><span class="at">@</span><span class="host">oracle-lab</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
+    <span class="cmd"> sqlplus / as sysdba &amp;&amp; echo "Oracle Database Training — Renato Barros"</span>
+  </div>
+</header>
+<div style="background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:10px 20px;text-align:center;font-family:var(--font-mono);font-size:11px;color:#666;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;">
+  <span style="color:#4CAF50;font-weight:700;letter-spacing:.5px;">COMPATIBILIDADE:</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">Oracle 19c</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">Oracle 21c</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">Oracle 23ai Free</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">Oracle Linux 8/9</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">RAC · ASM · DG</span>
+  <span style="background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px;">OCI · Exadata</span>
+</div>
+<nav>
+  <div class="brand">SQL&gt; Oracle</div>
+  <a style="cursor:pointer;" data-goto="s1" onclick="gotoSection('s1')" class="level-basic">01·Fundamentos</a>
+  <a style="cursor:pointer;" data-goto="s2" onclick="gotoSection('s2')" class="level-basic">02·Instalação</a>
+  <a style="cursor:pointer;" data-goto="s3" onclick="gotoSection('s3')" class="level-basic">03·SQL*Plus</a>
+  <a style="cursor:pointer;" data-goto="s4" onclick="gotoSection('s4')" class="level-inter">04·Storage</a>
+  <a style="cursor:pointer;" data-goto="s5" onclick="gotoSection('s5')" class="level-inter">05·RMAN</a>
+  <a style="cursor:pointer;" data-goto="s6" onclick="gotoSection('s6')" class="level-inter">06·Tuning</a>
+  <a style="cursor:pointer;" data-goto="s7" onclick="gotoSection('s7')" class="level-inter">07·Network</a>
+  <a style="cursor:pointer;" data-goto="s8" onclick="gotoSection('s8')" class="level-adv">08·Data Guard</a>
+  <a style="cursor:pointer;" data-goto="s9" onclick="gotoSection('s9')" class="level-adv">09·RAC/ASM</a>
+  <a style="cursor:pointer;" data-goto="s10" onclick="gotoSection('s10')" class="level-adv">10·Segurança</a>
+  <a style="cursor:pointer;" data-goto="s11" onclick="gotoSection('s11')" class="level-expert">11·Troubleshooting</a>
+  <a style="cursor:pointer;" data-goto="s12" onclick="gotoSection('s12')" class="level-expert">12·Cloud</a>
+  <a data-goto="qr" onclick="gotoSection('qr')" style="cursor:pointer;color:var(--yellow2);">⚡Lab</a>
+</nav>
+<main>
+<div id="s1" class="section level-basic"><div class="section-header"><div class="section-num">01</div><div class="section-title"><h2>Fundamentos & Arquitetura Oracle</h2><div class="pct">Instance · Database · SGA · PGA · Processos · Arquivos</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Conceitos Essenciais</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Database</td><td>Conjunto físico de arquivos: datafiles, control files, redo logs, tempfiles</td></tr><tr><td>Instance</td><td>Memória + processos que acessam o database</td></tr><tr><td>SGA</td><td>Memória compartilhada: buffer cache, shared pool, redo log buffer, large/java/streams pool</td></tr><tr><td>PGA</td><td>Memória privada de cada processo servidor</td></tr><tr><td>CDB/PDB</td><td>Arquitetura multitenant: Container Database e Pluggable Databases</td></tr><tr><td>Data Dictionary</td><td>Metadados do banco: USER_, ALL_, DBA_, V$, GV$</td></tr><tr><td>SCN</td><td>System Change Number; marca lógica de consistência</td></tr><tr><td>Checkpoint</td><td>Sincroniza buffers sujos para disco e atualiza headers/controlfile</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Arquivos Físicos</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Datafiles</td><td>Armazenam segmentos: tabelas, índices, undo, LOBs</td></tr><tr><td>Control files</td><td>Estrutura crítica com metadados, SCN, backups e redo history</td></tr><tr><td>Online redo logs</td><td>Registram mudanças para recuperação de instância</td></tr><tr><td>Archived redo logs</td><td>Cópias dos redos para recuperação e Data Guard</td></tr><tr><td>Tempfiles</td><td>Usados por tablespace temporária em sort/hash/temp</td></tr><tr><td>Password file</td><td>Autenticação administrativa remota SYSDBA/SYSOPER</td></tr><tr><td>SPFILE/PFILE</td><td>Parâmetros de inicialização da instância</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Processos Background</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>PMON</td><td>Limpa sessões mortas e registra serviço no listener</td></tr><tr><td>SMON</td><td>Instance recovery e limpeza de segmentos temporários</td></tr><tr><td>DBWn</td><td>Grava dirty buffers para datafiles</td></tr><tr><td>LGWR</td><td>Grava redo buffer nos online redo logs</td></tr><tr><td>CKPT</td><td>Sinaliza checkpoints e atualiza headers</td></tr><tr><td>ARCn</td><td>Arquiva online redo logs</td></tr><tr><td>MMON/MMNL</td><td>AWR, snapshots e métricas</td></tr><tr><td>CJQ0/Jnnn</td><td>Scheduler jobs</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Comandos rápidos</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">export ORACLE_SID=orcl</span></div><div><span class="p">$</span> <span class="cmd">sqlplus / as sysdba</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show parameter db_name</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select name, open_mode, database_role from v$database;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select instance_name, status from v$instance;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select con_id, name, open_mode from v$pdbs;</span></div></div></div></div></div></div></div>
+<div id="s2" class="section level-basic"><div class="section-header"><div class="section-num">02</div><div class="section-title"><h2>Instalação & Ambiente Oracle 19c/21c/23ai</h2><div class="pct">Oracle Linux · Preinstall · OFA · Listener · DBCA Silent</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Pré-requisitos Linux</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Pacote preinstall</td><td>oracle-database-preinstall-19c ajusta kernel, limits, users e grupos</td></tr><tr><td>Usuários/grupos</td><td>oracle, oinstall, dba, oper, backupdba, dgdba, kmdba</td></tr><tr><td>OFA</td><td>/u01/app/oracle/product/19.0.0/dbhome_1</td></tr><tr><td>Variáveis</td><td>ORACLE_BASE, ORACLE_HOME, ORACLE_SID, PATH, TNS_ADMIN</td></tr><tr><td>Swap/SHMMAX</td><td>Dimensionar conforme RAM e recomendações do ambiente</td></tr><tr><td>SELinux/Firewall</td><td>Validar políticas; em lab geralmente permissive/firewalld off</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>Instalação Silent — exemplo</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">./runInstaller -silent -responseFile db_install.rsp -ignorePrereqFailure</span></div><div><span class="p">$</span> <span class="cmd">/u01/app/oraInventory/orainstRoot.sh</span></div><div><span class="p">$</span> <span class="cmd">/u01/app/oracle/product/19.0.0/dbhome_1/root.sh</span></div><div><span class="p">$</span> <span class="cmd">netca -silent -responseFile netca.rsp</span></div><div><span class="p">$</span> <span class="cmd">dbca -silent -createDatabase -responseFile dbca.rsp</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>Checklist Pós-instalação</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Listener</td><td>lsnrctl status</td></tr><tr><td>Banco</td><td>sqlplus / as sysdba</td></tr><tr><td>Serviços</td><td>select name from v$services;</td></tr><tr><td>Alert log</td><td>show parameter diagnostic_dest</td></tr><tr><td>Autostart</td><td>/etc/oratab + dbstart/dbshut</td></tr><tr><td>Patch</td><td>opatch lsinventory</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>Validação básica</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">ps -ef | grep pmon</span></div><div><span class="p">$</span> <span class="cmd">lsnrctl status</span></div><div><span class="p">$</span> <span class="cmd">sqlplus -L / as sysdba <<EOF</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select status from v\$instance;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select name, open_mode from v\$database;</span></div><div><span class="p">$</span> <span class="cmd">EOF</span></div></div></div></div></div></div></div>
+<div id="s3" class="section level-basic"><div class="section-header"><div class="section-num">03</div><div class="section-title"><h2>SQL*Plus, SQLcl & Administração Básica</h2><div class="pct">Conexão · Usuários · Sessões · Dicionário · PDBs</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Comandos SQL*Plus</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>show parameter</td><td>Exibe parâmetros</td></tr><tr><td>show pdbs</td><td>Lista PDBs</td></tr><tr><td>show con_name</td><td>Mostra container atual</td></tr><tr><td>set lines 200 pages 100</td><td>Formata saída</td></tr><tr><td>col name format a30</td><td>Formata coluna</td></tr><tr><td>spool arquivo.log</td><td>Grava saída em arquivo</td></tr><tr><td>desc tabela</td><td>Descreve objeto</td></tr><tr><td>@script.sql</td><td>Executa script SQL</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Criação de usuário</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">alter session set container=ORCLPDB1;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">create user app identified by "Senha#2026" default tablespace users temporary tablespace temp;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">grant create session, create table, create sequence, create view to app;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter user app quota unlimited on users;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select username, account_status from dba_users where username = 'APP';</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Sessões e bloqueios</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select sid, serial#, username, status, machine from v$session where username is not null;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select s.sid, s.serial#, s.username, l.type, l.lmode, l.request from v$lock l join v$session s on s.sid=l.sid;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter system kill session '&sid,&serial' immediate;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Views úteis</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>DBA_TABLESPACES</td><td>Tablespaces</td></tr><tr><td>DBA_DATA_FILES</td><td>Datafiles permanentes</td></tr><tr><td>DBA_TEMP_FILES</td><td>Tempfiles</td></tr><tr><td>DBA_USERS</td><td>Usuários</td></tr><tr><td>DBA_OBJECTS</td><td>Objetos</td></tr><tr><td>V$SESSION</td><td>Sessões</td></tr><tr><td>V$SQL</td><td>SQLs em memória</td></tr><tr><td>V$DATABASE</td><td>Informações do banco</td></tr></tbody></table></div></div></div></div></div>
+<div id="s4" class="section level-inter"><div class="section-header"><div class="section-num">04</div><div class="section-title"><h2>Tablespaces, Datafiles & Segmentos</h2><div class="pct">Storage lógico · ASM · Autoextend · Temp · Undo</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Estrutura lógica</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Tablespace</td><td>Container lógico de segmentos</td></tr><tr><td>Segment</td><td>Tabela, índice, undo, LOB</td></tr><tr><td>Extent</td><td>Conjunto de blocos alocados</td></tr><tr><td>Block</td><td>Menor unidade de I/O Oracle</td></tr><tr><td>ASM Diskgroup</td><td>Storage gerenciado pelo ASM</td></tr><tr><td>Bigfile TS</td><td>Tablespace com um datafile grande</td></tr><tr><td>Smallfile TS</td><td>Tablespace com múltiplos datafiles</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Criar e expandir tablespace</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">create tablespace app_data datafile '/u02/oradata/ORCL/app_data01.dbf' size 10G autoextend on next 1G maxsize 50G;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter tablespace app_data add datafile '/u02/oradata/ORCL/app_data02.dbf' size 10G autoextend on next 1G maxsize 50G;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter database datafile '/u02/oradata/ORCL/app_data01.dbf' resize 20G;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Monitoramento de espaço</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select tablespace_name, round(used_percent,2) used_pct from dba_tablespace_usage_metrics order by used_percent desc;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select file_name, bytes/1024/1024 MB, autoextensible, maxbytes/1024/1024 max_mb from dba_data_files;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select tablespace_name, file_name, bytes/1024/1024 MB from dba_temp_files;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Undo e Temp</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>UNDO_RETENTION</td><td>Tempo desejado para retenção de undo</td></tr><tr><td>ORA-01555</td><td>Snapshot too old; avaliar undo sizing/queries longas</td></tr><tr><td>TEMP</td><td>Sort, hash join, create index, operações temporárias</td></tr><tr><td>Temp usage</td><td>GV$TEMPSEG_USAGE e V$SORT_USAGE</td></tr></tbody></table></div></div></div></div></div>
+<div id="s5" class="section level-inter"><div class="section-header"><div class="section-num">05</div><div class="section-title"><h2>Backup & Recovery com RMAN</h2><div class="pct">Backupset · Image Copy · Archivelog · Restore · Recover</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Estratégia RMAN</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Full backup</td><td>Backup completo do banco</td></tr><tr><td>Incremental level 0</td><td>Base para incrementais</td></tr><tr><td>Incremental level 1</td><td>Mudanças desde level 0 ou último level 1</td></tr><tr><td>Archivelog backup</td><td>Necessário para point-in-time recovery</td></tr><tr><td>Controlfile autobackup</td><td>Crítico para recuperação de desastre</td></tr><tr><td>Retention policy</td><td>Recovery window ou redundancy</td></tr><tr><td>Crosscheck</td><td>Sincroniza catálogo RMAN com arquivos físicos</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>Backup completo</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">rman target /</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">configure controlfile autobackup on;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">configure retention policy to recovery window of 7 days;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">backup as compressed backupset database plus archivelog;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">delete noprompt obsolete;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>Restore e recover básico</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">startup mount;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">restore database;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">recover database;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter database open;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-orange"></span>PITR — visão geral</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">run {</span></div><div><span class="p">$</span> <span class="cmd">  set until time "to_date('2026-06-11 10:00:00','yyyy-mm-dd hh24:mi:ss')";</span></div><div><span class="p">$</span> <span class="cmd">  restore database;</span></div><div><span class="p">$</span> <span class="cmd">  recover database;</span></div><div><span class="p">$</span> <span class="cmd">  alter database open resetlogs;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">}</span></div></div></div></div></div></div></div>
+<div id="s6" class="section level-inter"><div class="section-header"><div class="section-num">06</div><div class="section-title"><h2>Performance & Tuning</h2><div class="pct">AWR · ASH · Wait Events · SQL Tuning · Índices</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Fluxo de análise</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>1. Sintoma</td><td>Lentidão geral, query específica, CPU, I/O, locks</td></tr><tr><td>2. Janela</td><td>Definir horário exato do problema</td></tr><tr><td>3. Métricas</td><td>AWR/ASH, wait events, top SQL, load profile</td></tr><tr><td>4. Plano</td><td>DBMS_XPLAN, cardinalidade, joins, filtros</td></tr><tr><td>5. Correção</td><td>Stats, índice, rewrite, parâmetros, SQL Profile/Baseline</td></tr><tr><td>6. Validação</td><td>Comparar antes/depois com métricas</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>AWR/ASH</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">@?/rdbms/admin/awrrpt.sql</span></div><div><span class="p">$</span> <span class="cmd">@?/rdbms/admin/ashrpt.sql</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select snap_id, begin_interval_time, end_interval_time from dba_hist_snapshot order by snap_id desc fetch first 10 rows only;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>SQL Plan</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select * from table(dbms_xplan.display_cursor('&sql_id', null, 'ALLSTATS LAST +PEEKED_BINDS'));</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select sql_id, executions, elapsed_time/1000000 elapsed_s, buffer_gets, disk_reads from v$sql order by elapsed_time desc fetch first 20 rows only;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>Wait Events comuns</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>db file sequential read</td><td>Leitura single-block, comum em índice</td></tr><tr><td>db file scattered read</td><td>Leitura multiblock, full scan</td></tr><tr><td>log file sync</td><td>Commit aguardando LGWR</td></tr><tr><td>enq: TX - row lock contention</td><td>Bloqueio de linha</td></tr><tr><td>library cache lock/pin</td><td>Concorrência em shared pool</td></tr><tr><td>direct path read/write temp</td><td>Uso de TEMP em operações grandes</td></tr></tbody></table></div></div></div></div></div>
+<div id="s7" class="section level-inter"><div class="section-header"><div class="section-num">07</div><div class="section-title"><h2>Networking Oracle</h2><div class="pct">Listener · TNS · Services · EZCONNECT · Troubleshooting</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Arquivos de rede</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>listener.ora</td><td>Configuração do listener</td></tr><tr><td>tnsnames.ora</td><td>Aliases de conexão</td></tr><tr><td>sqlnet.ora</td><td>Métodos de autenticação, timeout, wallet</td></tr><tr><td>ldap.ora</td><td>Directory naming</td></tr><tr><td>TNS_ADMIN</td><td>Diretório alternativo para arquivos de rede</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Comandos Listener</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">lsnrctl status</span></div><div><span class="p">$</span> <span class="cmd">lsnrctl services</span></div><div><span class="p">$</span> <span class="cmd">lsnrctl stop</span></div><div><span class="p">$</span> <span class="cmd">lsnrctl start</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter system register;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Exemplo tnsnames.ora</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">ORCLPDB1 =</span></div><div><span class="p">$</span> <span class="cmd">  (DESCRIPTION =</span></div><div><span class="p">$</span> <span class="cmd">    (ADDRESS = (PROTOCOL = TCP)(HOST = dbserver01)(PORT = 1521))</span></div><div><span class="p">$</span> <span class="cmd">    (CONNECT_DATA = (SERVICE_NAME = orclpdb1))</span></div><div><span class="p">$</span> <span class="cmd">  )</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Testes de conexão</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">tnsping ORCLPDB1</span></div><div><span class="p">$</span> <span class="cmd">sqlplus app/Senha#2026@ORCLPDB1</span></div><div><span class="p">$</span> <span class="cmd">sqlplus app/Senha#2026@//dbserver01:1521/orclpdb1</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select sys_context('USERENV','SERVICE_NAME') from dual;</span></div></div></div></div></div></div></div>
+<div id="s8" class="section level-adv"><div class="section-header"><div class="section-num">08</div><div class="section-title"><h2>Data Guard & Alta Disponibilidade</h2><div class="pct">Physical Standby · Broker · Switchover · Failover</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-blue"></span>Componentes Data Guard</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Primary</td><td>Banco principal aberto para produção</td></tr><tr><td>Standby</td><td>Cópia sincronizada para DR</td></tr><tr><td>Redo Transport</td><td>Envio de redo para standby</td></tr><tr><td>Redo Apply</td><td>Aplicação do redo no standby</td></tr><tr><td>Data Guard Broker</td><td>Gerência via DGMGRL</td></tr><tr><td>Protection Mode</td><td>Maximum Performance, Availability ou Protection</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-blue"></span>Verificações no banco</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select name, database_role, open_mode, protection_mode from v$database;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select process, status, sequence# from v$managed_standby;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select dest_id, status, error from v$archive_dest_status where dest_id <= 5;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-blue"></span>Broker básico</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">dgmgrl /</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show configuration;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show database verbose ORCL;</span></div><div><span class="p">$</span> <span class="cmd">validate database ORCL_STBY;</span></div><div><span class="p">$</span> <span class="cmd">switchover to ORCL_STBY;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-blue"></span>Lag e saúde</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Transport Lag</td><td>Diferença de redo transportado</td></tr><tr><td>Apply Lag</td><td>Diferença aplicada no standby</td></tr><tr><td>MRP0</td><td>Managed Recovery Process</td></tr><tr><td>RFS</td><td>Recebe redo no standby</td></tr><tr><td>FAL_SERVER</td><td>Busca archives ausentes</td></tr></tbody></table></div></div></div></div></div>
+<div id="s9" class="section level-adv"><div class="section-header"><div class="section-num">09</div><div class="section-title"><h2>RAC, ASM & Clusterware</h2><div class="pct">Grid Infrastructure · OCR · Voting · SCAN · Services</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Conceitos RAC</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Clusterware</td><td>Camada de cluster e recursos</td></tr><tr><td>ASM</td><td>Gerencia storage compartilhado</td></tr><tr><td>OCR</td><td>Oracle Cluster Registry</td></tr><tr><td>Voting disks</td><td>Quórum do cluster</td></tr><tr><td>SCAN</td><td>Nome único de acesso ao cluster</td></tr><tr><td>VIP</td><td>IP virtual por nó</td></tr><tr><td>Services</td><td>Roteamento e failover de aplicações</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-purple"></span>Comandos Clusterware</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">crsctl check cluster -all</span></div><div><span class="p">$</span> <span class="cmd">crsctl stat res -t</span></div><div><span class="p">$</span> <span class="cmd">olsnodes -n -i</span></div><div><span class="p">$</span> <span class="cmd">srvctl status database -d ORCL</span></div><div><span class="p">$</span> <span class="cmd">srvctl status service -d ORCL</span></div><div><span class="p">$</span> <span class="cmd">srvctl config scan</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-purple"></span>ASM</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">$</span> <span class="cmd">asmcmd lsdg</span></div><div><span class="p">$</span> <span class="cmd">asmcmd ls +DATA</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select name, state, type, total_mb, free_mb from v$asm_diskgroup;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select path, name, failgroup, header_status from v$asm_disk;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-purple"></span>Troubleshooting RAC</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Cluster não sobe</td><td>Verificar OHASD, CSSD, voting, rede privada</td></tr><tr><td>Instância não registra</td><td>Listener, SCAN, service_names, local_listener</td></tr><tr><td>Interconnect</td><td>Validar latência, MTU, perda de pacote</td></tr><tr><td>Split-brain</td><td>Voting/quórum evita escrita simultânea inconsistente</td></tr></tbody></table></div></div></div></div></div>
+<div id="s10" class="section level-adv"><div class="section-header"><div class="section-num">10</div><div class="section-title"><h2>Segurança, Auditoria & Criptografia</h2><div class="pct">Roles · Profiles · TDE · Auditing · Least Privilege</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-yellow"></span>Hardening básico</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Menor privilégio</td><td>Conceder somente permissões necessárias</td></tr><tr><td>Profiles</td><td>Senha, lock, sessões, idle time</td></tr><tr><td>Auditoria</td><td>Unified Auditing ou audit tradicional</td></tr><tr><td>TDE</td><td>Criptografia em repouso</td></tr><tr><td>Wallet/Keystore</td><td>Armazena master key</td></tr><tr><td>Patch</td><td>Manter RU/CPU atualizado</td></tr><tr><td>Contas padrão</td><td>Bloquear/remover contas não usadas</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-yellow"></span>Profiles e usuários</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">create profile app_profile limit failed_login_attempts 5 password_life_time 90 idle_time 30;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter user app profile app_profile;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select username, account_status, profile from dba_users order by username;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-yellow"></span>TDE visão rápida</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">administer key management create keystore '/u01/app/oracle/admin/ORCL/wallet' identified by "SenhaWallet#2026";</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">administer key management set keystore open identified by "SenhaWallet#2026";</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">administer key management set key identified by "SenhaWallet#2026" with backup;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">alter tablespace app_data encryption online encrypt;</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-yellow"></span>Auditoria</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select user_name, action_name, event_timestamp from unified_audit_trail order by event_timestamp desc fetch first 20 rows only;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">audit create session;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">audit select on app.tabela_critica;</span></div></div></div></div></div></div></div>
+<div id="s11" class="section level-expert"><div class="section-header"><div class="section-num">11</div><div class="section-title"><h2>Troubleshooting & Operação de Produção</h2><div class="pct">Alert Log · ORA Errors · Locks · Incidentes · Runbook</div></div><div class="level-tag">Expert</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Runbook de incidente</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>1. Confirmar impacto</td><td>Usuários, aplicações, tempo, escopo</td></tr><tr><td>2. Coletar evidências</td><td>Alert log, AWR/ASH, sessões, eventos</td></tr><tr><td>3. Estabilizar</td><td>Kill sessão, expandir TS, liberar lock, failover se necessário</td></tr><tr><td>4. Corrigir causa</td><td>SQL, storage, rede, parâmetro, bug/patch</td></tr><tr><td>5. Documentar</td><td>Timeline, causa raiz, ação preventiva</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>Alert log e ADRCI</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">show parameter diagnostic_dest</span></div><div><span class="p">$</span> <span class="cmd">adrci</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show homes</span></div><div><span class="p">$</span> <span class="cmd">set home diag/rdbms/orcl/ORCL</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show alert -tail 100</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">show incident</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>Erros comuns</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>ORA-01017</td><td>Usuário/senha inválidos ou case sensitive</td></tr><tr><td>ORA-12154</td><td>Alias TNS não resolvido</td></tr><tr><td>ORA-12514</td><td>Listener não conhece service</td></tr><tr><td>ORA-01653</td><td>Não consegue estender segmento</td></tr><tr><td>ORA-01555</td><td>Snapshot too old</td></tr><tr><td>ORA-00060</td><td>Deadlock detectado</td></tr><tr><td>ORA-00257</td><td>Archiver stuck; FRA cheia</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-red"></span>Scripts úteis</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="p">SQL&gt;</span> <span class="cmd">select * from v$diag_alert_ext where originating_timestamp > systimestamp - interval '1' hour order by originating_timestamp desc;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select blocking_session, sid, serial#, wait_class, event, seconds_in_wait from v$session where blocking_session is not null;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select name, space_limit/1024/1024/1024 limit_gb, space_used/1024/1024/1024 used_gb from v$recovery_file_dest;</span></div></div></div></div></div></div></div>
+<div id="s12" class="section level-expert"><div class="section-header"><div class="section-num">12</div><div class="section-title"><h2>Automação, Cloud & Carreira DBA</h2><div class="pct">Shell · Python · OCI · Exadata · Portfólio · Cursos</div></div><div class="level-tag">Expert</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Automação DBA</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Shell</td><td>Backup, validação, logs, healthcheck</td></tr><tr><td>Python</td><td>Relatórios, coleta via oracledb, APIs</td></tr><tr><td>Ansible</td><td>Padronização de instalação e config</td></tr><tr><td>Terraform</td><td>Provisionamento em cloud</td></tr><tr><td>GitHub</td><td>Versionamento de scripts e portfólio</td></tr><tr><td>HTML reports</td><td>Entrega visual para cliente/aluno</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Healthcheck exemplo</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle@dbserver</span></div><div class="term-body"><div><span class="cmt">#!/bin/bash</span></div><div><span class="p">$</span> <span class="cmd">export ORACLE_SID=orcl</span></div><div><span class="p">$</span> <span class="cmd">sqlplus -s / as sysdba <<EOF</span></div><div><span class="p">$</span> <span class="cmd">set pages 100 lines 200</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select instance_name,status from v\$instance;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select tablespace_name, used_percent from dba_tablespace_usage_metrics where used_percent > 85;</span></div><div><span class="p">SQL&gt;</span> <span class="cmd">select name, open_mode from v\$database;</span></div><div><span class="p">$</span> <span class="cmd">EOF</span></div></div></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Cloud/Exadata</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>OCI DB System</td><td>Banco gerenciado em VM/BM</td></tr><tr><td>ExaCS</td><td>Exadata Cloud Service em OCI</td></tr><tr><td>ExaCC</td><td>Exadata Cloud@Customer</td></tr><tr><td>Object Storage</td><td>Destino para backup</td></tr><tr><td>Data Safe</td><td>Segurança e auditoria</td></tr><tr><td>Ops Insights</td><td>Capacidade e performance</td></tr><tr><td>MAA</td><td>Arquitetura máxima disponibilidade</td></tr></tbody></table></div></div></div><div class="card"><div class="card-header"><span class="dot dot-green"></span>Para vender como curso</div><div class="card-body"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Descrição</th></tr></thead><tbody><tr><td>Módulos práticos</td><td>Instalação, administração, backup, tuning, HA</td></tr><tr><td>Laboratórios</td><td>VM Oracle Linux + Oracle 19c/23ai Free</td></tr><tr><td>Projetos</td><td>Healthcheck, RMAN, Data Guard, AWR</td></tr><tr><td>Portfólio</td><td>Publicar HTML, GitHub e LinkedIn</td></tr><tr><td>Certificado</td><td>Emitir certificado de conclusão próprio</td></tr></tbody></table></div></div></div></div></div>
+
+<div id="qr" class="section level-expert">
+  <div class="section-header"><div class="section-num">LAB</div><div class="section-title"><h2>Mini Lab Interativo — Checklist DBA</h2><div class="pct">Use como página de apresentação do curso e material de apoio</div></div><div class="level-tag">Prático</div></div>
+  <div class="grid grid-2">
+    <div class="card"><div class="card-header"><span class="dot dot-green"></span>Como usar este material</div><div class="card-body"><ul class="ref"><li><strong>Aula 1:</strong> Fundamentos e arquitetura Oracle</li><li><strong>Aula 2:</strong> Instalação silent e validação do ambiente</li><li><strong>Aula 3:</strong> Administração diária com SQL*Plus/SQLcl</li><li><strong>Aula 4:</strong> Backup, restore e recovery com RMAN</li><li><strong>Aula 5:</strong> Performance, AWR, ASH e SQL tuning</li><li><strong>Aula 6:</strong> Alta disponibilidade com RAC e Data Guard</li></ul><div class="oracle-visual-lab">
+<style>
+.oracle-visual-lab{
+  margin-top:24px;
+  background:radial-gradient(circle at 50% 38%, rgba(0,188,212,.10), transparent 30%), #071017;
+  border:1px solid #24404d;
+  border-radius:6px;
+  padding:18px 16px;
+  overflow:hidden;
+  box-shadow:inset 0 0 52px rgba(0,188,212,.08), 0 0 18px rgba(0,0,0,.25);
+  position:relative;
+  min-height:620px;
+}
+.oracle-visual-lab .ov-title{
+  text-align:center;
+  font-size:18px;
+  color:var(--cyan2);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin:0 0 18px;
+  font-weight:700;
+  text-shadow:0 0 14px rgba(0,188,212,.35);
+}
+.oracle-visual-lab .ov-title:before,
+.oracle-visual-lab .ov-title:after{content:'────';color:var(--green3);margin:0 18px;opacity:.9}
+.oracle-visual-lab .ov-stage{position:relative;height:680px;font-family:var(--font-mono);color:var(--green3)}
+.oracle-visual-lab .stars{position:absolute;inset:0;opacity:.35;background-image:radial-gradient(var(--cyan2) 1px, transparent 1px);background-size:42px 42px;pointer-events:none}
+.oracle-visual-lab .connector-svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;filter:drop-shadow(0 0 5px rgba(76,175,80,.35))}
+.oracle-visual-lab .box{position:absolute;z-index:3;border:2px dashed rgba(129,199,132,.85);border-radius:8px;background:rgba(5,12,18,.78);padding:14px 16px;font-size:12px;line-height:1.65;color:var(--text2);box-shadow:0 0 18px rgba(0,0,0,.35)}
+.oracle-visual-lab .box strong{display:block;color:var(--green3);font-size:13px;margin-bottom:8px;text-transform:uppercase;text-shadow:0 0 8px rgba(76,175,80,.30)}
+.oracle-visual-lab .box span{display:block;white-space:nowrap}
+.oracle-visual-lab .instance{left:2%;top:34px;width:150px}.oracle-visual-lab .memory{right:2%;top:34px;width:170px}.oracle-visual-lab .storage{left:2%;top:286px;width:170px}.oracle-visual-lab .protection{right:2%;top:286px;width:175px}
+.oracle-visual-lab .icon{display:inline-block;width:22px;height:22px;margin-right:8px;vertical-align:-6px;border:1px solid var(--green3);border-radius:4px;position:relative}
+.oracle-visual-lab .icon.db:before,.oracle-visual-lab .icon.db:after{content:'';position:absolute;left:3px;right:3px;height:7px;border:1px solid var(--green3);border-radius:50%;}.oracle-visual-lab .icon.db:before{top:3px}.oracle-visual-lab .icon.db:after{bottom:3px}
+.oracle-visual-lab .icon.mem:before{content:'✦';position:absolute;inset:0;text-align:center;line-height:20px}.oracle-visual-lab .icon.shield:before{content:'✓';position:absolute;inset:0;text-align:center;line-height:20px}.oracle-visual-lab .icon.inst:before{content:'▦';position:absolute;inset:0;text-align:center;line-height:20px}
+.oracle-visual-lab .db-core{position:absolute;z-index:4;left:50%;top:92px;transform:translateX(-50%);width:300px;height:230px}
+.oracle-visual-lab .db-core .ellipse{position:absolute;left:0;width:300px;height:84px;border:2px dashed var(--cyan2);border-radius:50%;opacity:.95;box-shadow:0 0 20px rgba(0,188,212,.22)}
+.oracle-visual-lab .db-core .e1{top:0}.oracle-visual-lab .db-core .e2{top:64px}.oracle-visual-lab .db-core .e3{top:128px}
+.oracle-visual-lab .db-core .side-l,.oracle-visual-lab .db-core .side-r{position:absolute;top:42px;width:2px;height:128px;border-left:2px dashed var(--cyan2);opacity:.85}.oracle-visual-lab .db-core .side-l{left:0}.oracle-visual-lab .db-core .side-r{right:0}
+.oracle-visual-lab .oracle-word{position:absolute;top:86px;left:0;right:0;text-align:center;color:#ff3535;font-size:36px;letter-spacing:2px;font-weight:800;text-shadow:0 0 14px rgba(244,67,54,.55)}
+.oracle-visual-lab .db-word{position:absolute;top:136px;left:0;right:0;text-align:center;color:#f0f0f0;font-size:19px;letter-spacing:9px;text-shadow:0 0 10px rgba(255,255,255,.18)}
+.oracle-visual-lab .mini-box{position:absolute;z-index:3;top:405px;width:128px;border:2px dashed rgba(129,199,132,.85);border-radius:8px;background:rgba(5,12,18,.75);padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.4}.oracle-visual-lab .mini-box strong{display:block;color:var(--green3);font-size:13px;text-transform:uppercase}.oracle-visual-lab .rman{left:32%}.oracle-visual-lab .dg{left:50%;transform:translateX(-50%)}.oracle-visual-lab .asm{right:32%}
+.oracle-visual-lab .dba-person{position:absolute;z-index:4;left:50%;bottom:12px;width:260px;height:130px;color:var(--green3);filter:drop-shadow(0 0 6px rgba(76,175,80,.18));transform:translateX(-50%) scale(.82);transform-origin:center bottom}
+.oracle-visual-lab .head{position:absolute;left:28px;top:2px;width:46px;height:46px;border:2px solid var(--green3);border-radius:50%;box-shadow:0 0 8px rgba(76,175,80,.25)}
+.oracle-visual-lab .head:before{content:'';position:absolute;left:12px;top:16px;width:5px;height:5px;background:var(--green3);border-radius:50%;box-shadow:17px 0 0 var(--green3)}
+.oracle-visual-lab .head:after{content:'';position:absolute;left:15px;top:28px;width:16px;height:8px;border-bottom:2px solid var(--green3);border-radius:50%}
+.oracle-visual-lab .hair{position:absolute;left:25px;top:0;width:52px;height:20px;border-top:2px solid var(--green3);border-radius:50% 50% 0 0}
+.oracle-visual-lab .body{position:absolute;left:15px;top:52px;width:72px;height:72px;border:2px solid var(--green3);border-bottom:none;border-radius:26px 26px 0 0}
+.oracle-visual-lab .arm{position:absolute;left:78px;top:92px;width:96px;border-top:2px solid var(--green3);transform:rotate(-10deg);transform-origin:left center}.oracle-visual-lab .arm:after{content:'';position:absolute;right:-4px;top:-3px;width:7px;height:7px;border:2px solid var(--green3);border-radius:50%}
+.oracle-visual-lab .monitor{position:absolute;left:126px;top:34px;width:112px;height:64px;border:2px solid var(--green3);border-radius:6px;background:rgba(0,0,0,.24)}.oracle-visual-lab .monitor:before{content:'';position:absolute;left:46px;bottom:-17px;height:15px;border-left:2px solid var(--green3)}.oracle-visual-lab .monitor:after{content:'SQL> _';position:absolute;left:13px;top:19px;color:var(--green3);font-weight:700}.oracle-visual-lab .keyboard{position:absolute;left:116px;top:112px;width:142px;height:14px;border:2px solid var(--green3);transform:skewX(-22deg);opacity:.9}.oracle-visual-lab .desk{position:absolute;left:0;bottom:0;width:260px;border-top:2px solid var(--green3)}
+.oracle-visual-lab .quote{position:absolute;z-index:5;left:0;right:0;bottom:145px;text-align:center;color:var(--green3);font-size:14px;line-height:1.75;text-shadow:0 0 10px rgba(76,175,80,.35)}
+.oracle-visual-lab .quote span{display:block}
+@media(max-width:1200px){.oracle-visual-lab .db-core{transform:translateX(-50%) scale(.82)}.oracle-visual-lab .instance,.oracle-visual-lab .storage{left:1%}.oracle-visual-lab .memory,.oracle-visual-lab .protection{right:1%}.oracle-visual-lab .rman{left:28%}.oracle-visual-lab .asm{right:28%}.oracle-visual-lab .dba-person{left:50%;transform:translateX(-50%) scale(.78);transform-origin:center bottom}}
+@media(max-width:768px){.oracle-visual-lab{min-height:820px}.oracle-visual-lab .ov-stage{height:740px}.oracle-visual-lab .connector-svg{display:none}.oracle-visual-lab .db-core{top:190px;transform:translateX(-50%) scale(.75)}.oracle-visual-lab .instance{left:8px;top:50px}.oracle-visual-lab .memory{right:8px;top:50px}.oracle-visual-lab .storage{left:8px;top:405px}.oracle-visual-lab .protection{right:8px;top:405px}.oracle-visual-lab .mini-box{top:560px;width:105px}.oracle-visual-lab .rman{left:4%}.oracle-visual-lab .dg{left:50%}.oracle-visual-lab .asm{right:4%}.oracle-visual-lab .dba-person{display:none}.oracle-visual-lab .quote{bottom:0;font-size:12px}.oracle-visual-lab .ov-title:before,.oracle-visual-lab .ov-title:after{content:''}}
+</style>
+<div class="ov-title">Mapa Visual Oracle Database</div>
+<div class="ov-stage">
+  <div class="stars"></div>
+  <svg class="connector-svg" viewBox="0 0 1000 545" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="none" stroke="#81C784" stroke-width="2.2" stroke-dasharray="7 5" stroke-linecap="round">
+      <path d="M170 130 H386"/><path d="M614 130 H830"/>
+      <path d="M175 337 H386 V256"/><path d="M614 256 V337 H825"/>
+      
+    </g>
+    <g fill="#81C784"><circle cx="170" cy="130" r="4"/><circle cx="386" cy="130" r="4"/><circle cx="614" cy="130" r="4"/><circle cx="830" cy="130" r="4"/><circle cx="175" cy="337" r="4"/><circle cx="825" cy="337" r="4"/><circle cx="500" cy="330" r="4"/></g>
+  </svg>
+  <div class="box instance"><strong><span class="icon inst"></span>Instância</strong><span>SMON</span><span>PMON</span><span>DBWn</span><span>LGWR</span><span>CKPT</span><span>ARCn</span><span>...</span></div>
+  <div class="box memory"><strong><span class="icon mem"></span>Memória</strong><span>SGA</span><span> - Buffer Cache</span><span> - Shared Pool</span><span> - Redo Buffer</span><span> - Large Pool</span><span>PGA</span><span> - Session Data</span></div>
+  <div class="box storage"><strong><span class="icon db"></span>Storage</strong><span>◉ Datafiles</span><span>◉ Control Files</span><span>◉ Redo Logs</span><span>◉ Tempfiles</span></div>
+  <div class="box protection"><strong><span class="icon shield"></span>Proteção</strong><span>RMAN Backup</span><span>Data Guard</span><span>Archive Logs</span><span>Flashback</span></div>
+  <div class="db-core">
+    <div class="ellipse e1"></div><div class="ellipse e2"></div><div class="ellipse e3"></div><div class="side-l"></div><div class="side-r"></div>
+    <div class="oracle-word">ORACLE</div><div class="db-word">DATABASE</div>
+  </div>
+  <div class="mini-box rman"><strong>RMAN</strong><span>Backup</span></div>
+  <div class="mini-box dg"><strong>Data Guard</strong><span>DR</span></div>
+  <div class="mini-box asm"><strong>ASM/RAC</strong><span>HA</span></div>
+  <div class="dba-person"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="arm"></div><div class="monitor"></div><div class="keyboard"></div><div class="desk"></div></div>
+  <div class="quote"><span>"Dados são o novo petróleo, mas é o DBA que refina."</span><span>— Renato Barros</span></div>
+</div>
+</div></div></div></div></div>
+    <div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Simulador de Comandos</div><div class="card-body">
+      <div class="callout callout-info"><strong>Como testar</strong>Digite <code>help</code> para ver todos os comandos aceitos. O simulador aceita somente os comandos listados abaixo para manter o laboratório seguro e didático.</div>
+      <div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">oracle-lab simulator</span></div><div class="term-body" id="labOutput"><div><span class="p">SQL&gt;</span> <span class="cmd">Digite <strong>help</strong> ou clique em um comando da lista abaixo.</span></div></div></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><input id="labCmd" placeholder="Ex: help | show pdbs | select name,open_mode,database_role from v$database;" style="flex:1;min-width:220px;background:#0d1117;color:var(--text);border:1px solid var(--border2);padding:10px;border-radius:4px;font-family:var(--font-mono);"><button id="labRunBtn" type="button" style="background:var(--green-dim);color:var(--green3);border:1px solid var(--green);padding:10px 16px;border-radius:4px;font-family:var(--font-mono);cursor:pointer;">Rodar</button></div>
+      <div style="margin-top:14px;background:#0d1117;border:1px solid #2a3540;border-radius:5px;padding:12px;">
+        <div style="font-size:11px;color:var(--cyan2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Comandos disponíveis para teste</div>
+        <div id="labCommandList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;font-size:12px;line-height:1.5;"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:10px;">Dica: clique em qualquer comando da lista para preencher o terminal automaticamente.</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+</main>
+<footer>
+  <div class="brand">Oracle Database Training — Renato Barros</div>
+  <div style="margin-top:6px;color:var(--text3);">DBA Cheat Sheet Completo · Oracle 19c/21c/23ai · RMAN · Tuning · RAC · Data Guard · Cloud · 2026</div>
+  <div style="margin-top:4px;font-size:11px;color:#555;"><span style="color:var(--green3);">●</span> Básico &nbsp; <span style="color:var(--orange2);">●</span> Intermediário &nbsp; <span style="color:var(--red2);">●</span> Avançado &nbsp; <span style="color:var(--purple);">●</span> Expert</div>
+</footer>
+<script>
+
+// === ORACLE LAB SIMULATOR ===
+// Simulador client-side para curso: seguro para publicar, sem conexão real com banco.
+var oracleLabState = {
+  connected: true,
+  instanceStatus: 'OPEN',
+  databaseOpenMode: 'READ WRITE',
+  currentUser: 'SYS',
+  container: 'CDB$ROOT',
+  history: []
+};
+
+function escapeHtml(str){
+  return String(str || '').replace(/[&<>'"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+
+function normalizeCmd(cmd){
+  return (cmd || '')
+    .trim()
+    .replace(/;$/,'')
+    .replace(/\s+/g,' ')
+    .toLowerCase();
+}
+
+function appendLabLine(prompt, html){
+  var out = document.getElementById('labOutput');
+  out.innerHTML += '<div><span class="p">'+prompt+'</span> <span class="cmd">'+html+'</span></div>';
+  out.scrollTop = out.scrollHeight;
+}
+
+function appendLabResult(text, type){
+  var out = document.getElementById('labOutput');
+  var color = type === 'err' ? 'var(--red2)' : type === 'warn' ? 'var(--orange2)' : 'var(--green3)';
+  out.innerHTML += '<pre style="color:'+color+';white-space:pre-wrap;margin:6px 0 12px;font-family:var(--font-mono);line-height:1.55;">'+escapeHtml(text)+'</pre>';
+  out.scrollTop = out.scrollHeight;
+}
+
+function sqlTable(headers, rows){
+  var widths = headers.map(function(h, i){
+    return Math.max(String(h).length, ...rows.map(function(r){ return String(r[i] == null ? '' : r[i]).length; }));
+  });
+  var line = widths.map(function(w){ return '-'.repeat(w); }).join('  ');
+  var head = headers.map(function(h,i){ return String(h).padEnd(widths[i]); }).join('  ');
+  var body = rows.map(function(r){ return r.map(function(v,i){ return String(v == null ? '' : v).padEnd(widths[i]); }).join('  '); }).join('\n');
+  return head + '\n' + line + (body ? '\n' + body : '') + '\n\n' + rows.length + ' row' + (rows.length === 1 ? '' : 's') + ' selected.';
+}
+
+function oracleResponse(raw){
+  var cmd = normalizeCmd(raw);
+  if(!cmd) return {text:'Digite um comando Oracle, por exemplo: select instance_name,status from v$instance;', type:'warn'};
+  if(cmd === 'clear' || cmd === 'cls'){
+    document.getElementById('labOutput').innerHTML = '<div><span class="p">SQL&gt;</span> <span class="cmd">Terminal limpo. Digite <strong>help</strong> para ver exemplos.</span></div>';
+    return null;
+  }
+  if(cmd === 'help' || cmd === '?'){
+    return {text:
+`Comandos disponíveis no simulador:
+
+Conexão e ambiente:
+  sqlplus / as sysdba
+  show user
+  show con_name
+  show parameter db_name
+  show parameter memory
+  show pdbs
+
+Banco e instância:
+  select instance_name,status from v$instance;
+  select name,open_mode,database_role from v$database;
+  select banner_full from v$version;
+
+Administração:
+  select username,account_status from dba_users;
+  select tablespace_name,status,contents from dba_tablespaces;
+  select tablespace_name,used_percent from dba_tablespace_usage_metrics;
+  select name from v$services;
+  select group#,status,bytes/1024/1024 mb from v$log;
+
+Backup/RMAN e infraestrutura:
+  rman target /
+  lsnrctl status
+  archive log list
+
+Controle simulado:
+  startup
+  shutdown immediate
+  alter pluggable database all open;
+  clear`, type:'ok'};
+  }
+
+  if(cmd === 'sqlplus / as sysdba' || cmd === 'connect / as sysdba' || cmd === 'conn / as sysdba'){
+    oracleLabState.connected = true; oracleLabState.currentUser = 'SYS';
+    return {text:'Connected to:\nOracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production', type:'ok'};
+  }
+  if(cmd === 'show user') return {text:'USER is "'+oracleLabState.currentUser+'"', type:'ok'};
+  if(cmd === 'show con_name') return {text:'CON_NAME\n------------------------------\n'+oracleLabState.container, type:'ok'};
+  if(cmd === 'alter session set container=orclpdb1') { oracleLabState.container='ORCLPDB1'; return {text:'Session altered.', type:'ok'}; }
+  if(cmd === 'alter session set container=cdb$root') { oracleLabState.container='CDB$ROOT'; return {text:'Session altered.', type:'ok'}; }
+
+  if(cmd === 'startup'){
+    oracleLabState.instanceStatus='OPEN'; oracleLabState.databaseOpenMode='READ WRITE';
+    return {text:'ORACLE instance started.\n\nDatabase mounted.\nDatabase opened.', type:'ok'};
+  }
+  if(cmd === 'shutdown immediate'){
+    oracleLabState.instanceStatus='SHUTDOWN'; oracleLabState.databaseOpenMode='MOUNTED';
+    return {text:'Database closed.\nDatabase dismounted.\nORACLE instance shut down.', type:'ok'};
+  }
+  if(oracleLabState.instanceStatus === 'SHUTDOWN' && cmd.indexOf('startup') !== 0){
+    return {text:'ORA-01034: ORACLE not available\nDica: execute startup', type:'err'};
+  }
+
+  if(cmd.includes('v$instance')) return {text:sqlTable(['INSTANCE_NAME','HOST_NAME','VERSION','STATUS'], [['ORCL','oracle-lab','19.0.0.0.0',oracleLabState.instanceStatus]]), type:'ok'};
+  if(cmd.includes('v$database')) return {text:sqlTable(['NAME','OPEN_MODE','DATABASE_ROLE','LOG_MODE'], [['ORCL',oracleLabState.databaseOpenMode,'PRIMARY','ARCHIVELOG']]), type:'ok'};
+  if(cmd.includes('v$version')) return {text:sqlTable(['BANNER_FULL'], [['Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production Version 19.22.0.0.0']]), type:'ok'};
+  if(cmd === 'show parameter db_name') return {text:sqlTable(['NAME','TYPE','VALUE'], [['db_name','string','ORCL']]), type:'ok'};
+  if(cmd === 'show parameter memory') return {text:sqlTable(['NAME','TYPE','VALUE'], [['memory_target','big integer','0'],['sga_target','big integer','2500M'],['pga_aggregate_target','big integer','800M']]), type:'ok'};
+  if(cmd === 'show pdbs') return {text:sqlTable(['CON_ID','CON_NAME','OPEN MODE','RESTRICTED'], [[2,'PDB$SEED','READ ONLY','NO'],[3,'ORCLPDB1','READ WRITE','NO']]), type:'ok'};
+  if(cmd === 'alter pluggable database all open') return {text:'Pluggable database altered.', type:'ok'};
+  if(cmd.includes('dba_users')) return {text:sqlTable(['USERNAME','ACCOUNT_STATUS','DEFAULT_TABLESPACE'], [['SYS','OPEN','SYSTEM'],['SYSTEM','OPEN','SYSTEM'],['HR','OPEN','USERS'],['APP_USER','LOCKED','APP_DATA']]), type:'ok'};
+  if(cmd.includes('dba_tablespaces')) return {text:sqlTable(['TABLESPACE_NAME','STATUS','CONTENTS'], [['SYSTEM','ONLINE','PERMANENT'],['SYSAUX','ONLINE','PERMANENT'],['UNDOTBS1','ONLINE','UNDO'],['TEMP','ONLINE','TEMPORARY'],['USERS','ONLINE','PERMANENT'],['APP_DATA','ONLINE','PERMANENT']]), type:'ok'};
+  if(cmd.includes('dba_tablespace_usage_metrics')) return {text:sqlTable(['TABLESPACE_NAME','USED_PERCENT'], [['SYSTEM','71.42'],['SYSAUX','63.88'],['USERS','18.05'],['APP_DATA','86.74']]), type:'ok'};
+  if(cmd.includes('v$services')) return {text:sqlTable(['NAME','NETWORK_NAME'], [['SYS$BACKGROUND',''],['SYS$USERS',''],['orclpdb1','orclpdb1']]), type:'ok'};
+  if(cmd.includes('v$log')) return {text:sqlTable(['GROUP#','STATUS','MB'], [[1,'CURRENT','200'],[2,'INACTIVE','200'],[3,'INACTIVE','200']]), type:'ok'};
+  if(cmd === 'archive log list') return {text:'Database log mode              Archive Mode\nAutomatic archival             Enabled\nArchive destination            USE_DB_RECOVERY_FILE_DEST\nOldest online log sequence     221\nNext log sequence to archive   224\nCurrent log sequence           224', type:'ok'};
+  if(cmd === 'lsnrctl status') return {text:'LSNRCTL for Linux: Version 19.0.0.0.0\n\nSTATUS of the LISTENER\n------------------------\nAlias                     LISTENER\nListening Endpoints       (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=oracle-lab)(PORT=1521)))\nServices Summary...\nService "ORCL" has 1 instance(s).\nService "ORCLPDB1" has 1 instance(s).\nThe command completed successfully', type:'ok'};
+  if(cmd === 'rman target /') return {text:'Recovery Manager: Release 19.0.0.0.0 - Production\n\nconnected to target database: ORCL (DBID=1234567890)\n\nRMAN>', type:'ok'};
+  if(cmd.includes('backup') && cmd.includes('database')) return {text:'Starting backup at 11-JUN-26\nallocated channel: ORA_DISK_1\nchannel ORA_DISK_1: starting compressed full datafile backup set\nchannel ORA_DISK_1: backup set complete\nFinished backup at 11-JUN-26', type:'ok'};
+  if(cmd.startsWith('select')) return {text:'ORA-00942: table or view does not exist no simulador\nDica: digite help para ver os SELECTs disponíveis neste laboratório.', type:'err'};
+  return {text:'SP2-0734: unknown command beginning "'+raw.substring(0,35)+'"\nDica: digite help para ver os comandos aceitos no simulador.', type:'err'};
+}
+
+function runLabCmd(){
+  var input = document.getElementById('labCmd');
+  var raw = (input.value || '').trim();
+  if(!raw) return;
+  oracleLabState.history.push(raw);
+  appendLabLine('SQL&gt;', escapeHtml(raw));
+  var resp = oracleResponse(raw);
+  if(resp) appendLabResult(resp.text, resp.type);
+  input.value = '';
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var input = document.getElementById('labCmd');
+  if(input){
+    input.placeholder = 'Ex: help | show pdbs | select name,open_mode,database_role from v$database;';
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') runLabCmd();
+    });
+  }
+});
+
+
+// === NAVIGATION — no href anchors, pure JS scroll (Claude iframe safe) ===
+function gotoSection(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var nav = document.querySelector('nav');
+  var offset = nav ? nav.offsetHeight + 16 : 72;
+  var top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - offset;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+  // update active immediately
+  updateNav(id);
+}
+
+function updateNav(forceId) {
+  var sections = Array.from(document.querySelectorAll('[id^="s"],[id="qr"]'));
+  var navLinks = Array.from(document.querySelectorAll('[data-goto]'));
+  var nav = document.querySelector('nav');
+  var navH = nav ? nav.offsetHeight : 56;
+  var scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+  var activeId = forceId || (sections[0] && sections[0].id);
+  if (!forceId) {
+    for (var i = 0; i < sections.length; i++) {
+      var rect = sections[i].getBoundingClientRect();
+      var top = rect.top + scrollY - navH - 24;
+      if (scrollY >= top) activeId = sections[i].id;
+    }
+  }
+  navLinks.forEach(function(a) {
+    var isActive = a.getAttribute('data-goto') === activeId;
+    a.style.background = isActive ? 'rgba(76,175,80,0.15)' : '';
+    a.style.borderColor = isActive ? 'rgba(76,175,80,0.5)' : 'transparent';
+    a.style.color = isActive ? 'var(--green)' : '';
+  });
+}
+
+window.addEventListener('scroll', function() { updateNav(null); }, { passive: true });
+document.addEventListener('DOMContentLoaded', function() { updateNav(null); });
+updateNav(null);
+
+
+</script>
+
+<script>
+/* PATCH FINAL — Simulador Oracle Database 100% client-side */
+(function(){
+  var state = { instanceStatus:'OPEN', openMode:'READ WRITE', user:'SYS', con:'CDB$ROOT' };
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function norm(v){ return String(v || '').trim().replace(/;\s*$/,'').replace(/\s+/g,' ').toLowerCase(); }
+  function out(){ return document.getElementById('labOutput'); }
+  function widths(headers, rows){
+    var w=[]; for(var i=0;i<headers.length;i++){ w[i]=String(headers[i]).length; }
+    for(var r=0;r<rows.length;r++){ for(var c=0;c<headers.length;c++){ var l=String(rows[r][c] == null ? '' : rows[r][c]).length; if(l>w[c]) w[c]=l; } }
+    return w;
+  }
+  function pad(v,n){ v=String(v == null ? '' : v); while(v.length<n) v+=' '; return v; }
+  function table(headers, rows){
+    var w=widths(headers, rows), head='', line='', body='';
+    for(var i=0;i<headers.length;i++){ head += (i?'  ':'') + pad(headers[i],w[i]); line += (i?'  ':'') + Array(w[i]+1).join('-'); }
+    for(var r=0;r<rows.length;r++){ var row=''; for(var c=0;c<headers.length;c++){ row += (c?'  ':'') + pad(rows[r][c],w[c]); } body += row + '\n'; }
+    return head+'\n'+line+'\n'+body+'\n'+rows.length+' row'+(rows.length===1?'':'s')+' selected.';
+  }
+  function printCommand(raw){ var el=out(); if(!el) return; el.innerHTML += '<div style="margin-top:10px"><span class="p">SQL&gt;</span> <span class="cmd">'+esc(raw)+'</span></div>'; el.scrollTop=el.scrollHeight; }
+  function printResult(txt,type){ var el=out(); if(!el) return; var color = type==='err'?'var(--red2)':(type==='warn'?'var(--orange2)':'var(--green3)'); el.innerHTML += '<pre style="color:'+color+';white-space:pre-wrap;margin:6px 0 12px;font-family:var(--font-mono);line-height:1.55;">'+esc(txt)+'</pre>'; el.scrollTop=el.scrollHeight; }
+  function response(raw){
+    var cmd=norm(raw);
+    if(!cmd) return {t:'Digite um comando. Exemplo: show pdbs;', y:'warn'};
+    if(cmd==='clear' || cmd==='cls'){ var el=out(); if(el) el.innerHTML='<div><span class="p">SQL&gt;</span> <span class="cmd">Terminal limpo. Digite help para ver exemplos.</span></div>'; return null; }
+    if(cmd==='help' || cmd==='?') return {y:'ok', t:'Comandos disponíveis:\n\nhelp\nshow user\nshow con_name\nshow pdbs\nshow parameter db_name\nshow parameter memory\nselect instance_name,status from v$instance;\nselect name,open_mode,database_role from v$database;\nselect username,account_status from dba_users;\nselect tablespace_name,status,contents from dba_tablespaces;\nselect tablespace_name,used_percent from dba_tablespace_usage_metrics;\narchive log list\nlsnrctl status\nrman target /\nstartup\nshutdown immediate\nclear'};
+    if(cmd==='sqlplus / as sysdba' || cmd==='connect / as sysdba' || cmd==='conn / as sysdba'){ state.user='SYS'; return {y:'ok', t:'Connected to:\nOracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production'}; }
+    if(cmd==='show user') return {y:'ok', t:'USER is "'+state.user+'"'};
+    if(cmd==='show con_name') return {y:'ok', t:'CON_NAME\n------------------------------\n'+state.con};
+    if(cmd==='alter session set container=orclpdb1'){ state.con='ORCLPDB1'; return {y:'ok', t:'Session altered.'}; }
+    if(cmd==='alter session set container=cdb$root'){ state.con='CDB$ROOT'; return {y:'ok', t:'Session altered.'}; }
+    if(cmd==='startup'){ state.instanceStatus='OPEN'; state.openMode='READ WRITE'; return {y:'ok', t:'ORACLE instance started.\n\nDatabase mounted.\nDatabase opened.'}; }
+    if(cmd==='shutdown immediate'){ state.instanceStatus='SHUTDOWN'; state.openMode='MOUNTED'; return {y:'ok', t:'Database closed.\nDatabase dismounted.\nORACLE instance shut down.'}; }
+    if(state.instanceStatus==='SHUTDOWN' && cmd!=='startup') return {y:'err', t:'ORA-01034: ORACLE not available\nDica: execute startup'};
+    if(cmd==='show pdbs') return {y:'ok', t:table(['CON_ID','CON_NAME','OPEN MODE','RESTRICTED'], [[2,'PDB$SEED','READ ONLY','NO'],[3,'ORCLPDB1','READ WRITE','NO']])};
+    if(cmd==='show parameter db_name') return {y:'ok', t:table(['NAME','TYPE','VALUE'], [['db_name','string','ORCL']])};
+    if(cmd==='show parameter memory') return {y:'ok', t:table(['NAME','TYPE','VALUE'], [['memory_target','big integer','0'],['sga_target','big integer','2500M'],['pga_aggregate_target','big integer','800M']])};
+    if(cmd.indexOf('v$instance')>=0) return {y:'ok', t:table(['INSTANCE_NAME','STATUS'], [['ORCL',state.instanceStatus]])};
+    if(cmd.indexOf('v$database')>=0) return {y:'ok', t:table(['NAME','OPEN_MODE','DATABASE_ROLE'], [['ORCL',state.openMode,'PRIMARY']])};
+    if(cmd.indexOf('dba_users')>=0) return {y:'ok', t:table(['USERNAME','ACCOUNT_STATUS'], [['SYS','OPEN'],['SYSTEM','OPEN'],['HR','OPEN'],['APP_USER','LOCKED']])};
+    if(cmd.indexOf('dba_tablespaces')>=0 && cmd.indexOf('usage')<0) return {y:'ok', t:table(['TABLESPACE_NAME','STATUS','CONTENTS'], [['SYSTEM','ONLINE','PERMANENT'],['SYSAUX','ONLINE','PERMANENT'],['UNDOTBS1','ONLINE','UNDO'],['TEMP','ONLINE','TEMPORARY'],['USERS','ONLINE','PERMANENT']])};
+    if(cmd.indexOf('dba_tablespace_usage_metrics')>=0) return {y:'ok', t:table(['TABLESPACE_NAME','USED_PERCENT'], [['SYSTEM','71.42'],['SYSAUX','63.88'],['USERS','18.05'],['APP_DATA','86.74']])};
+    if(cmd==='archive log list') return {y:'ok', t:'Database log mode              Archive Mode\nAutomatic archival             Enabled\nArchive destination            USE_DB_RECOVERY_FILE_DEST\nCurrent log sequence           224'};
+    if(cmd==='lsnrctl status') return {y:'ok', t:'LSNRCTL for Linux: Version 19.0.0.0.0\n\nSTATUS of the LISTENER\n------------------------\nAlias                     LISTENER\nListening Endpoints       (HOST=oracle-lab)(PORT=1521)\nService "ORCL" has 1 instance(s).\nService "ORCLPDB1" has 1 instance(s).\nThe command completed successfully'};
+    if(cmd==='rman target /') return {y:'ok', t:'Recovery Manager: Release 19.0.0.0.0 - Production\n\nconnected to target database: ORCL (DBID=1234567890)\n\nRMAN>'};
+    return {y:'err', t:'SP2-0734: unknown command beginning "'+String(raw).substring(0,35)+'"\nDica: digite help para ver os comandos aceitos.'};
+  }
+  window.runLabCmd = function(){
+    var input=document.getElementById('labCmd'); if(!input) return false;
+    var raw=input.value || ''; if(!raw.trim()) return false;
+    printCommand(raw); var r=response(raw); if(r) printResult(r.t,r.y); input.value=''; input.focus(); return false;
+  };
+  function bind(){
+    var btn=document.getElementById('labRunBtn'); var input=document.getElementById('labCmd');
+    if(btn){ btn.onclick=function(e){ if(e) e.preventDefault(); return window.runLabCmd(); }; }
+    if(input){ input.onkeydown=function(e){ e=e||window.event; if(e.key==='Enter' || e.keyCode===13){ if(e.preventDefault) e.preventDefault(); return window.runLabCmd(); } }; }
+    var el=out(); if(el && el.getAttribute('data-patch')!=='ok'){ el.setAttribute('data-patch','ok'); }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+})();
+</script>
+
+
+<script>
+/* SIMULADOR ORACLE - VERSAO ESTAVEL v5
+   Funciona 100% local no index.html, sem backend e sem banco real. */
+(function(){
+  var estadoOracleLab = {
+    status: 'OPEN',
+    openMode: 'READ WRITE',
+    user: 'SYS',
+    con: 'CDB$ROOT'
+  };
+
+  function byId(id){ return document.getElementById(id); }
+
+  function limparTexto(v){
+    return String(v || '').replace(/[&<>"']/g, function(c){
+      if(c === '&') return '&amp;';
+      if(c === '<') return '&lt;';
+      if(c === '>') return '&gt;';
+      if(c === '"') return '&quot;';
+      return '&#39;';
+    });
+  }
+
+  function normalizar(cmd){
+    cmd = String(cmd || '').trim();
+    cmd = cmd.replace(/;\s*$/, '');
+    cmd = cmd.replace(/\s+/g, ' ');
+    return cmd.toLowerCase();
+  }
+
+  function pad(v, n){
+    v = String(v == null ? '' : v);
+    while(v.length < n) v += ' ';
+    return v;
+  }
+
+  function montarTabela(headers, rows){
+    var widths = [];
+    var i, r, c, linha;
+    for(i=0;i<headers.length;i++) widths[i] = String(headers[i]).length;
+    for(r=0;r<rows.length;r++){
+      for(c=0;c<headers.length;c++){
+        linha = String(rows[r][c] == null ? '' : rows[r][c]).length;
+        if(linha > widths[c]) widths[c] = linha;
+      }
+    }
+    var head = '';
+    var sep = '';
+    for(i=0;i<headers.length;i++){
+      head += (i ? '  ' : '') + pad(headers[i], widths[i]);
+      sep += (i ? '  ' : '') + Array(widths[i] + 1).join('-');
+    }
+    var body = '';
+    for(r=0;r<rows.length;r++){
+      var row = '';
+      for(c=0;c<headers.length;c++) row += (c ? '  ' : '') + pad(rows[r][c], widths[c]);
+      body += row + '\n';
+    }
+    return head + '\n' + sep + '\n' + body + '\n' + rows.length + ' row' + (rows.length === 1 ? '' : 's') + ' selected.';
+  }
+
+  function escreverComando(raw){
+    var saida = byId('labOutput');
+    if(!saida) return;
+    saida.innerHTML += '<div style="margin-top:10px"><span class="p">SQL&gt;</span> <span class="cmd">' + limparTexto(raw) + '</span></div>';
+    saida.scrollTop = saida.scrollHeight;
+  }
+
+  function escreverResultado(texto, tipo){
+    var saida = byId('labOutput');
+    if(!saida) return;
+    var cor = 'var(--green3)';
+    if(tipo === 'erro') cor = 'var(--red2)';
+    if(tipo === 'aviso') cor = 'var(--orange2)';
+    saida.innerHTML += '<pre style="color:' + cor + ';white-space:pre-wrap;margin:6px 0 12px;font-family:var(--font-mono);line-height:1.55;">' + limparTexto(texto) + '</pre>';
+    saida.scrollTop = saida.scrollHeight;
+  }
+
+  function respostaOracle(raw){
+    var cmd = normalizar(raw);
+
+    if(cmd === '') return {tipo:'aviso', texto:'Digite um comando. Exemplo: show pdbs'};
+
+    if(cmd === 'clear' || cmd === 'cls'){
+      var saida = byId('labOutput');
+      if(saida){
+        saida.innerHTML = '<div><span class="p">SQL&gt;</span> <span class="cmd">Terminal limpo. Digite help para ver os comandos.</span></div>';
+      }
+      return null;
+    }
+
+    if(cmd === 'help' || cmd === '?'){
+      return {tipo:'ok', texto:
+'Comandos disponíveis no laboratório Oracle:\n\n' +
+'help\n' +
+'show user\n' +
+'show con_name\n' +
+'show pdbs\n' +
+'show parameter db_name\n' +
+'show parameter memory\n' +
+'select instance_name,status from v$instance;\n' +
+'select name,open_mode,database_role from v$database;\n' +
+'select username,account_status from dba_users;\n' +
+'select tablespace_name,status,contents from dba_tablespaces;\n' +
+'select tablespace_name,used_percent from dba_tablespace_usage_metrics;\n' +
+'archive log list\n' +
+'lsnrctl status\n' +
+'rman target /\n' +
+'startup\n' +
+'shutdown immediate\n' +
+'clear'};
+    }
+
+    if(cmd === 'sqlplus / as sysdba' || cmd === 'connect / as sysdba' || cmd === 'conn / as sysdba'){
+      estadoOracleLab.user = 'SYS';
+      return {tipo:'ok', texto:'Connected to:\nOracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production'};
+    }
+
+    if(cmd === 'startup'){
+      estadoOracleLab.status = 'OPEN';
+      estadoOracleLab.openMode = 'READ WRITE';
+      return {tipo:'ok', texto:'ORACLE instance started.\n\nDatabase mounted.\nDatabase opened.'};
+    }
+
+    if(cmd === 'shutdown immediate'){
+      estadoOracleLab.status = 'SHUTDOWN';
+      estadoOracleLab.openMode = 'MOUNTED';
+      return {tipo:'ok', texto:'Database closed.\nDatabase dismounted.\nORACLE instance shut down.'};
+    }
+
+    if(estadoOracleLab.status === 'SHUTDOWN' && cmd !== 'startup'){
+      return {tipo:'erro', texto:'ORA-01034: ORACLE not available\nDica: execute startup'};
+    }
+
+    if(cmd === 'show user') return {tipo:'ok', texto:'USER is "' + estadoOracleLab.user + '"'};
+    if(cmd === 'show con_name') return {tipo:'ok', texto:'CON_NAME\n------------------------------\n' + estadoOracleLab.con};
+
+    if(cmd === 'alter session set container=orclpdb1'){
+      estadoOracleLab.con = 'ORCLPDB1';
+      return {tipo:'ok', texto:'Session altered.'};
+    }
+
+    if(cmd === 'alter session set container=cdb$root'){
+      estadoOracleLab.con = 'CDB$ROOT';
+      return {tipo:'ok', texto:'Session altered.'};
+    }
+
+    if(cmd === 'show pdbs'){
+      return {tipo:'ok', texto:montarTabela(['CON_ID','CON_NAME','OPEN MODE','RESTRICTED'], [[2,'PDB$SEED','READ ONLY','NO'],[3,'ORCLPDB1','READ WRITE','NO']])};
+    }
+
+    if(cmd === 'show parameter db_name'){
+      return {tipo:'ok', texto:montarTabela(['NAME','TYPE','VALUE'], [['db_name','string','ORCL']])};
+    }
+
+    if(cmd === 'show parameter memory'){
+      return {tipo:'ok', texto:montarTabela(['NAME','TYPE','VALUE'], [['memory_target','big integer','0'],['sga_target','big integer','2500M'],['pga_aggregate_target','big integer','800M']])};
+    }
+
+    if(cmd.indexOf('v$instance') >= 0){
+      return {tipo:'ok', texto:montarTabela(['INSTANCE_NAME','STATUS'], [['ORCL',estadoOracleLab.status]])};
+    }
+
+    if(cmd.indexOf('v$database') >= 0){
+      return {tipo:'ok', texto:montarTabela(['NAME','OPEN_MODE','DATABASE_ROLE'], [['ORCL',estadoOracleLab.openMode,'PRIMARY']])};
+    }
+
+    if(cmd.indexOf('dba_users') >= 0){
+      return {tipo:'ok', texto:montarTabela(['USERNAME','ACCOUNT_STATUS'], [['SYS','OPEN'],['SYSTEM','OPEN'],['HR','OPEN'],['APP_USER','LOCKED']])};
+    }
+
+    if(cmd.indexOf('dba_tablespace_usage_metrics') >= 0){
+      return {tipo:'ok', texto:montarTabela(['TABLESPACE_NAME','USED_PERCENT'], [['SYSTEM','71.42'],['SYSAUX','63.88'],['USERS','18.05'],['APP_DATA','86.74']])};
+    }
+
+    if(cmd.indexOf('dba_tablespaces') >= 0){
+      return {tipo:'ok', texto:montarTabela(['TABLESPACE_NAME','STATUS','CONTENTS'], [['SYSTEM','ONLINE','PERMANENT'],['SYSAUX','ONLINE','PERMANENT'],['UNDOTBS1','ONLINE','UNDO'],['TEMP','ONLINE','TEMPORARY'],['USERS','ONLINE','PERMANENT'],['APP_DATA','ONLINE','PERMANENT']])};
+    }
+
+    if(cmd === 'archive log list'){
+      return {tipo:'ok', texto:'Database log mode              Archive Mode\nAutomatic archival             Enabled\nArchive destination            USE_DB_RECOVERY_FILE_DEST\nCurrent log sequence           224'};
+    }
+
+    if(cmd === 'lsnrctl status'){
+      return {tipo:'ok', texto:'LSNRCTL for Linux: Version 19.0.0.0.0\n\nSTATUS of the LISTENER\n------------------------\nAlias                     LISTENER\nListening Endpoints       (HOST=oracle-lab)(PORT=1521)\nService "ORCL" has 1 instance(s).\nService "ORCLPDB1" has 1 instance(s).\nThe command completed successfully'};
+    }
+
+    if(cmd === 'rman target /'){
+      return {tipo:'ok', texto:'Recovery Manager: Release 19.0.0.0.0 - Production\n\nconnected to target database: ORCL (DBID=1234567890)\n\nRMAN>'};
+    }
+
+    return {tipo:'erro', texto:'SP2-0734: unknown command beginning "' + String(raw).substring(0,35) + '"\nDica: digite help para ver os comandos aceitos.'};
+  }
+
+  window.executarOracleLab = function(){
+    var input = byId('labCmd');
+    if(!input) return false;
+    var raw = input.value || '';
+    if(raw.replace(/\s+/g,'') === '') return false;
+    escreverComando(raw);
+    var resp = respostaOracle(raw);
+    if(resp) escreverResultado(resp.texto, resp.tipo);
+    input.value = '';
+    try { input.focus(); } catch(e) {}
+    return false;
+  };
+
+  window.runLabCmd = window.executarOracleLab;
+
+  function prepararLab(){
+    var botao = byId('labRunBtn');
+    var input = byId('labCmd');
+    if(botao){
+      botao.disabled = false;
+      botao.removeAttribute('disabled');
+      botao.onclick = function(e){
+        if(e && e.preventDefault) e.preventDefault();
+        return window.executarOracleLab();
+      };
+    }
+    if(input){
+      input.disabled = false;
+      input.removeAttribute('disabled');
+      input.placeholder = 'Ex: help | show pdbs | select name,open_mode,database_role from v$database;';
+      input.onkeydown = function(e){
+        e = e || window.event;
+        var tecla = e.key || e.keyCode;
+        if(tecla === 'Enter' || tecla === 13){
+          if(e.preventDefault) e.preventDefault();
+          return window.executarOracleLab();
+        }
+      };
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', prepararLab);
+  } else {
+    prepararLab();
+  }
+  setTimeout(prepararLab, 300);
+  setTimeout(prepararLab, 1000);
+})();
+</script>
+
+
+<script>
+/* PATCH v6 — Simulador Oracle com lista visual, resultado único por execução e comandos de DBA */
+(function(){
+  var state = { status:'OPEN', openMode:'READ WRITE', user:'SYS', con:'CDB$ROOT' };
+  var commands = [
+    'help',
+    'show user',
+    'show con_name',
+    'show pdbs',
+    'show parameter db_name',
+    'show parameter memory',
+    'select instance_name,status from v$instance;',
+    'select name,open_mode,database_role from v$database;',
+    'select banner_full from v$version;',
+    'select username,account_status from dba_users;',
+    'select tablespace_name,status,contents from dba_tablespaces;',
+    'select tablespace_name,used_percent from dba_tablespace_usage_metrics;',
+    'select file_name,tablespace_name,bytes/1024/1024 mb from dba_data_files;',
+    'select name from v$controlfile;',
+    'select member from v$logfile;',
+    'select group#,status,bytes/1024/1024 mb from v$log;',
+    'select sid,serial#,username,status,machine from v$session;',
+    'select blocking_session,sid,serial#,event from v$session where blocking_session is not null;',
+    'select sql_id,executions,elapsed_time from v$sql order by elapsed_time desc;',
+    'select owner,object_name,object_type,status from dba_objects where status <> \'VALID\';',
+    'select job_name,state from dba_scheduler_jobs;',
+    'select name,space_limit,space_used from v$recovery_file_dest;',
+    'archive log list',
+    'lsnrctl status',
+    'rman target /',
+    'backup database plus archivelog;',
+    'startup',
+    'shutdown immediate',
+    'alter session set container=ORCLPDB1;',
+    'alter session set container=CDB$ROOT;',
+    'alter pluggable database all open;',
+    'clear'
+  ];
+  function el(id){ return document.getElementById(id); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function norm(v){ return String(v||'').trim().replace(/;\s*$/,'').replace(/\s+/g,' ').toLowerCase(); }
+  function pad(v,n){ v=String(v==null?'':v); while(v.length<n) v+=' '; return v; }
+  function table(headers, rows){
+    var w=headers.map(function(h){return String(h).length;});
+    rows.forEach(function(r){ r.forEach(function(c,i){ w[i]=Math.max(w[i],String(c==null?'':c).length); }); });
+    var head=headers.map(function(h,i){return pad(h,w[i]);}).join('  ');
+    var sep=w.map(function(n){return Array(n+1).join('-');}).join('  ');
+    var body=rows.map(function(r){return r.map(function(c,i){return pad(c,w[i]);}).join('  ');}).join('\n');
+    return head+'\n'+sep+'\n'+body+'\n\n'+rows.length+' row'+(rows.length===1?'':'s')+' selected.';
+  }
+  function helpText(){ return 'Comandos disponíveis no laboratório Oracle:\n\n' + commands.map(function(c){return '  '+c;}).join('\n') + '\n\nObservação: este é um simulador didático. Use exatamente os comandos listados acima.'; }
+  function response(raw){
+    var cmd=norm(raw);
+    if(!cmd) return {type:'warn', text:'Digite um comando. Exemplo: help'};
+    if(cmd==='clear' || cmd==='cls') return {type:'ok', text:'Terminal limpo. Digite help para ver os comandos disponíveis.'};
+    if(cmd==='help' || cmd==='?') return {type:'ok', text:helpText()};
+    if(cmd==='sqlplus / as sysdba' || cmd==='connect / as sysdba' || cmd==='conn / as sysdba') { state.user='SYS'; return {type:'ok', text:'Connected to:\nOracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production'}; }
+    if(cmd==='show user') return {type:'ok', text:'USER is "'+state.user+'"'};
+    if(cmd==='show con_name') return {type:'ok', text:'CON_NAME\n------------------------------\n'+state.con};
+    if(cmd==='alter session set container=orclpdb1'){ state.con='ORCLPDB1'; return {type:'ok', text:'Session altered.'}; }
+    if(cmd==='alter session set container=cdb$root'){ state.con='CDB$ROOT'; return {type:'ok', text:'Session altered.'}; }
+    if(cmd==='startup'){ state.status='OPEN'; state.openMode='READ WRITE'; return {type:'ok', text:'ORACLE instance started.\n\nDatabase mounted.\nDatabase opened.'}; }
+    if(cmd==='shutdown immediate'){ state.status='SHUTDOWN'; state.openMode='MOUNTED'; return {type:'ok', text:'Database closed.\nDatabase dismounted.\nORACLE instance shut down.'}; }
+    if(state.status==='SHUTDOWN' && cmd!=='startup') return {type:'err', text:'ORA-01034: ORACLE not available\nDica: execute startup'};
+    if(cmd==='show pdbs') return {type:'ok', text:table(['CON_ID','CON_NAME','OPEN MODE','RESTRICTED'], [[2,'PDB$SEED','READ ONLY','NO'],[3,'ORCLPDB1','READ WRITE','NO']])};
+    if(cmd==='show parameter db_name') return {type:'ok', text:table(['NAME','TYPE','VALUE'], [['db_name','string','ORCL']])};
+    if(cmd==='show parameter memory') return {type:'ok', text:table(['NAME','TYPE','VALUE'], [['memory_target','big integer','0'],['sga_target','big integer','2500M'],['pga_aggregate_target','big integer','800M']])};
+    if(cmd==='alter pluggable database all open') return {type:'ok', text:'Pluggable database altered.'};
+    if(cmd.indexOf('v$instance')>=0) return {type:'ok', text:table(['INSTANCE_NAME','STATUS','HOST_NAME','VERSION'], [['ORCL',state.status,'oracle-lab','19.22.0.0.0']])};
+    if(cmd.indexOf('v$database')>=0) return {type:'ok', text:table(['NAME','OPEN_MODE','DATABASE_ROLE','LOG_MODE'], [['ORCL',state.openMode,'PRIMARY','ARCHIVELOG']])};
+    if(cmd.indexOf('v$version')>=0) return {type:'ok', text:table(['BANNER_FULL'], [['Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production Version 19.22.0.0.0']])};
+    if(cmd.indexOf('dba_users')>=0) return {type:'ok', text:table(['USERNAME','ACCOUNT_STATUS','DEFAULT_TABLESPACE'], [['SYS','OPEN','SYSTEM'],['SYSTEM','OPEN','SYSTEM'],['HR','OPEN','USERS'],['APP_USER','LOCKED','APP_DATA']])};
+    if(cmd.indexOf('dba_tablespace_usage_metrics')>=0) return {type:'ok', text:table(['TABLESPACE_NAME','USED_PERCENT'], [['SYSTEM','71.42'],['SYSAUX','63.88'],['USERS','18.05'],['APP_DATA','86.74']])};
+    if(cmd.indexOf('dba_tablespaces')>=0) return {type:'ok', text:table(['TABLESPACE_NAME','STATUS','CONTENTS'], [['SYSTEM','ONLINE','PERMANENT'],['SYSAUX','ONLINE','PERMANENT'],['UNDOTBS1','ONLINE','UNDO'],['TEMP','ONLINE','TEMPORARY'],['USERS','ONLINE','PERMANENT'],['APP_DATA','ONLINE','PERMANENT']])};
+    if(cmd.indexOf('dba_data_files')>=0) return {type:'ok', text:table(['FILE_NAME','TABLESPACE_NAME','MB'], [['/u01/oradata/ORCL/system01.dbf','SYSTEM','900'],['/u01/oradata/ORCL/sysaux01.dbf','SYSAUX','700'],['/u01/oradata/ORCL/users01.dbf','USERS','200'],['/u01/oradata/ORCL/app_data01.dbf','APP_DATA','1024']])};
+    if(cmd.indexOf('v$controlfile')>=0) return {type:'ok', text:table(['NAME'], [['/u01/oradata/ORCL/control01.ctl'],['/u02/fast_recovery_area/ORCL/control02.ctl']])};
+    if(cmd.indexOf('v$logfile')>=0) return {type:'ok', text:table(['MEMBER'], [['/u01/oradata/ORCL/redo01.log'],['/u01/oradata/ORCL/redo02.log'],['/u01/oradata/ORCL/redo03.log']])};
+    if(cmd.indexOf('v$log')>=0) return {type:'ok', text:table(['GROUP#','STATUS','MB'], [[1,'CURRENT','200'],[2,'INACTIVE','200'],[3,'INACTIVE','200']])};
+    if(cmd.indexOf('blocking_session')>=0) return {type:'ok', text:table(['BLOCKING_SESSION','SID','SERIAL#','EVENT'], [[145,233,8172,'enq: TX - row lock contention']])};
+    if(cmd.indexOf('v$session')>=0) return {type:'ok', text:table(['SID','SERIAL#','USERNAME','STATUS','MACHINE'], [[12,583,'SYS','ACTIVE','oracle-lab'],[44,981,'HR','INACTIVE','app01'],[145,1001,'APP_USER','ACTIVE','app02']])};
+    if(cmd.indexOf('v$sql')>=0) return {type:'ok', text:table(['SQL_ID','EXECUTIONS','ELAPSED_TIME'], [['9x7abc123',120,9823401],['4k2def777',35,3312000],['8zzpqa901',8,1200040]])};
+    if(cmd.indexOf('dba_objects')>=0) return {type:'ok', text:table(['OWNER','OBJECT_NAME','OBJECT_TYPE','STATUS'], [['APP_USER','PKG_BILLING','PACKAGE BODY','INVALID'],['HR','VW_EMPLOYEES','VIEW','INVALID']])};
+    if(cmd.indexOf('dba_scheduler_jobs')>=0) return {type:'ok', text:table(['JOB_NAME','STATE'], [['GATHER_STATS_JOB','SCHEDULED'],['BKP_VALIDATE_JOB','SUCCEEDED'],['PURGE_LOG_JOB','RUNNING']])};
+    if(cmd.indexOf('v$recovery_file_dest')>=0) return {type:'ok', text:table(['NAME','SPACE_LIMIT','SPACE_USED'], [['USE_DB_RECOVERY_FILE_DEST','107374182400','64424509440']])};
+    if(cmd==='archive log list') return {type:'ok', text:'Database log mode              Archive Mode\nAutomatic archival             Enabled\nArchive destination            USE_DB_RECOVERY_FILE_DEST\nOldest online log sequence     221\nNext log sequence to archive   224\nCurrent log sequence           224'};
+    if(cmd==='lsnrctl status') return {type:'ok', text:'LSNRCTL for Linux: Version 19.0.0.0.0\n\nSTATUS of the LISTENER\n------------------------\nAlias                     LISTENER\nListening Endpoints       (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=oracle-lab)(PORT=1521)))\nServices Summary...\nService "ORCL" has 1 instance(s).\nService "ORCLPDB1" has 1 instance(s).\nThe command completed successfully'};
+    if(cmd==='rman target /') return {type:'ok', text:'Recovery Manager: Release 19.0.0.0.0 - Production\n\nconnected to target database: ORCL (DBID=1234567890)\n\nRMAN>'};
+    if(cmd==='backup database plus archivelog') return {type:'ok', text:'Starting backup at 12-JUN-26\nallocated channel: ORA_DISK_1\nchannel ORA_DISK_1: starting compressed full datafile backup set\nchannel ORA_DISK_1: archived log backup complete\nFinished backup at 12-JUN-26'};
+    if(cmd.startsWith('select')) return {type:'err', text:'ORA-00942: comando não disponível neste simulador.\nDigite help e use exatamente um dos SELECTs listados.'};
+    return {type:'err', text:'SP2-0734: unknown command beginning "'+String(raw).substring(0,35)+'"\nDica: digite help para ver os comandos aceitos.'};
+  }
+  function print(raw, r){
+    var out=el('labOutput'); if(!out) return;
+    var color = r.type==='err' ? 'var(--red2)' : (r.type==='warn' ? 'var(--orange2)' : 'var(--green3)');
+    out.innerHTML = '<div><span class="p">SQL&gt;</span> <span class="cmd">'+esc(raw)+'</span></div>' +
+      '<pre style="color:'+color+';white-space:pre-wrap;margin:8px 0 0;font-family:var(--font-mono);line-height:1.55;">'+esc(r.text)+'</pre>';
+    out.scrollTop = 0;
+  }
+  function run(){
+    var input=el('labCmd'); if(!input) return false;
+    var raw=input.value.trim(); if(!raw) return false;
+    var r=response(raw); print(raw,r); input.value=''; input.focus(); return false;
+  }
+  function fillList(){
+    var box=el('labCommandList'); if(!box) return;
+    box.innerHTML = commands.map(function(c){
+      return '<button type="button" class="labCmdSample" data-cmd="'+esc(c)+'" style="text-align:left;background:#111923;border:1px solid #2a3540;color:var(--green3);padding:6px 8px;border-radius:4px;font-family:var(--font-mono);font-size:11px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(c)+'</button>';
+    }).join('');
+    box.querySelectorAll('.labCmdSample').forEach(function(b){ b.onclick=function(){ var input=el('labCmd'); if(input){ input.value=this.getAttribute('data-cmd'); input.focus(); } }; });
+  }
+  function bind(){
+    fillList();
+    var btn=el('labRunBtn'), input=el('labCmd');
+    window.executarOracleLab=run; window.runLabCmd=run;
+    if(btn){ btn.disabled=false; btn.onclick=function(e){ if(e) e.preventDefault(); return run(); }; }
+    if(input){ input.onkeydown=function(e){ if((e.key==='Enter') || e.keyCode===13){ e.preventDefault(); return run(); } }; }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bind); else bind();
+})();
+</script>
+
+</body>
+</html>

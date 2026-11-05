@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oracle Universal Installer Silent Installations | OUI Command Center</title>
+<style>
+:root{--bg:#070b12;--panel:#0e1728;--panel2:#121e33;--red:#ff3048;--red2:#ff6374;--text:#eef4ff;--muted:#aebbd4;--line:#244669;--green:#39d98a;--yellow:#ffd166;--code:#03070d}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top left,#3b0611 0,#070b12 36%,#02040a 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}body.locked .lockedArea{filter:grayscale(1);opacity:.28;pointer-events:none}.top{padding:36px 5vw 24px;border-bottom:1px solid #3a1220;background:linear-gradient(135deg,#440613,#0b1323 55%,#040711)}.brand{text-align:center;font-weight:900;letter-spacing:8px;font-size:26px}.brand span{color:var(--red)}h1{text-align:center;font-size:46px;line-height:1.05;margin:20px auto 12px;max-width:1180px;letter-spacing:4px}.subtitle{text-align:center;color:#c8d6f3;max-width:1040px;margin:0 auto 24px;font-size:17px;line-height:1.6}.gate{max-width:880px;margin:24px auto 0;background:rgba(18,30,51,.92);border:1px solid #7d1d31;border-radius:20px;padding:22px;box-shadow:0 0 40px rgba(255,48,72,.14)}.gate h2,.section h2,.story h2{margin:0 0 14px;color:var(--red2);letter-spacing:5px;text-transform:uppercase}.gate input{width:100%;padding:15px;margin:10px 0 16px;border-radius:12px;border:1px solid #7b2334;background:#02070e;color:#fff;font-weight:800;font-size:16px}.btn{border:1px solid var(--line);background:#12213a;color:#fff;border-radius:11px;padding:11px 16px;font-weight:900;cursor:pointer}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.btn.primary{background:linear-gradient(135deg,#e8122f,#ff394e);border-color:#ff394e;box-shadow:0 14px 28px rgba(255,48,72,.25)}.btn.ghost{background:#19263c}.btn.small{padding:8px 11px;font-size:12px}.navWrap{max-width:1360px;margin:18px auto 0;padding:0 12px}.nav{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid #7d1d31;border-radius:18px;overflow:hidden}.nav a{padding:17px;background:rgba(7,12,20,.85);text-decoration:none;color:#fff;border-right:1px solid #282e3a}.nav a:last-child{border-right:0}.nav b{display:block;letter-spacing:3px;font-size:16px}.nav small{color:#c4d2ed}.story{max-width:1360px;margin:20px auto;background:rgba(14,23,40,.94);border:1px solid #244669;border-radius:20px;padding:26px;line-height:1.6;color:#cad6ed}.storyGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}.story img{max-width:100%;border-radius:12px;border:1px solid #314d70;background:#fff}.layout{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:22px;align-items:start;padding:0 12px}.rightRail{position:sticky;top:12px;display:flex;flex-direction:column;gap:14px;max-height:96vh}.progressBox{background:var(--panel);border:1px solid #244669;border-radius:18px;padding:18px}.progressBox h3{margin:0 0 12px;color:#ff6374;letter-spacing:3px}.bar{height:12px;background:#07101d;border:1px solid #315579;border-radius:20px;overflow:hidden}.bar div{height:100%;width:0;background:linear-gradient(90deg,#ff3048,#ffd166,#39d98a);transition:.35s}.steps{display:grid;gap:8px;margin-top:12px}.step{display:flex;justify-content:space-between;gap:10px;border:1px solid #233c5c;background:#08111f;border-radius:10px;padding:9px 10px;color:#cfe0ff}.step.done{border-color:#39d98a;color:#39d98a}.terminalFloat{background:#03070d;border:1px solid #315579;border-radius:18px;box-shadow:0 0 35px rgba(85,183,255,.1);overflow:hidden}.termHead{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#101d31;border-bottom:1px solid #315579}.lights span{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;background:#ff5f57}.lights span:nth-child(2){background:#ffbd2e}.lights span:nth-child(3){background:#28c840}.termBody{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.45;color:#dff7ff;padding:14px;min-height:300px;max-height:48vh;overflow:auto;white-space:pre-wrap}.termInput{display:flex;border-top:1px solid #243b5b}.prompt{padding:12px;color:#39d98a;font-family:monospace}.termInput input{flex:1;background:#02050a;color:#fff;border:0;padding:13px;font-family:monospace;outline:0}.section{background:rgba(14,23,40,.94);border:1px solid #244669;border-radius:20px;padding:24px;margin:0 0 22px}.intro{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px}.info{background:#080d16;border:1px solid #1f3958;border-radius:16px;padding:18px;line-height:1.55;color:#cbd7ee}.cmdCard{border:1px solid #244669;border-radius:14px;margin:14px 0;overflow:hidden;background:#08111f}.cmdTop{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#111d31;padding:12px 14px}.cmdTop strong{color:#ff6374}.cmdDesc{padding:13px 14px;color:#c5d2eb;line-height:1.5;border-top:1px solid rgba(255,255,255,.04)}pre{margin:0;padding:15px;background:#02060c;color:#e8fbff;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.45}.cmdCard.done{border-color:#39d98a}.cmdCard.done .cmdTop strong:after{content:'  ✓ executado';color:#39d98a;font-size:12px}.footer{text-align:center;color:#b8c9e9;padding:30px}.back{display:inline-block;color:#fff;text-decoration:none;margin-top:12px}.note{border-left:4px solid #ff3048;padding:14px 18px;background:#08111f;color:#d9e7ff;border-radius:10px}.warn{color:#ffd166;font-weight:800}.backLink{display:inline-block;margin:0 0 22px;color:#ff6374;font-size:18px;font-weight:800;text-decoration:none;transition:.25s}.backLink:hover{color:#ffffff;text-decoration:underline}@media(max-width:1100px){.layout,.storyGrid,.intro{grid-template-columns:1fr}.rightRail{position:relative}.nav{grid-template-columns:1fr 1fr}h1{font-size:32px}}
+
+
+/* === V16 FIX: terminal sticky estilo SSH, sem cortar e com linha de digitação sempre visível === */
+.layout{
+  max-width:1540px !important;
+  grid-template-columns:minmax(0,1fr) minmax(560px,640px) !important;
+  gap:24px !important;
+  padding:0 16px !important;
+}
+.rightRail{
+  position:sticky !important;
+  top:10px !important;
+  height:calc(100vh - 20px) !important;
+  max-height:calc(100vh - 20px) !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+}
+.progressBox{
+  flex:0 0 auto !important;
+  max-height:36vh !important;
+  overflow:auto !important;
+  padding:10px 12px !important;
+  border-radius:14px !important;
+}
+.progressBox h2,.progressBox h3{
+  font-size:16px !important;
+  letter-spacing:2px !important;
+  margin-bottom:8px !important;
+}
+.progressBox p{font-size:12px !important;margin:7px 0 !important;line-height:1.35 !important;}
+.bar{height:7px !important;}
+.steps{gap:5px !important;margin-top:8px !important;}
+.step{padding:5px 8px !important;font-size:12px !important;min-height:28px;align-items:center;}
+.step span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.step.done{background:rgba(57,217,138,.10) !important;border-color:var(--green) !important;color:var(--green) !important;}
+.terminalFloat{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+.termHead{flex:0 0 auto !important;padding:9px 12px !important;}
+.termHead b{font-size:17px !important;}
+.termBody{
+  flex:1 1 auto !important;
+  min-height:180px !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
+  font-size:11px !important;
+  line-height:1.26 !important;
+  padding:12px !important;
+  scrollbar-gutter:stable !important;
+}
+.termInput{
+  flex:0 0 auto !important;
+  display:flex !important;
+  border-top:1px solid #243b5b !important;
+  background:#02050a !important;
+}
+.prompt{font-size:12px !important;white-space:nowrap !important;flex-shrink:0 !important;}
+.termInput input{font-size:12px !important;min-width:0 !important;}
+@media(max-width:1200px){
+  .layout{grid-template-columns:1fr !important;}
+  .rightRail{position:relative !important;height:auto !important;max-height:none !important;overflow:visible !important;}
+  .terminalFloat{min-height:420px !important;}
+  .termBody{min-height:320px !important;}
+}
+
+</style>
+</head>
+<body class="locked">
+<header class="top">
+  <a href="index.html" class="backLink">← Voltar ao Command Center</a>
+  <div class="brand"><span>ORACLE</span> DBA ACADEMY</div>
+  <h1>ORACLE UNIVERSAL INSTALLER SILENT INSTALLATIONS</h1>
+  <p class="subtitle">Command Center interativo em português para instalações silent com OUI: response files, parâmetros de linha de comando, execução sem interface gráfica, patching da mídia com <b>-applyRU</b> e <b>-applyOneOffs</b>, além de terminal simulado e progresso por execução.</p>
+  <div class="gate">
+    <h2>Identificação do DBA</h2>
+    <label>Nome do aluno/cliente</label>
+    <input id="studentName" placeholder="Digite seu nome completo" />
+    <button class="btn primary" onclick="startLab()">INICIAR LAB COMPLETO</button>
+    <button class="btn ghost" onclick="resetLab()">REINICIAR LAB COMPLETO</button>
+  </div>
+</header>
+
+<div class="lockedArea">
+  <div class="navWrap">
+    <nav class="nav">
+      <a href="#visao"><b>▣ VISÃO</b><small>Conceito OUI Silent</small></a>
+      <a href="#response"><b>◎ RESPONSE FILES</b><small>Formas de uso</small></a>
+      <a href="#basic"><b>⌁ BASIC</b><small>Silent básico</small></a>
+      <a href="#overrides"><b>✦ OVERRIDES</b><small>Parâmetros inline</small></a>
+      <a href="#18c"><b>⌂ 18c/19c</b><small>Unzip no ORACLE_HOME</small></a>
+      <a href="#patch"><b>⚙ PATCHING</b><small>-applyRU / OneOffs</small></a>
+    </nav>
+  </div>
+
+  <section class="story" id="visao">
+    <h2>História e objetivo do processo</h2>
+    <div class="storyGrid">
+      <div>
+        <p>O Oracle Universal Installer é normalmente usado em modo gráfico, exigindo que o DBA informe manualmente cada opção da instalação. Em ambientes profissionais, repetitivos ou automatizados, a instalação silent permite executar o mesmo fluxo com um arquivo de resposta ou com parâmetros informados diretamente na linha de comando.</p>
+        <p>Este laboratório mostra como registrar ou usar um response file, executar o <b>runInstaller</b> em modo silent, sobrescrever parâmetros pela linha de comando, instalar versões modernas como 18c/19c extraindo o software diretamente no <b>ORACLE_HOME</b> e aplicar patches durante a instalação.</p>
+        <p class="note">A imagem ao lado representa a tela do OUI onde o DBA pode salvar um response file antes de iniciar a instalação. Ela é útil quando o DBA prefere montar a instalação pela interface e reaproveitar as escolhas em execuções silent.</p>
+      </div>
+      <div><img src="assets/oui-save-response.png" alt="OUI Save Response File" /></div>
+    </div>
+  </section>
+
+  <main class="layout">
+    <div>
+      <section class="section" id="response">
+        <h2>Response Files</h2>
+        <div class="intro">
+          <div class="info"><b>O que é?</b><br>Um response file é um arquivo de configuração que contém as respostas que seriam dadas manualmente durante o Oracle Universal Installer.</div>
+          <div class="info"><b>Quando usar?</b><br>Use para padronizar instalações, automatizar ambientes, repetir builds, criar laboratórios e reduzir erro humano.</div>
+        </div>
+        <p class="note">Existem três formas principais de usar response files: editar o modelo fornecido pela mídia, usar o modelo e sobrescrever parâmetros na linha de comando, ou gerar um response file pela GUI do OUI.</p>
+        <div class="cmdCard" data-step="Response file antigo" data-cmd="./runInstaller -record -destinationFile /tmp/10gR2.rsp"><div class="cmdTop"><strong>1. Criar response file com -record em versões antigas</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Antes do Oracle 11gR2 era possível iniciar o instalador com <b>-record</b> para gravar as opções escolhidas em um arquivo de resposta.</div><pre>./runInstaller -record -destinationFile /tmp/10gR2.rsp</pre></div>
+        <div class="cmdCard" data-step="Abrir OUI GUI" data-cmd="./runInstaller"><div class="cmdTop"><strong>2. Abrir o OUI para salvar response file pela tela final</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">A partir do 11gR2, o parâmetro <b>-record</b> não é mais suportado. O OUI oferece a opção <b>Save Response File</b> na tela final antes da instalação.</div><pre>./runInstaller</pre></div>
+      </section>
+
+      <section class="section" id="basic">
+        <h2>Using Response Files : Basic</h2>
+        <div class="info">A instalação silent é iniciada com <b>-silent</b> e <b>-responseFile</b>. O instalador lê o arquivo de resposta e executa sem solicitar entradas adicionais pela interface gráfica.</div>
+        <div class="cmdCard" data-step="Silent básico" data-cmd="./runInstaller -silent -responseFile /tmp/12cR2.rsp"><div class="cmdTop"><strong>3. Silent installation normal</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Executa uma instalação silent usando o response file informado.</div><pre>./runInstaller -silent -responseFile /tmp/12cR2.rsp</pre></div>
+        <div class="cmdCard" data-step="Silent avançado" data-cmd="./runInstaller -ignoreSysPrereqs -ignorePrereq -waitforcompletion -showProgress -silent -responseFile /tmp/12cR2.rsp"><div class="cmdTop"><strong>4. Silent ignorando pré-requisitos e exibindo progresso</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Útil para automação, porque ignora checks não críticos, aguarda o término do processo e mostra progresso na tela.</div><pre>./runInstaller -ignoreSysPrereqs -ignorePrereq -waitforcompletion -showProgress -silent -responseFile /tmp/12cR2.rsp</pre></div>
+        <div class="cmdCard" data-step="Flags úteis" data-cmd="runInstaller flags"><div class="cmdTop"><strong>5. Flags úteis do runInstaller</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Lista de parâmetros comuns para instalações silent e scripts de automação.</div><pre>-silent            : Executa em modo silent.
+-responseFile      : Define o caminho do response file.
+-ignoreSysPrereqs  : Ignora pré-requisitos do sistema.
+-ignorePrereq      : Ignora pré-requisitos gerais.
+-waitforcompletion : Aguarda o processo terminar, útil em scripts.
+-invPtrLoc         : Especifica o oraInst.loc com detalhes do inventory.
+-force             : Continua mesmo usando ORACLE_HOME não vazio.
+-showProgress      : Mostra pontos de progresso durante a instalação.</pre></div>
+      </section>
+
+      <section class="section" id="overrides">
+        <h2>Using Response Files : Command Line Overrides</h2>
+        <div class="info">Uma alternativa a editar manualmente o response file é usar o arquivo padrão da mídia e sobrescrever parâmetros diretamente na linha de comando. Isso deixa o processo mais fácil de versionar e adaptar.</div>
+        <div class="cmdCard" data-step="12cR1 overrides" data-cmd="./runInstaller 12cR1 overrides"><div class="cmdTop"><strong>6. Exemplo 12cR1 e versões anteriores</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Exemplo usando o response file padrão e sobrescrevendo parâmetros como ORACLE_HOME, ORACLE_BASE, grupos e edição.</div><pre>./runInstaller -ignoreSysPrereqs -ignorePrereq -waitforcompletion -showProgress -silent \
+    -responseFile /tmp/database/response/db_install.rsp \
+    oracle.install.option=INSTALL_DB_SWONLY \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME} \
+    UNIX_GROUP_NAME=oinstall \
+    INVENTORY_LOCATION=${ORA_INVENTORY} \
+    SELECTED_LANGUAGES=en,en_GB \
+    ORACLE_HOME=${ORACLE_HOME} \
+    ORACLE_BASE=${ORACLE_BASE} \
+    oracle.install.db.InstallEdition=EE \
+    oracle.install.db.DBA_GROUP=dba \
+    oracle.install.db.OPER_GROUP=dba \
+    oracle.install.db.BACKUPDBA_GROUP=dba \
+    oracle.install.db.DGDBA_GROUP=dba \
+    oracle.install.db.KMDBA_GROUP=dba \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+    DECLINE_SECURITY_UPDATES=true</pre></div>
+        <div class="cmdCard" data-step="12cR2 overrides" data-cmd="./runInstaller 12cR2 overrides"><div class="cmdTop"><strong>7. Exemplo 12cR2</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">No 12cR2 os parâmetros dos grupos receberam prefixo <b>OS</b>, e o grupo <b>OSRACDBA</b> passou a ser obrigatório.</div><pre>./runInstaller -ignoreSysPrereqs -ignorePrereq -waitforcompletion -showProgress -silent \
+    -responseFile /tmp/database/response/db_install.rsp \
+    oracle.install.option=INSTALL_DB_SWONLY \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME} \
+    UNIX_GROUP_NAME=oinstall \
+    INVENTORY_LOCATION=${ORA_INVENTORY} \
+    SELECTED_LANGUAGES=en,en_GB \
+    ORACLE_HOME=${ORACLE_HOME} \
+    ORACLE_BASE=${ORACLE_BASE} \
+    oracle.install.db.InstallEdition=EE \
+    oracle.install.db.OSDBA_GROUP=dba \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba \
+    oracle.install.db.OSDGDBA_GROUP=dba \
+    oracle.install.db.OSKMDBA_GROUP=dba \
+    oracle.install.db.OSRACDBA_GROUP=dba \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+    DECLINE_SECURITY_UPDATES=true</pre></div>
+        <div class="cmdCard" data-step="26ai overrides" data-cmd="./runInstaller 26ai overrides"><div class="cmdTop"><strong>8. Exemplo Oracle AI Database 26ai</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Em versões mais novas, vários nomes de parâmetros foram simplificados.</div><pre>./runInstaller -ignorePrereq -waitforcompletion -silent              \
+    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp     \
+    installOption=INSTALL_DB_SWONLY                                  \
+    UNIX_GROUP_NAME=oinstall                                         \
+    INVENTORY_LOCATION=${ORA_INVENTORY}                              \
+    ORACLE_HOME=${ORACLE_HOME}                                       \
+    ORACLE_BASE=${ORACLE_BASE}                                       \
+    installEdition=EE                                                \
+    OSDBA=dba                                                        \
+    OSBACKUPDBA=dba                                                  \
+    OSDGDBA=dba                                                      \
+    OSKMDBA=dba                                                      \
+    OSRACDBA=dba</pre></div>
+      </section>
+
+      <section class="section" id="18c">
+        <h2>Using Response Files : 18c Onward - Unzip to ORACLE_HOME</h2>
+        <div class="info">A partir do Oracle 18c, o binário do banco é extraído diretamente dentro do <b>ORACLE_HOME</b>. Depois disso, o <b>runInstaller</b> é executado a partir do próprio home.</div>
+        <div class="cmdCard" data-step="Unzip ORACLE_HOME" data-cmd="cd $ORACLE_HOME && unzip -oq /path/to/software/LINUX.X64_190000_db_home.zip"><div class="cmdTop"><strong>9. Extrair software no ORACLE_HOME</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">O arquivo ZIP do Oracle Database 18c/19c deve ser descompactado diretamente no ORACLE_HOME.</div><pre>cd $ORACLE_HOME
+unzip -oq /path/to/software/LINUX.X64_190000_db_home.zip</pre></div>
+        <div class="cmdCard" data-step="18c/19c silent" data-cmd="./runInstaller 18c onward silent"><div class="cmdTop"><strong>10. Instalação silent 18c/19c</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Executa a instalação somente do software usando response file dentro do ORACLE_HOME e parâmetros inline.</div><pre>./runInstaller -ignorePrereq -waitforcompletion -silent \
+    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp \
+    oracle.install.option=INSTALL_DB_SWONLY \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME} \
+    UNIX_GROUP_NAME=oinstall \
+    INVENTORY_LOCATION=${ORA_INVENTORY} \
+    SELECTED_LANGUAGES=en,en_GB \
+    ORACLE_HOME=${ORACLE_HOME} \
+    ORACLE_BASE=${ORACLE_BASE} \
+    oracle.install.db.InstallEdition=EE \
+    oracle.install.db.OSDBA_GROUP=dba \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba \
+    oracle.install.db.OSDGDBA_GROUP=dba \
+    oracle.install.db.OSKMDBA_GROUP=dba \
+    oracle.install.db.OSRACDBA_GROUP=dba \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+    DECLINE_SECURITY_UPDATES=true</pre></div>
+      </section>
+
+      <section class="section" id="patch">
+        <h2>Using Response Files : Patching Installation Media</h2>
+        <div class="info">O Oracle 18c introduziu a possibilidade de aplicar RU e one-off patches durante a instalação, antes da criação do banco. Isso evita instalar primeiro e patchar depois como etapas separadas.</div>
+        <div class="cmdCard" data-step="Apply RU" data-cmd="./runInstaller -applyRU /u01/software/10000000"><div class="cmdTop"><strong>11. Instalação com -applyRU</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Aplica uma Release Update descompactada antes de concluir a instalação do ORACLE_HOME.</div><pre>./runInstaller -ignorePrereq -waitforcompletion -silent \
+    -applyRU /u01/software/10000000 \
+    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp \
+    oracle.install.option=INSTALL_DB_SWONLY \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME} \
+    UNIX_GROUP_NAME=oinstall \
+    INVENTORY_LOCATION=${ORA_INVENTORY} \
+    SELECTED_LANGUAGES=en,en_GB \
+    ORACLE_HOME=${ORACLE_HOME} \
+    ORACLE_BASE=${ORACLE_BASE} \
+    oracle.install.db.InstallEdition=EE \
+    oracle.install.db.OSDBA_GROUP=dba \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba \
+    oracle.install.db.OSDGDBA_GROUP=dba \
+    oracle.install.db.OSKMDBA_GROUP=dba \
+    oracle.install.db.OSRACDBA_GROUP=dba \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+    DECLINE_SECURITY_UPDATES=true</pre></div>
+        <div class="cmdCard" data-step="Apply RU + OneOffs" data-cmd="./runInstaller -applyRU -applyOneOffs"><div class="cmdTop"><strong>12. Instalação com -applyRU e -applyOneOffs</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">Permite combinar uma Release Update com múltiplos one-off patches separados por vírgula.</div><pre>./runInstaller -ignorePrereq -waitforcompletion -silent \
+    -applyRU /u01/software/10000000 \
+    -applyOneOffs /u01/software/10000001,/u01/software/10000002 \
+    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp \
+    oracle.install.option=INSTALL_DB_SWONLY \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME} \
+    UNIX_GROUP_NAME=oinstall \
+    INVENTORY_LOCATION=${ORA_INVENTORY} \
+    SELECTED_LANGUAGES=en,en_GB \
+    ORACLE_HOME=${ORACLE_HOME} \
+    ORACLE_BASE=${ORACLE_BASE} \
+    oracle.install.db.InstallEdition=EE \
+    oracle.install.db.OSDBA_GROUP=dba \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba \
+    oracle.install.db.OSDGDBA_GROUP=dba \
+    oracle.install.db.OSKMDBA_GROUP=dba \
+    oracle.install.db.OSRACDBA_GROUP=dba \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+    DECLINE_SECURITY_UPDATES=true</pre></div>
+        <div class="cmdCard" data-step="Grid applyRU" data-cmd="./gridSetup.sh -silent -applyRU ${SOFTWARE_DIR}/10000000"><div class="cmdTop"><strong>13. Conceito equivalente para Grid Infrastructure</strong><span><button class="btn small" onclick="copyCmd(this)">Copiar</button> <button class="btn small primary" onclick="execCmd(this)">Executar</button></span></div><div class="cmdDesc">A mesma abordagem também está disponível para instalação do Grid Infrastructure.</div><pre>./gridSetup.sh ... -silent -applyRU ${SOFTWARE_DIR}/10000000 ...</pre></div>
+      </section>
+    </div>
+
+    <aside class="rightRail">
+      <div class="progressBox">
+        <h3>Dashboard de Progresso</h3>
+        <div class="bar"><div id="bar"></div></div>
+        <p><b id="pct">0%</b> concluído · <span id="studentLabel">Aluno não iniciado</span></p>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="terminalFloat">
+        <div class="termHead"><div class="lights"><span></span><span></span><span></span></div><b>OUI Silent Terminal</b><button class="btn small" onclick="clearTerm()">Limpar</button></div>
+        <div class="termBody" id="terminal">Laboratório bloqueado. Digite o nome e clique em INICIAR LAB COMPLETO.</div>
+        <div class="termInput"><span class="prompt">[oracle@ol8-19 dbhome_1]$</span><input id="manualCmd" placeholder="Digite um comando ou use Executar nos cards" onkeydown="if(event.key==='Enter')execManual()" /></div>
+      </div>
+    </aside>
+  </main>
+</div>
+<footer class="footer">Material educacional reorganizado em português para laboratório interativo. Use em ambiente de teste antes de produção.</footer>
+
+<script>
+const totalSteps=13;let done=new Set();
+function startLab(){const n=document.getElementById('studentName').value.trim();if(!n){alert('Digite o nome para liberar o laboratório.');return;}document.body.classList.remove('locked');document.getElementById('studentLabel').textContent=n;localStorage.setItem('ouiStudent',n);writeTerm('Laboratório OUI Silent liberado para '+n+'\nUse os botões Executar nos cards para acompanhar o progresso.');renderSteps();}
+function resetLab(){localStorage.removeItem('ouiStudent');done.clear();document.querySelectorAll('.cmdCard').forEach(c=>c.classList.remove('done'));document.body.classList.add('locked');document.getElementById('studentName').value='';document.getElementById('studentLabel').textContent='Aluno não iniciado';document.getElementById('terminal').textContent='Laboratório bloqueado. Digite o nome e clique em INICIAR LAB COMPLETO.';updateProgress();renderSteps();}
+function card(btn){return btn.closest('.cmdCard')}function cmdText(c){return c.querySelector('pre').innerText.trim()}function copyCmd(btn){navigator.clipboard.writeText(cmdText(card(btn)));writeTerm('Comando copiado para a área de transferência.');}
+function execCmd(btn){const c=card(btn);const cmd=cmdText(c);runCommand(cmd,c.dataset.step);c.classList.add('done');done.add(c.dataset.step);updateProgress();renderSteps();}
+function execManual(){const i=document.getElementById('manualCmd');const v=i.value.trim();if(!v)return;runCommand(v,'Manual');i.value='';}
+function clearTerm(){document.getElementById('terminal').textContent='Terminal limpo. Execute um comando para ver a saída.'}
+function writeTerm(t){const el=document.getElementById('terminal');el.textContent=t;requestAnimationFrame(()=>{el.scrollTop=el.scrollHeight;});}
+function appendTerm(t){const el=document.getElementById('terminal');el.textContent += '\n'+t;const lines=el.textContent.split('\n');if(lines.length>260){el.textContent=lines.slice(-220).join('\n');}requestAnimationFrame(()=>{el.scrollTop=el.scrollHeight;});}
+function runCommand(cmd,step){let out='';if(cmd.includes('-record'))out='Starting Oracle Universal Installer...\nRecording user selections to /tmp/10gR2.rsp\nResponse file created successfully.';else if(cmd==='./runInstaller')out='Launching Oracle Universal Installer GUI...\nSummary screen reached. Option Save Response File is available.\nResponse file can be saved before installation.';else if(cmd.includes('-silent -responseFile'))out='Starting Oracle Universal Installer in silent mode...\nReading response file...\nPreparing session...\nChecking prerequisites...\n........................................\nInstallation successful.\nRun root scripts as root when prompted.';else if(cmd.includes('flags'))out='runInstaller flags loaded. These options control silent execution, prerequisites, inventory pointer and progress output.';else if(cmd.includes('12cR1'))out='12cR1 command line overrides validated. Parameters mapped to DBA_GROUP, OPER_GROUP and related groups.';else if(cmd.includes('12cR2'))out='12cR2 command line overrides validated. OSDBA_GROUP, OSBACKUPDBA_GROUP, OSDGDBA_GROUP, OSKMDBA_GROUP and OSRACDBA_GROUP detected.';else if(cmd.includes('26ai'))out='26ai simplified parameter format validated. installOption, installEdition and OSDBA group aliases detected.';else if(cmd.includes('unzip'))out='Changing to ORACLE_HOME...\nArchive extracted into ORACLE_HOME.\nInstaller files available under install/response.';else if(cmd.includes('-applyRU') && cmd.includes('-applyOneOffs'))out='Preparing patched installation media...\nRU 10000000 detected.\nOne-off patches 10000001 and 10000002 detected.\nPatches staged before installation.';else if(cmd.includes('-applyRU'))out='Release Update staged with -applyRU.\nInstaller will apply the RU before completing ORACLE_HOME installation.';else if(cmd.includes('gridSetup'))out='Grid Infrastructure silent setup syntax recognized.\nRU path received and ready for GI installation flow.';else out='Command received.\nSimulated execution completed successfully.';writeTerm('['+step+']\n$ '+cmd+'\n\n'+out);}
+function updateProgress(){const pct=Math.round((done.size/totalSteps)*100);document.getElementById('pct').textContent=pct+'%';document.getElementById('bar').style.width=pct+'%'}
+function renderSteps(){const box=document.getElementById('steps');box.innerHTML='';document.querySelectorAll('.cmdCard').forEach((c,i)=>{const name=c.dataset.step||('Passo '+(i+1));const d=done.has(name);box.innerHTML += '<div class="step '+(d?'done':'')+'"><span>'+(i+1)+'. '+name+'</span><b>'+(d?'✓':'○')+'</b></div>';});updateProgress();}
+window.addEventListener('load',()=>{const n=localStorage.getItem('ouiStudent');renderSteps();if(n){document.getElementById('studentName').value=n;startLab();}});
+</script>
+</body>
+</html>

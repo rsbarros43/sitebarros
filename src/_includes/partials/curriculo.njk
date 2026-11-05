@@ -1,0 +1,162 @@
+{#- Espera: c (dados do cv no idioma), L (rótulos), en (bool) -#}
+<section class="cv-hero">
+  <div class="container cv-hero-grid">
+    <div>
+      <div class="cv-idioma">
+        <a href="/curriculo/" {% if not en %}aria-current="true"{% endif %}>🇧🇷 PT</a>
+        <a href="/en/curriculum/" {% if en %}aria-current="true"{% endif %}>🇺🇸 EN</a>
+      </div>
+      <h1 class="cv-nome">RENATO <span class="destaque">BARROS</span></h1>
+      <p class="cv-cargo">{{ c.hero.role | replace("Engineer", "<span>Engineer</span>") | safe }}</p>
+      <p class="cv-stack">{{ c.hero.stack }}</p>
+      <p class="cv-foco">{{ c.hero.focus }}</p>
+      <p class="cv-resumo">{{ c.hero.summary }}</p>
+      <div class="hero-acoes cv-acoes nao-imprimir">
+        <a class="btn btn-primario" href="{{ L.pdf }}" download>⇩ {{ L.baixar }}</a>
+        <button class="btn" type="button" onclick="window.print()">▣ {{ L.imprimir }}</button>
+        <a class="btn" href="{{ L.contatoUrl }}">✉ {{ L.contato }}</a>
+        <a class="btn btn-quadrado" href="{{ site.autor.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><b>in</b></a>
+      </div>
+    </div>
+    <img class="cv-foto" src="{{ site.autor.foto }}" alt="Renato Barros" width="600" height="600">
+  </div>
+</section>
+
+<nav class="cv-nav nao-imprimir" aria-label="{{ L.secoes }}">
+  <div class="container">
+    <a href="#resumo">{{ L.navResumo }}</a><a href="#experiencia">{{ L.navExp }}</a><a href="#competencias">{{ L.navComp }}</a><a href="#certificacoes">{{ L.navCert }}</a><a href="#projetos">{{ L.navProj }}</a>
+  </div>
+</nav>
+
+<section class="secao">
+  <div class="container">
+    <div class="cv-metricas">
+      {% for m in c.metrics %}<div class="cv-metrica"><span class="cv-metrica-ico">{{ m.icon }}</span><strong>{{ m.value }}</strong><span>{{ m.label }}</span></div>{% endfor %}
+    </div>
+    <div class="grade-4 cv-paineis">
+      {% for p in c.panels %}
+      <article class="cartao"><h3><i>{{ p.icon }}</i> {{ p.title }}</h3><ul class="lista-check">{% for i in p.items %}<li>{{ i }}</li>{% endfor %}</ul></article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="resumo">
+  <div class="container">
+    <h2 class="secao-titulo">{{ c.summary_title }}</h2>
+    <p class="secao-intro">{{ c.summary_intro }}</p>
+    <div class="grade-2-1">
+      <div class="cartao prosa">{% for p in c.summary %}<p>{{ p }}</p>{% endfor %}</div>
+      <div class="cartao"><h3>{{ c.skills_title }}</h3><div class="chips">{% for s in c.skills %}<span class="chip">{{ s }}</span>{% endfor %}</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="competencias">
+  <div class="container">
+    <h2 class="secao-titulo">{{ c.domains_title }}</h2>
+    <div class="grade-3">{% for d in c.domains %}<div class="cartao"><h3>{{ d.title }}</h3><p>{{ d.text }}</p></div>{% endfor %}</div>
+    <h2 class="secao-titulo espaco-topo">{{ c.tech_title }}</h2>
+    <p class="secao-intro">{{ c.tech_intro }}</p>
+    <div class="cv-tech">{% for t in c.tech %}<div class="cv-tech-item"><span>{{ t.code }}</span><strong>{{ t.name }}</strong><small>{{ t.desc }}</small></div>{% endfor %}</div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="container">
+    <span class="kicker">{{ c.oracle.kicker }}</span>
+    <h2 class="secao-titulo">{{ c.oracle.title }}</h2>
+    <p class="secao-intro">{{ c.oracle.intro }}</p>
+    <div class="grade-1-2">
+      <div class="cartao cv-oracle">
+        <span class="oracle-marca">ORACLE</span>
+        <small>{{ c.oracle.company }}</small>
+        <h3>{{ c.oracle.role }}</h3>
+        <p class="texto-suave">{{ c.oracle.period }}</p>
+        <div class="nota-lateral"><strong>{{ c.oracle.note_title }}</strong><br>{{ c.oracle.note }}</div>
+      </div>
+      <div class="cartao"><h3>{{ c.oracle.areas_title }}</h3><div class="cv-oracle-lista">{% for a in c.oracle.areas %}<span>{{ a }}</span>{% endfor %}</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="experiencia">
+  <div class="container">
+    <h2 class="secao-titulo">{{ c.exp_title }}</h2>
+    <p class="secao-intro">{{ c.exp_intro }}</p>
+    <div class="cv-timeline">
+      {% for j in c.jobs %}
+      <details class="cv-job" {% if loop.first %}open{% endif %}>
+        <summary>
+          <div>
+            <span class="cv-empresa">{% if j.oracle %}<span class="oracle-marca pequena">ORACLE</span> {% endif %}{{ j.company }}</span>
+            <h3>{{ j.role }}</h3>
+          </div>
+          <span class="cv-periodo">{{ j.period }}</span>
+        </summary>
+        <ul>{% for i in j.items %}<li>{{ i }}</li>{% endfor %}</ul>
+      </details>
+      {% endfor %}
+    </div>
+    <h3 class="espaco-topo">{{ c.history_title }}</h3>
+    <div class="grade-2 cv-historico">
+      {% for h in c.history %}<div class="cartao cartao-compacto"><strong>{{ h.company }}</strong><span>{{ h.role }}</span></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="container">
+    <h2 class="secao-titulo">{{ c.spec_title }}</h2>
+    <div class="grade-3">{% for d in c.spec %}<div class="cartao"><h3>{{ d.title }}</h3><p>{{ d.text }}</p></div>{% endfor %}</div>
+  </div>
+</section>
+
+<section class="secao" id="certificacoes">
+  <div class="container">
+    <h2 class="secao-titulo">{{ c.cert_title }}</h2>
+    <div class="grade-1-2">
+      <div class="cartao cv-cert-numero"><strong>52</strong><span>{{ c.cert_number_label }}</span></div>
+      <div class="cartao"><h3>{{ c.cert_featured_title }}</h3><p>{{ c.cert_featured_text }}</p></div>
+    </div>
+    <div class="cv-certs">
+      {% for ce in c.certs %}<div class="cv-cert"><div class="cv-cert-marca"><span>ORACLE</span><small>Certified Professional</small></div><div class="cv-cert-corpo"><strong>{{ ce.title }}</strong><small>{{ ce.text }}</small></div></div>{% endfor %}
+    </div>
+    <div class="grade-2 espaco-topo">
+      <div class="cartao"><h3>{{ c.education_title }}</h3>{% for e in c.education %}<p><strong>{{ e.title }}</strong><br><span class="texto-suave">{{ e.text }}</span></p>{% endfor %}</div>
+      <div class="cartao"><h3>{{ c.network_title }}</h3>{% for n in c.network %}<p>{{ n }}</p>{% endfor %}</div>
+    </div>
+  </div>
+</section>
+
+<section class="secao nao-imprimir" id="projetos">
+  <div class="container">
+    <h2 class="secao-titulo">{{ L.projTitulo }}</h2>
+    <p class="secao-intro">{{ L.projIntro }}</p>
+    <div class="grade-projetos">
+      {% for p in projetos %}
+      <a class="projeto-card" href="{{ p.url }}"><div class="projeto-topo"><span class="projeto-rotulo">{{ p.label_en if en else p.rotulo }}</span></div><h3>{{ p.titulo }}</h3><p>{{ p.description_en if en else p.descricao }}</p><span class="link-seta">{{ L.abrir }} →</span></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="secao nao-imprimir">
+  <div class="container">
+    <details class="cv-infografico">
+      <summary>{{ L.infografico }}</summary>
+      <img src="/assets/curriculum-infographic.jpg" alt="{{ L.infograficoAlt }}" loading="lazy">
+    </details>
+  </div>
+</section>
+
+<section class="cta-contato">
+  <div class="container cta-grid">
+    <div><h2>{{ c.contact_title }}</h2><p>{{ c.contact_text }}</p></div>
+    <div class="hero-acoes">
+      <a class="btn btn-primario" href="mailto:{{ site.autor.email }}">✉ E-mail</a>
+      <a class="btn" href="{{ site.autor.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://wa.me/{{ site.autor.whatsapp }}" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>

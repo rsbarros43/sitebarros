@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ lang or site.idioma }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  {%- set tituloPagina = (title + " | " + site.titulo) if title else (site.titulo + " — " + site.autor.cargo) %}
+  {%- set descPagina = descricao or site.descricao %}
+  {%- set imagemPagina = site.url + (capa or site.autor.fotoAmbiente) %}
+  <title>{{ tituloPagina }}</title>
+  <meta name="description" content="{{ descPagina }}">
+  <meta name="author" content="{{ site.autor.nome }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <meta property="og:site_name" content="{{ site.titulo }}">
+  <meta property="og:title" content="{{ title or site.titulo }}">
+  <meta property="og:description" content="{{ descPagina }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:image" content="{{ imagemPagina }}">
+  <meta property="og:type" content="{{ 'article' if layout == 'layouts/post.njk' else 'website' }}">
+  <meta property="og:locale" content="{{ 'en_US' if lang == 'en' else 'pt_BR' }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#08121f">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.titulo }} — Blog" href="/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script>
+    (function(){try{var t=localStorage.getItem('tema');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'claro':'escuro';document.documentElement.dataset.tema=t;}catch(e){document.documentElement.dataset.tema='escuro';}})();
+  </script>
+  {% block head %}{% endblock %}
+</head>
+<body class="{{ bodyClass }}">
+  <a class="pular" href="#conteudo">{{ 'Skip to content' if lang == 'en' else 'Ir para o conteúdo' }}</a>
+  <div class="progresso" id="progresso" aria-hidden="true"></div>
+  {% include "partials/header.njk" %}
+  <main id="conteudo">
+    {{ content | safe }}
+  </main>
+  {% include "partials/footer.njk" %}
+  {% include "partials/busca-modal.njk" %}
+  <script src="/assets/js/main.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

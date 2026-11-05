@@ -1,0 +1,17 @@
+---
+layout: layouts/pagina.njk
+title: Artigos
+kicker: Conteúdo aprofundado
+descricao: Artigos técnicos mais longos — arquitetura, passo a passo, troubleshooting e boas práticas em ambientes Oracle de missão crítica.
+pagination:
+  data: collections.artigos
+  size: 8
+  alias: posts
+permalink: "/artigos/{% if pagination.pageNumber > 0 %}pagina/{{ pagination.pageNumber + 1 }}/{% endif %}"
+---
+<div class="container layout-com-sidebar">
+  <div class="coluna-principal">
+    {% include "partials/lista-paginada.njk" %}
+  </div>
+  {% include "partials/sidebar.njk" %}
+</div>

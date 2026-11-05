@@ -1,0 +1,12 @@
+---
+layout: layouts/pagina.njk
+title: Tags
+kicker: Explorar
+descricao: Palavras-chave usadas nos posts e artigos.
+permalink: /tags/
+---
+<div class="container">
+  <div class="nuvem-tags nuvem-grande">
+    {% for t in collections.listaTags %}<a href="/tags/{{ t.slug }}/">#{{ t.nome }} <b>{{ t.posts.length }}</b></a>{% endfor %}
+  </div>
+</div>

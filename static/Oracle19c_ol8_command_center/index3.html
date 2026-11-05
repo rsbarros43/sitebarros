@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>DBCA Silent Mode - Oracle DBA Academy</title><style>
+:root{--bg:#070b12;--panel:#0e1728;--panel2:#121e33;--red:#ff3048;--red2:#ff6374;--text:#eef4ff;--muted:#aebbd4;--line:#234364;--green:#39d98a;--yellow:#ffd166;--code:#03070d}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top left,#3b0611 0,#070b12 35%,#02040a 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.top{padding:28px 5vw 24px;border-bottom:1px solid #3a1220;background:linear-gradient(135deg,#440613,#0b1323 55%,#040711)}.wrap{max-width:1360px;margin:0 auto;padding:0 18px}.back{display:inline-block;margin:18px 0 10px;color:#ff6374;text-decoration:none;font-weight:900;font-size:18px;background:transparent;border:0;border-radius:0;padding:0}.back:hover{color:#fff;text-decoration:underline}.brand{text-align:center;font-weight:900;letter-spacing:8px;font-size:25px}.brand span{color:var(--red)}h1{text-align:center;font-size:42px;line-height:1.08;margin:18px auto 12px;max-width:1180px;letter-spacing:3px}.subtitle{text-align:center;color:#c8d6f3;max-width:1030px;margin:0 auto;font-size:17px;line-height:1.6}.nav{margin:18px auto;display:grid;grid-template-columns:repeat(6,1fr);border:1px solid #7d1d31;border-radius:18px;overflow:hidden}.nav a{padding:15px;background:rgba(7,12,20,.85);text-decoration:none;color:#fff;border-right:1px solid #282e3a}.nav a:last-child{border-right:0}.nav b{display:block;letter-spacing:3px;font-size:15px}.nav small{color:#c4d2ed}.story{background:rgba(14,23,40,.94);border:1px solid #244669;border-radius:20px;padding:24px;margin:18px 0;line-height:1.65;color:#cbd7ee}.story h2,.section h2{margin:0 0 14px;color:var(--red2);letter-spacing:5px;text-transform:uppercase}.pillRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.pill{border:1px solid #315579;border-radius:999px;padding:8px 12px;background:#08111f;color:#d9e8ff;font-weight:800}.layout{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:22px;align-items:start}.rightRail{position:sticky;top:12px;display:flex;flex-direction:column;gap:14px;max-height:96vh}.progressBox{background:var(--panel);border:1px solid #244669;border-radius:18px;padding:18px}.bar{height:12px;background:#07101d;border:1px solid #315579;border-radius:20px;overflow:hidden}.bar div{height:100%;width:0;background:linear-gradient(90deg,#ff3048,#ffd166,#39d98a);transition:.35s}.steps{display:grid;gap:8px;margin-top:12px}.step{display:flex;justify-content:space-between;gap:10px;border:1px solid #233c5c;background:#08111f;border-radius:10px;padding:9px 10px;color:#cfe0ff}.step.done{border-color:#39d98a;color:#39d98a}.terminalFloat{background:#03070d;border:1px solid #315579;border-radius:18px;box-shadow:0 0 35px rgba(85,183,255,.1);overflow:hidden}.termHead{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#101d31;border-bottom:1px solid #315579}.lights span{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;background:#ff5f57}.lights span:nth-child(2){background:#ffbd2e}.lights span:nth-child(3){background:#28c840}.termBody{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.45;color:#dff7ff;padding:14px;min-height:340px;max-height:52vh;overflow:auto;white-space:pre-wrap}.termInput{display:flex;border-top:1px solid #243b5b}.prompt{padding:12px;color:#39d98a;font-family:monospace}.termInput input{flex:1;background:#02050a;color:#fff;border:0;padding:13px;font-family:monospace;outline:0}.section{background:rgba(14,23,40,.94);border:1px solid #244669;border-radius:20px;padding:24px;margin:0 0 22px}.intro{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px}.info{background:#080d16;border:1px solid #1f3958;border-radius:16px;padding:18px;line-height:1.55;color:#cbd7ee}.cmdCard{border:1px solid #244669;border-radius:14px;margin:14px 0;overflow:hidden;background:#08111f}.cmdTop{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#111d31;padding:12px 14px}.cmdTop strong{color:#ff6374}.cmdActions{white-space:nowrap}.btn{border:1px solid var(--line);background:#12213a;color:#fff;border-radius:11px;padding:9px 12px;font-weight:900;cursor:pointer}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.btn.primary{background:linear-gradient(135deg,#e8122f,#ff394e);border-color:#ff394e}.btn.small{padding:8px 11px;font-size:12px}.cmdDesc{padding:13px 14px;color:#c5d2eb;line-height:1.55;border-top:1px solid rgba(255,255,255,.04)}pre{margin:0;padding:15px;background:#02060c;color:#e8fbff;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.45}.cmdCard.done{border-color:#39d98a}.cmdCard.done .cmdTop strong:after{content:'  ✓ executado';color:#39d98a;font-size:12px}.doclink{display:inline-flex;margin-top:12px;color:#fff;text-decoration:none;background:#10233d;border:1px solid #315579;border-radius:12px;padding:11px 14px;font-weight:900}.footer{text-align:center;color:#b8c9e9;padding:30px}.warn{color:#ffd166;font-weight:800}@media(max-width:1100px){.layout{grid-template-columns:1fr}.rightRail{position:relative}.nav{grid-template-columns:1fr 1fr}.intro{grid-template-columns:1fr}h1{font-size:30px}}
+
+
+/* === V16 FIX: terminal sticky estilo SSH, sem cortar e com linha de digitação sempre visível === */
+.layout{
+  max-width:1540px !important;
+  grid-template-columns:minmax(0,1fr) minmax(560px,640px) !important;
+  gap:24px !important;
+  padding:0 16px !important;
+}
+.rightRail{
+  position:sticky !important;
+  top:10px !important;
+  height:calc(100vh - 20px) !important;
+  max-height:calc(100vh - 20px) !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+}
+.progressBox{
+  flex:0 0 auto !important;
+  max-height:36vh !important;
+  overflow:auto !important;
+  padding:10px 12px !important;
+  border-radius:14px !important;
+}
+.progressBox h2,.progressBox h3{
+  font-size:16px !important;
+  letter-spacing:2px !important;
+  margin-bottom:8px !important;
+}
+.progressBox p{font-size:12px !important;margin:7px 0 !important;line-height:1.35 !important;}
+.bar{height:7px !important;}
+.steps{gap:5px !important;margin-top:8px !important;}
+.step{padding:5px 8px !important;font-size:12px !important;min-height:28px;align-items:center;}
+.step span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.step.done{background:rgba(57,217,138,.10) !important;border-color:var(--green) !important;color:var(--green) !important;}
+.terminalFloat{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+.termHead{flex:0 0 auto !important;padding:9px 12px !important;}
+.termHead b{font-size:17px !important;}
+.termBody{
+  flex:1 1 auto !important;
+  min-height:180px !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
+  font-size:11px !important;
+  line-height:1.26 !important;
+  padding:12px !important;
+  scrollbar-gutter:stable !important;
+}
+.termInput{
+  flex:0 0 auto !important;
+  display:flex !important;
+  border-top:1px solid #243b5b !important;
+  background:#02050a !important;
+}
+.prompt{font-size:12px !important;white-space:nowrap !important;flex-shrink:0 !important;}
+.termInput input{font-size:12px !important;min-width:0 !important;}
+@media(max-width:1200px){
+  .layout{grid-template-columns:1fr !important;}
+  .rightRail{position:relative !important;height:auto !important;max-height:none !important;overflow:visible !important;}
+  .terminalFloat{min-height:420px !important;}
+  .termBody{min-height:320px !important;}
+}
+
+</style></head><body>
+<div class="wrap"><a class="back" href="index.html">← Voltar ao Command Center</a></div>
+<header class="top"><div class="brand"><span>ORACLE</span> DBA ACADEMY</div><h1>Database Configuration Assistant (DBCA)<br>Creating Databases in Silent Mode</h1><p class="subtitle">Laboratório interativo em português para criação, remoção e validação de bancos Oracle usando DBCA em modo silencioso, com terminal, progresso e comandos executáveis.</p></header>
+<div class="wrap">
+<nav class="nav"><a href="#intro"><b>□ INTRODUÇÃO</b><small>DBCA Silent</small></a><a href="#response"><b>◎ RESPONSE FILE</b><small>dbca.rsp</small></a><a href="#cmdline"><b>⌘ COMMAND LINE</b><small>Create DB</small></a><a href="#delete"><b>✕ DELETE</b><small>Remove DB</small></a><a href="#omf"><b>◇ OMF</b><small>Managed Files</small></a><a href="#validacao"><b>✓ VALIDAÇÃO</b><small>SQL*Plus</small></a></nav>
+<section class="story" id="intro"><h2>História do processo</h2><p>O Database Configuration Assistant, conhecido como <b>DBCA</b>, é a ferramenta da Oracle usada para criar, configurar, excluir e administrar bancos de dados. Normalmente ele pode ser utilizado pela interface gráfica, mas em ambientes corporativos, automações, laboratórios e pipelines, o modo <b>silent</b> permite executar a criação do banco sem interação manual.</p><p>Além da criação de bancos, o DBCA também pode modificar ou remover bancos, gerenciar templates e trabalhar com pluggable databases. Neste laboratório o foco é a criação e remoção de bancos em modo silencioso, usando response file ou parâmetros na linha de comando.</p><div class="pillRow"><span class="pill">Response File</span><span class="pill">Command Line</span><span class="pill">CDB/PDB</span><span class="pill">Delete Database</span><span class="pill">OMF</span><span class="pill">Validação</span></div><a class="doclink" target="_blank" href="https://docs.oracle.com/en/database/oracle/oracle-database/19/admin/creating-and-configuring-an-oracle-database.html#GUID-5DD346B8-4404-48F1-A811-F39D739E4D05">📘 DBCA Command Reference - Documentação Oficial Oracle 19c</a></section>
+<div class="layout"><main>
+<section class="section" id="response"><h2>Response File</h2><div class="intro"><div class="info"><b>Conceito</b><br>O response file fornece todas as respostas que o DBCA pediria pela interface gráfica. O arquivo de exemplo pode ser encontrado em <b>$ORACLE_HOME/assistants/dbca/dbca.rsp</b>.</div><div class="info"><b>Oracle 19c</b><br>No Oracle 19c em diante, a operação deve ser informada junto com o response file. Para criação de banco, utilize <b>-createDatabase</b>.</div></div><div class="cmdCard" id="cmd1"><div class="cmdTop"><strong>1. Response file básico</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(1)">Copiar</button> <button class="btn small primary" onclick="runCmd(1)">Executar</button></div></div><div class="cmdDesc">O arquivo de resposta fornece ao DBCA todas as respostas que normalmente seriam preenchidas na interface gráfica. O exemplo padrão fica em $ORACLE_HOME/assistants/dbca/dbca.rsp.</div><pre id="code1">dbca -silent -responseFile ./dbca.rsp</pre></div>
+<div class="cmdCard" id="cmd2"><div class="cmdTop"><strong>2. Response file no Oracle 19c</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(2)">Copiar</button> <button class="btn small primary" onclick="runCmd(2)">Executar</button></div></div><div class="cmdDesc">A partir do Oracle 19c, além do response file, a operação precisa ser informada explicitamente. Para criar banco, use -createDatabase junto com -silent e -responseFile.</div><pre id="code2">dbca -createDatabase -silent -responseFile ./dbca.rsp</pre></div>
+<div class="cmdCard" id="cmd3"><div class="cmdTop"><strong>3. Seções importantes do dbca.rsp</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(3)">Copiar</button> <button class="btn small primary" onclick="runCmd(3)">Executar</button></div></div><div class="cmdDesc">O arquivo dbca.rsp é grande porque suporta várias ações. Para criar banco, foque na seção [CREATEDATABASE] e ignore as demais seções quando não forem necessárias.</div><pre id="code3">[CREATEDATABASE]
+[createTemplateFromDB]
+[createCloneTemplate]
+[DELETEDATABASE]
+[generateScripts]
+[CONFIGUREDATABASE]
+[ADDINSTANCE]
+[DELETEINSTANCE]
+[CREATEPLUGGABLEDATABASE]
+[UNPLUGDATABASE]
+[DELETEPLUGGABLEDATABASE]
+[CONFIGUREPLUGGABLEDATABASE]</pre></div>
+</section>
+<section class="section" id="cmdline"><h2>Command Line</h2><div class="info">A abordagem por linha de comando é mais clara em laboratórios porque mostra todos os parâmetros relevantes, como SID, CDB, PDB, charset, memória, destino dos datafiles e configuração do Enterprise Manager.</div><div class="cmdCard" id="cmd4"><div class="cmdTop"><strong>4. Criar CDB/PDB por linha de comando</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(4)">Copiar</button> <button class="btn small primary" onclick="runCmd(4)">Executar</button></div></div><div class="cmdDesc">Alternativa mais clara para laboratórios: informar todos os parâmetros diretamente na linha de comando. Este exemplo cria o CDB cdb3 com a PDB pdb3, charset AL32UTF8, memória de 1536 MB e arquivos em filesystem.</div><pre id="code4">dbca -silent -createDatabase \
+ -templateName General_Purpose.dbc \
+ -gdbname cdb3 -sid cdb3 -responseFile NO_VALUE \
+ -characterSet AL32UTF8 \
+ -sysPassword OraPasswd1 \
+ -systemPassword OraPasswd1 \
+ -createAsContainerDatabase true \
+ -numberOfPDBs 1 \
+ -pdbName pdb3 \
+ -pdbAdminPassword OraPasswd1 \
+ -databaseType MULTIPURPOSE \
+ -memoryMgmtType auto_sga \
+ -totalMemory 1536 \
+ -storageType FS \
+ -datafileDestination &quot;/u01/app/oracle/oradata/&quot; \
+ -redoLogFileSize 50 \
+ -emConfiguration NONE \
+ -ignorePreReqs</pre></div>
+</section>
+<section class="section" id="delete"><h2>Delete Database</h2><div class="info">O DBCA em silent mode também remove bancos. Antes de usar em ambientes reais, valide backup, dependências, listener, arquivos de rede e diretórios físicos.</div><div class="cmdCard" id="cmd5"><div class="cmdTop"><strong>5. Excluir o banco cdb2</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(5)">Copiar</button> <button class="btn small primary" onclick="runCmd(5)">Executar</button></div></div><div class="cmdDesc">O DBCA também permite remover bancos em silent mode. O comando conecta como SYS, atualiza arquivos de rede e remove instância/datafiles.</div><pre id="code5">dbca -silent -deleteDatabase -sourceDB cdb2 -sysDBAUserName sys -sysDBAPassword OraPasswd1</pre></div>
+<div class="cmdCard" id="cmd6"><div class="cmdTop"><strong>6. Excluir o banco cdb3</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(6)">Copiar</button> <button class="btn small primary" onclick="runCmd(6)">Executar</button></div></div><div class="cmdDesc">Mesmo processo para o banco cdb3 criado via linha de comando. Em ambiente real, valide backup, dependências e diretórios antes da remoção.</div><pre id="code6">dbca -silent -deleteDatabase -sourceDB cdb3 -sysDBAUserName sys -sysDBAPassword OraPasswd1</pre></div>
+</section>
+<section class="section" id="omf"><h2>Oracle Managed Files no DBCA</h2><div class="info">Com <b>-useOMF true</b>, o Oracle gerencia automaticamente nomes e localização lógica dos arquivos, reduzindo erros de nomenclatura e simplificando a administração.</div><div class="cmdCard" id="cmd7"><div class="cmdTop"><strong>7. Criar banco usando OMF</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(7)">Copiar</button> <button class="btn small primary" onclick="runCmd(7)">Executar</button></div></div><div class="cmdDesc">No Oracle 18c/19c, a flag -useOMF true habilita Oracle Managed Files durante a criação, simplificando o gerenciamento de datafiles, controlfiles e redo logs.</div><pre id="code7">dbca -silent -createDatabase \
+ -templateName General_Purpose.dbc \
+ -gdbname cdb3 -sid cdb3 -responseFile NO_VALUE \
+ -characterSet AL32UTF8 \
+ -sysPassword OraPasswd1 \
+ -systemPassword OraPasswd1 \
+ -createAsContainerDatabase true \
+ -numberOfPDBs 1 \
+ -pdbName pdb3 \
+ -pdbAdminPassword OraPasswd1 \
+ -databaseType MULTIPURPOSE \
+ -memoryMgmtType auto_sga \
+ -totalMemory 1536 \
+ -storageType FS \
+ -datafileDestination &quot;/u01/app/oracle/oradata/&quot; \
+ -useOMF true \
+ -redoLogFileSize 50 \
+ -emConfiguration NONE \
+ -ignorePreReqs</pre></div>
+</section>
+<section class="section" id="validacao"><h2>Validação pós-criação</h2><div class="info">Após a criação do banco, use SQL*Plus para validar nome do banco, modo de abertura, PDBs e status da instância.</div><div class="cmdCard" id="cmd8"><div class="cmdTop"><strong>8. Validar banco criado</strong><div class="cmdActions"><button class="btn small" onclick="copyCmd(8)">Copiar</button> <button class="btn small primary" onclick="runCmd(8)">Executar</button></div></div><div class="cmdDesc">Depois da criação, valide conexão, CDB/PDB, versão e status da instância usando SQL*Plus.</div><pre id="code8">sqlplus / as sysdba
+select name, open_mode from v$database;
+show pdbs
+select instance_name, status from v$instance;</pre></div></section>
+</main><aside class="rightRail"><section class="progressBox"><h2>Progresso DBCA</h2><div class="bar"><div id="barFill"></div></div><p><b id="pct">0%</b> concluído</p><div class="steps"><div class="step" id="step1"><span>1. Response file básico</span><b>○</b></div>
+<div class="step" id="step2"><span>2. Response file no Oracle 19c</span><b>○</b></div>
+<div class="step" id="step3"><span>3. Seções importantes do dbca.rsp</span><b>○</b></div>
+<div class="step" id="step4"><span>4. Criar CDB/PDB por linha de comando</span><b>○</b></div>
+<div class="step" id="step5"><span>5. Excluir o banco cdb2</span><b>○</b></div>
+<div class="step" id="step6"><span>6. Excluir o banco cdb3</span><b>○</b></div>
+<div class="step" id="step7"><span>7. Criar banco usando OMF</span><b>○</b></div>
+<div class="step" id="step8"><span>8. Validar banco criado</span><b>○</b></div></div></section><section class="terminalFloat"><div class="termHead"><div><span class="lights"><span></span><span></span><span></span></span><b>Terminal DBCA Silent</b></div><button class="btn small" onclick="clearTerm()">Limpar</button></div><div class="termBody" id="term">oracle@ol8 ~$ echo "DBCA Silent Mode pronto."
+DBCA Silent Mode pronto.
+</div><div class="termInput"><span class="prompt">oracle@ol8 ~$</span><input id="termInput" placeholder="Digite um comando DBCA ou clique em Executar..." onkeydown="if(event.key==='Enter') manualRun()"></div></section></aside></div>
+<footer class="footer">Material educacional reorganizado em português para laboratório interativo Oracle DBA Academy.</footer></div>
+<script>
+const outputs={1:'dbca -silent -responseFile ./dbca.rsp\n\nCopying database files\n1% complete\n2% complete\n8% complete\n13% complete\n19% complete\n27% complete\nCreating and starting Oracle instance\n29% complete\n32% complete\n38% complete\n45% complete\nCompleting Database Creation\n48% complete\n62% complete\n72% complete\nCreating Pluggable Databases\n78% complete\n100% complete\nLook at the log file "/u01/app/oracle/cfgtoollogs/dbca/cdb2/cdb2.log" for further details.',2:'dbca -createDatabase -silent -responseFile ./dbca.rsp\n\nPrepare for db operation\n8% complete\nCopying database files\n31% complete\nCreating and starting Oracle instance\n32% complete\n36% complete\n40% complete\n46% complete\nCompleting Database Creation\n51% complete\n54% complete\nCreating Pluggable Databases\n58% complete\n77% complete\nExecuting Post Configuration Actions\n100% complete\nDatabase creation complete.\nDatabase Information:\nGlobal Database Name:cdb2\nSystem Identifier(SID):cdb2\nLog: /u01/app/oracle/cfgtoollogs/dbca/cdb2/cdb2.log',3:'cat dbca.rsp | egrep "^\\[|gdbName|sid|createAsContainerDatabase|pdbName"\n\n[CREATEDATABASE]\ngdbName=cdb2\nsid=cdb2\ncreateAsContainerDatabase=true\nnumberOfPDBs=1\npdbName=pdb2\n\nApenas a seção relacionada à ação desejada precisa ser ajustada.',4:'dbca -silent -createDatabase ...\n\nPrepare for db operation\n8% complete\nCopying database files\n31% complete\nCreating and starting Oracle instance\n46% complete\nCompleting Database Creation\n53% complete\nCreating Pluggable Databases\n78% complete\n100% complete\nDatabase creation complete.\nGlobal Database Name:cdb3\nSystem Identifier(SID):cdb3\nPDB Name:pdb3\nCharacter Set:AL32UTF8\nMemory:1536 MB\nLog: /u01/app/oracle/cfgtoollogs/dbca/cdb3/cdb3.log',5:'dbca -silent -deleteDatabase -sourceDB cdb2 ...\n\nConnecting to database\n4% complete\n9% complete\n14% complete\n23% complete\n47% complete\nUpdating network configuration files\n48% complete\n52% complete\nDeleting instance and datafiles\n76% complete\n100% complete\nLook at the log file "/u01/app/oracle/cfgtoollogs/dbca/cdb2.log" for further details.',6:'dbca -silent -deleteDatabase -sourceDB cdb3 ...\n\nConnecting to database\n4% complete\n9% complete\n14% complete\n23% complete\n47% complete\nUpdating network configuration files\n48% complete\n52% complete\nDeleting instance and datafiles\n76% complete\n100% complete\nLook at the log file "/u01/app/oracle/cfgtoollogs/dbca/cdb3.log" for further details.',7:'dbca -silent -createDatabase ... -useOMF true ...\n\nPrepare for db operation\n8% complete\nOMF enabled for database file management\nCopying database files\n31% complete\nCreating control files and redo logs with OMF names\nCreating and starting Oracle instance\n46% complete\nCreating Pluggable Databases\n78% complete\nExecuting Post Configuration Actions\n100% complete\nDatabase creation complete with Oracle Managed Files enabled.',8:'sqlplus / as sysdba\n\nSQL> select name, open_mode from v$database;\nNAME      OPEN_MODE\n--------- --------------------\nCDB3      READ WRITE\n\nSQL> show pdbs\nCON_ID CON_NAME   OPEN MODE\n------ ---------- ----------\n2      PDB$SEED   READ ONLY\n3      PDB3       READ WRITE\n\nSQL> select instance_name, status from v$instance;\nINSTANCE_NAME STATUS\n------------- ------------\ncdb3          OPEN'};
+const total=8; const done=new Set();
+function copyCmd(i){navigator.clipboard.writeText(document.getElementById('code'+i).innerText);}
+function runCmd(i){const code=document.getElementById('code'+i).innerText; const out=outputs[i]||('Executando...\n'+code+'\nOK'); append('oracle@ol8 ~$ '+code+'\n\n'+out+'\n'); mark(i);}
+function manualRun(){const v=document.getElementById('termInput').value.trim(); if(!v)return; document.getElementById('termInput').value=''; let out='Comando reconhecido no simulador. Use os botões Executar para saídas completas.'; if(v.includes('dbca')&&v.includes('createDatabase')) out=outputs[4]; if(v.includes('deleteDatabase')) out=outputs[5]; if(v.includes('sqlplus')) out=outputs[8]; append('oracle@ol8 ~$ '+v+'\n\n'+out+'\n');}
+function append(t){const el=document.getElementById('term'); el.textContent += '\n' + t; const lines=el.textContent.split('\n'); if(lines.length>260){el.textContent=lines.slice(-220).join('\n');} requestAnimationFrame(()=>{el.scrollTop=el.scrollHeight;});}
+function clearTerm(){document.getElementById('term').textContent='oracle@ol8 ~$ Terminal limpo.\n';}
+function mark(i){done.add(i); document.getElementById('cmd'+i)?.classList.add('done'); const st=document.getElementById('step'+i); if(st){st.classList.add('done'); st.querySelector('b').textContent='✓';} const pct=Math.round(done.size/total*100); document.getElementById('pct').textContent=pct+'%'; document.getElementById('barFill').style.width=pct+'%';}
+</script></body></html>

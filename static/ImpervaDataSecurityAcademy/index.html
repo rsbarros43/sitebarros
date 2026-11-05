@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Imperva Data Security Academy Enterprise Edition — treinamento interativo de segurança de dados, Oracle, SQL Server, políticas, investigação e documentação oficial.">
+  <meta name="theme-color" content="#090d18">
+  <meta property="og:title" content="Imperva Data Security Academy — Enterprise Edition">
+  <meta property="og:description" content="Plataforma educacional interativa de Data Security, Oracle Database, SQL Server, políticas e investigação.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="favicon.svg">
+  <title>Imperva Data Security Academy — Enterprise Edition v3.0.2</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta property="og:title" content="Imperva Data Security Academy — Enterprise Edition v3.0.2">
+  <meta property="og:description" content="Plataforma educacional interativa de Data Security, Oracle Database, SQL Server, políticas, investigação e arquitetura Imperva.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/social-preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">I</div>
+        <div><strong>IMPER<span>VA</span></strong><small>Data Security Academy</small></div>
+      </div>
+      <div class="version">v3.0.2 · FINAL ENTERPRISE EDITION</div>
+      <nav id="mainNav">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="modules"><span>▦</span> Módulos</button>
+        <button class="nav-item" data-view="architecture"><span>⬡</span> Architecture Center</button>
+        <button class="nav-item" data-view="connections"><span>⇄</span> Connections Center</button>
+        <button class="nav-item" data-view="oracle"><span>◉</span> Oracle Lab</button>
+        <button class="nav-item" data-view="sqlserver"><span>▤</span> SQL Server Lab</button>
+        <button class="nav-item" data-view="events"><span>⚡</span> Eventos</button>
+        <button class="nav-item" data-view="policies"><span>◆</span> Políticas</button>
+        <button class="nav-item" data-view="investigation"><span>⌕</span> Investigation</button>
+        <button class="nav-item" data-view="documentation"><span>▥</span> Documentation</button>
+        <button class="nav-item" data-view="official"><span>↗</span> Official Resources</button>
+        <button class="nav-item" data-view="downloads"><span>⇩</span> Downloads Center</button>
+        <button class="nav-item" data-view="installation"><span>⚙</span> Installation Center</button>
+        <button class="nav-item" data-view="training"><span>★</span> Training Center</button>
+        <button class="nav-item" data-view="monitoring"><span>◌</span> Live Monitoring</button>
+        <button class="nav-item" data-view="reports"><span>▧</span> Reports</button>
+        <button class="nav-item" data-view="demos"><span>▶</span> Demo Scenarios</button>
+        <button class="nav-item" data-view="terminal"><span>›_</span> Terminal</button>
+        <button class="nav-item" data-view="quiz"><span>?</span> Quiz</button>
+        <button class="nav-item" data-view="certificate"><span>◇</span> Certificado</button>
+        <button class="nav-item" data-view="about"><span>ⓘ</span> About Platform</button>
+      </nav>
+      <div class="progress-card">
+        <div class="progress-title"><span>PROGRESSO GERAL</span><b id="sidePercent">0%</b></div>
+        <div class="progress-bar"><i id="sideProgress"></i></div>
+        <small id="sideProgressText">0 de 20 módulos</small>
+      </div>
+      <footer class="sidebar-credit">Enterprise Edition v3.0.2<br>Renato Barros · Final Release · 2026</footer>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn">☰</button>
+        <div class="environment"><i></i> DEMO ENVIRONMENT <span>ONLINE</span></div><button class="global-search-trigger" id="globalSearchTrigger">⌕ <span>Pesquisar na plataforma</span><kbd>⌘ K</kbd></button>
+        <div class="user-area">
+          <div><strong id="headerUser">Visitante</strong><small>Security Academy</small></div>
+          <div class="avatar" id="avatar">V</div>
+        </div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">IMPER<span>VA</span> · DATA SECURITY PLATFORM</div>
+            <h1>Proteja dados críticos.<br><em>Monitore cada atividade.</em></h1>
+            <p>Uma experiência interativa de Database Activity Monitoring para Oracle Database e Microsoft SQL Server, com visão de arquitetura, políticas, alertas e investigação.</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-go="modules">▶ Iniciar treinamento</button>
+              <button class="btn secondary" data-go="architecture">⬡ Ver arquitetura</button>
+            </div>
+          </div>
+          <div class="radar-card">
+            <div class="radar-head"><span>DATA SECURITY FABRIC</span><b>LIVE</b></div>
+            <div class="radar">
+              <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+              <div class="scan"></div><div class="core">DSF</div>
+              <i class="dot d1"></i><i class="dot d2"></i><i class="dot d3"></i><i class="dot d4"></i>
+            </div>
+            <div class="radar-stats"><span><b>2</b>Data Sources</span><span><b>99.9%</b>Visibility</span><span><b>24×7</b>Monitoring</span></div>
+          </div>
+        </div>
+
+        <div class="identity card" id="identityCard">
+          <div class="identity-icon">👤</div>
+          <div><span class="label">IDENTIFICAÇÃO</span><h3>Digite seu nome para liberar a trilha</h3><p>O progresso, quiz e certificado serão salvos localmente no navegador.</p></div>
+          <div class="identity-form"><input id="studentName" placeholder="Digite seu nome completo"><button id="unlockBtn" class="btn primary">Liberar conteúdo</button></div>
+        </div>
+
+        <div class="welcome card hidden" id="welcomeCard">
+          <div><span class="label">ALUNO IDENTIFICADO</span><h3>Olá, <span id="welcomeName"></span>!</h3><p>Sua trilha está liberada. Explore o dashboard e avance pelos módulos.</p></div>
+          <button id="logoutBtn" class="btn danger">Sair da conta</button>
+        </div>
+
+        <div class="section-title"><div><span class="label">SECURITY OVERVIEW</span><h2>Visão executiva do ambiente</h2></div><span class="live-pill">● DADOS SIMULADOS EM TEMPO REAL</span></div>
+        <div class="metrics">
+          <article class="metric"><span class="metric-icon purple">▦</span><div><small>Eventos capturados</small><strong id="eventsCounter">12.486</strong><em>+8.4% hoje</em></div></article>
+          <article class="metric"><span class="metric-icon red">!</span><div><small>Alertas críticos</small><strong>4</strong><em>Requer atenção</em></div></article>
+          <article class="metric"><span class="metric-icon cyan">◉</span><div><small>Fontes protegidas</small><strong>2</strong><em>Oracle + SQL Server</em></div></article>
+          <article class="metric"><span class="metric-icon green">◆</span><div><small>Políticas ativas</small><strong id="activePoliciesMetric">10</strong><em>100% operacionais</em></div></article>
+        </div>
+        <div class="v2-kpis">
+          <article class="card"><span>GATEWAYS</span><strong>1</strong><small>GW-01 · Healthy</small></article>
+          <article class="card"><span>AGENTS</span><strong>2</strong><small>Oracle + SQL Server</small></article>
+          <article class="card"><span>RISK SCORE</span><strong>37</strong><small>Moderate posture</small></article>
+          <article class="card"><span>LAST SCAN</span><strong>4m</strong><small>Discovery completed</small></article>
+          <article class="card"><span>OFFICIAL DOCS</span><strong>12</strong><small>Verified resources</small></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="card chart-card">
+            <div class="card-head"><div><span class="label">ACTIVITY MONITORING</span><h3>Atividades nas últimas 24 horas</h3></div><span class="badge">LIVE</span></div>
+            <div class="bars">
+              <div class="bar-group"><i style="height:35%"></i><b style="height:25%"></b><small>00h</small></div>
+              <div class="bar-group"><i style="height:48%"></i><b style="height:32%"></b><small>04h</small></div>
+              <div class="bar-group"><i style="height:60%"></i><b style="height:45%"></b><small>08h</small></div>
+              <div class="bar-group"><i style="height:84%"></i><b style="height:68%"></b><small>12h</small></div>
+              <div class="bar-group"><i style="height:72%"></i><b style="height:56%"></b><small>16h</small></div>
+              <div class="bar-group"><i style="height:90%"></i><b style="height:72%"></b><small>20h</small></div>
+              <div class="bar-group"><i style="height:64%"></i><b style="height:48%"></b><small>24h</small></div>
+            </div>
+            <div class="legend"><span><i class="oracle-dot"></i>Oracle ORCLPRD</span><span><i class="sql-dot"></i>SQL Server SQLPROD01</span></div>
+          </article>
+          <article class="card risk-card">
+            <div class="card-head"><div><span class="label">RISK POSTURE</span><h3>Distribuição por severidade</h3></div></div>
+            <div class="risk-body">
+              <div class="donut"><div><strong>37</strong><span>Eventos de risco</span></div></div>
+              <div class="risk-list">
+                <span><i class="critical"></i>Crítico <b>4</b></span>
+                <span><i class="high"></i>Alto <b>9</b></span>
+                <span><i class="medium"></i>Médio <b>14</b></span>
+                <span><i class="low"></i>Baixo <b>10</b></span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="assets-grid">
+          <article class="asset-card oracle-card"><div class="asset-logo">ORACLE</div><span class="status protected">● PROTECTED</span><h3>ORCLPRD</h3><p>Oracle Database 19c Enterprise Edition</p><div><span>Eventos hoje<b>8.421</b></span><span>Alertas<b>2</b></span><span>Agente<b>Healthy</b></span></div><button class="btn secondary full" data-go="oracle">Abrir Oracle Lab →</button></article>
+          <article class="asset-card sql-card"><div class="asset-logo">SQL SERVER</div><span class="status protected">● PROTECTED</span><h3>SQLPROD01</h3><p>Microsoft SQL Server 2022 Enterprise</p><div><span>Eventos hoje<b>4.065</b></span><span>Alertas<b>2</b></span><span>Agente<b>Healthy</b></span></div><button class="btn secondary full" data-go="sqlserver">Abrir SQL Server Lab →</button></article>
+        </div>
+
+        <div class="section-title enterprise-shortcuts-title"><div><span class="label">ENTERPRISE WORKSPACES</span><h2>Centros operacionais</h2></div><span class="live-pill">v2.0.0 ENTERPRISE</span></div>
+        <div class="enterprise-shortcuts">
+          <button class="enterprise-shortcut" data-go="documentation"><span>▥</span><div><b>Documentation Center</b><small>Instalação, configuração, operação e troubleshooting</small></div><em>12 guias</em></button>
+          <button class="enterprise-shortcut" data-go="monitoring"><span>◌</span><div><b>Live Monitoring</b><small>Fluxo contínuo de atividades Oracle e SQL Server</small></div><em>ONLINE</em></button>
+          <button class="enterprise-shortcut" data-go="reports"><span>▧</span><div><b>Reports Center</b><small>Relatórios executivo, técnico e compliance</small></div><em>5 modelos</em></button>
+          <button class="enterprise-shortcut" data-go="demos"><span>▶</span><div><b>Demo Scenarios</b><small>Cenários guiados para apresentação</small></div><em>6 demos</em></button>
+        </div>
+        <div class="enterprise-shortcuts v2-shortcuts">
+          <button class="enterprise-shortcut" data-go="official"><span>↗</span><div><b>Official Resources</b><small>Documentação, suporte e recursos oficiais</small></div><em>12 links</em></button>
+          <button class="enterprise-shortcut" data-go="installation"><span>⚙</span><div><b>Installation Center</b><small>12 etapas guiadas de implantação</small></div><em>GUIDED</em></button>
+          <button class="enterprise-shortcut" data-go="training"><span>★</span><div><b>Training Center</b><small>Trilhas, catálogo, labs e certificações</small></div><em>ACADEMY</em></button>
+          <button class="enterprise-shortcut" data-go="downloads"><span>⇩</span><div><b>Downloads Center</b><small>Licenciamento, suporte e acesso autorizado</small></div><em>OFFICIAL</em></button>
+        </div>
+      </section>
+
+      <section class="view" id="view-modules">
+        <div class="page-head"><div><span class="label">LEARNING PATH</span><h1>Trilha de módulos</h1><p>Do fundamento à investigação de incidentes em bancos corporativos.</p></div><div class="completion-ring"><strong id="modulePercent">0%</strong><small>concluído</small></div></div>
+        <div id="modulesGrid" class="modules-grid"></div>
+      </section>
+
+      <section class="view" id="view-architecture">
+        <div class="page-head"><div><span class="label">INTERACTIVE REFERENCE ARCHITECTURE</span><h1>Architecture Center</h1><p>Explore componentes, comunicação, portas ilustrativas, requisitos e boas práticas da solução.</p></div><div class="arch-live-badge"><i></i> LIVE ARCHITECTURE</div></div>
+        <div class="arch-disclaimer card"><span>ⓘ</span><p><b>Importante:</b> portas, protocolos, requisitos e procedimentos exatos variam conforme produto, versão e modelo de implantação. Confirme sempre nos guias oficiais e na matriz de cobertura.</p></div>
+        <div class="architecture-center-layout">
+          <div class="architecture-live card">
+            <div class="architecture-flow-v2" id="architectureFlowV2">
+              <button class="arch-component" data-arch="users"><i>01</i><span>Users & DBAs</span><small>Privileged and application users</small><b>ACTIVE</b></button>
+              <div class="arch-connector"><span></span></div>
+              <button class="arch-component" data-arch="apps"><i>02</i><span>Applications</span><small>ERP · APIs · Batch · BI</small><b>ONLINE</b></button>
+              <div class="arch-connector"><span></span></div>
+              <div class="arch-dual">
+                <button class="arch-component oracle" data-arch="oracle"><i>03A</i><span>Oracle Database</span><small>ORCLPRD · 19c</small><b>PROTECTED</b></button>
+                <button class="arch-component sql" data-arch="sqlserver"><i>03B</i><span>SQL Server</span><small>SQLPROD01 · 2022</small><b>PROTECTED</b></button>
+              </div>
+              <div class="arch-connector"><span></span></div>
+              <button class="arch-component" data-arch="agent"><i>04</i><span>Agent / Collection</span><small>Activity capture and context</small><b>HEALTHY</b></button>
+              <div class="arch-connector"><span></span></div>
+              <button class="arch-component primary" data-arch="gateway"><i>05</i><span>Gateway</span><small>Collect · Normalize · Analyze</small><b>HEALTHY</b></button>
+              <div class="arch-connector"><span></span></div>
+              <button class="arch-component primary" data-arch="management"><i>06</i><span>Management Server</span><small>Policies · Audit · Administration</small><b>ONLINE</b></button>
+              <div class="arch-connector"><span></span></div>
+              <button class="arch-component" data-arch="analytics"><i>07</i><span>Policies & Risk Analytics</span><small>Behavior · Classification · Risk</small><b>RUNNING</b></button>
+              <div class="arch-connector"><span></span></div>
+              <div class="arch-triple">
+                <button class="arch-component compact" data-arch="alerts"><span>Alerts</span><b>READY</b></button>
+                <button class="arch-component compact" data-arch="reports"><span>Reports</span><b>READY</b></button>
+                <button class="arch-component compact" data-arch="siem"><span>SIEM / ITSM</span><b>CONNECTED</b></button>
+              </div>
+            </div>
+          </div>
+          <aside class="architecture-detail card" id="architectureDetail">
+            <span class="label">COMPONENT DETAIL</span><h2 id="archDetailTitle">Selecione um componente</h2><p id="archDetailSummary">Clique em qualquer elemento do diagrama para visualizar detalhes técnicos e operacionais.</p>
+            <div class="arch-detail-grid" id="archDetailGrid"></div>
+            <div class="arch-best-practices"><h3>Boas práticas</h3><ul id="archBestPractices"></ul></div>
+            <div class="arch-detail-actions"><button class="btn primary" id="archSimulateFlow">▶ Simular fluxo</button><a class="btn secondary" id="archOfficialLink" target="_blank" rel="noopener">Abrir documentação oficial ↗</a></div>
+          </aside>
+        </div>
+        <div class="arch-flow-console card"><div><span class="label">LIVE DATA FLOW</span><h3>Simulação de comunicação</h3></div><pre id="archFlowConsole">[READY] Selecione um componente ou execute a simulação completa.</pre></div>
+      </section>
+
+
+      <section class="view" id="view-connections">
+        <div class="page-head">
+          <div><span class="label">DATA SOURCE ONBOARDING</span><h1>Connections Center</h1><p>Configure, teste, valide e habilite o monitoramento de Oracle Database e Microsoft SQL Server.</p></div>
+          <button class="btn primary" id="validateAllConnections">✓ Validar ambiente completo</button>
+        </div>
+
+        <div class="connection-kpis">
+          <article class="card"><span>DATA SOURCES</span><strong>2</strong><small>Oracle + SQL Server</small></article>
+          <article class="card"><span>ONLINE</span><strong id="connectionsOnlineKpi">0</strong><small>Monitoramento habilitado</small></article>
+          <article class="card"><span>WARNING</span><strong id="connectionsWarningKpi">2</strong><small>Aguardando onboarding</small></article>
+          <article class="card"><span>GATEWAY</span><strong>HEALTHY</strong><small>GW-01 · 4 ms</small></article>
+          <article class="card"><span>MANAGEMENT</span><strong>ONLINE</strong><small>MX-01 · v15.4 ref.</small></article>
+        </div>
+
+        <div class="connection-tabs" id="connectionTabs">
+          <button class="active" data-connection-tab="oracle">Oracle Connection</button>
+          <button data-connection-tab="sqlserver">SQL Server Connection</button>
+          <button data-connection-tab="validation">Validation Center</button>
+          <button data-connection-tab="health">Connection Health</button>
+        </div>
+
+        <section class="connection-panel active" id="connection-panel-oracle">
+          <div class="connection-layout">
+            <article class="card connection-form-card">
+              <div class="connection-card-head"><div><span class="label oracle-label">ORACLE DATA SOURCE</span><h3>ORCLPRD Monitoring Connection</h3></div><span class="connection-state warning" id="oracleConnectionState">NOT TESTED</span></div>
+              <div class="wizard-steps" id="oracleWizardSteps">
+                <span class="active">1 Connection</span><i>→</i><span>2 Authentication</span><i>→</i><span>3 Privileges</span><i>→</i><span>4 Audit</span><i>→</i><span>5 Test</span><i>→</i><span>6 Enable</span>
+              </div>
+              <div class="connection-form-grid">
+                <label><span>Hostname / VIP</span><input id="oracleHost" value="oracle-db01.internal"></label>
+                <label><span>Port</span><input id="oraclePort" value="1521"></label>
+                <label><span>Service Name</span><input id="oracleService" value="ORCLPRD"></label>
+                <label><span>Monitoring User</span><input id="oracleUser" value="imperva_monitor"></label>
+                <label><span>Password</span><input id="oraclePassword" type="password" value="SecureDemo2026"></label>
+                <label><span>Connection Mode</span><select id="oracleMode"><option>Oracle Net / Agent</option><option>TCPS / Wallet</option><option>Network Monitoring</option></select></label>
+              </div>
+              <div class="connection-options"><label><input type="checkbox" id="oracleWallet"> Wallet / TCPS enabled</label><label><input type="checkbox" checked> Capture local sessions</label><label><input type="checkbox" checked> Unified Audit context</label><label><input type="checkbox" checked> Monitor SYS operations</label></div>
+              <div class="connection-actions"><button class="btn secondary" data-connection-action="oracle-test">⌁ Test Connection</button><button class="btn secondary" data-connection-action="oracle-privileges">◆ Validate Privileges</button><button class="btn primary" data-connection-action="oracle-enable">▶ Enable Monitoring</button></div>
+            </article>
+            <aside class="connection-side">
+              <article class="card connection-diagram"><span class="label">CONNECTION FLOW</span><div><span>Management Server</span><i>↓</i><span>Gateway GW-01</span><i>↓</i><span>Oracle Agent</span><i>↓</i><span>ORCLPRD · 1521</span><i>↓</i><span>Unified Audit / SQL Activity</span></div></article>
+              <article class="card connection-result"><span class="label">TEST RESULT</span><div id="oracleConnectionResult" class="connection-empty">Execute o teste de conexão.</div></article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="connection-panel" id="connection-panel-sqlserver">
+          <div class="connection-layout">
+            <article class="card connection-form-card">
+              <div class="connection-card-head"><div><span class="label sql-label">MICROSOFT SQL SERVER DATA SOURCE</span><h3>SQLPROD01 Monitoring Connection</h3></div><span class="connection-state warning" id="sqlConnectionState">NOT TESTED</span></div>
+              <div class="wizard-steps" id="sqlWizardSteps"><span class="active">1 Connection</span><i>→</i><span>2 Authentication</span><i>→</i><span>3 Privileges</span><i>→</i><span>4 Audit</span><i>→</i><span>5 Test</span><i>→</i><span>6 Enable</span></div>
+              <div class="connection-form-grid">
+                <label><span>Hostname / Listener</span><input id="sqlHost" value="sql-db01.internal"></label>
+                <label><span>Port</span><input id="sqlPort" value="1433"></label>
+                <label><span>Instance</span><input id="sqlInstance" value="MSSQLSERVER"></label>
+                <label><span>Monitoring Login</span><input id="sqlUser" value="imperva_monitor"></label>
+                <label><span>Password</span><input id="sqlPassword" type="password" value="SecureDemo2026"></label>
+                <label><span>Authentication</span><select id="sqlAuth"><option>SQL Server Authentication</option><option>Windows Integrated</option><option>Kerberos</option></select></label>
+              </div>
+              <div class="connection-options"><label><input type="checkbox" checked> TLS encryption</label><label><input type="checkbox" checked> Capture Windows identity</label><label><input type="checkbox" checked> SQL Server Audit context</label><label><input type="checkbox" checked> Monitor sa / sysadmin</label></div>
+              <div class="connection-actions"><button class="btn secondary" data-connection-action="sql-test">⌁ Test Connection</button><button class="btn secondary" data-connection-action="sql-privileges">◆ Validate Privileges</button><button class="btn primary" data-connection-action="sql-enable">▶ Enable Monitoring</button></div>
+            </article>
+            <aside class="connection-side">
+              <article class="card connection-diagram"><span class="label">CONNECTION FLOW</span><div><span>Management Server</span><i>↓</i><span>Gateway GW-01</span><i>↓</i><span>Windows Agent</span><i>↓</i><span>SQLPROD01 · 1433</span><i>↓</i><span>TDS / SQL Audit Activity</span></div></article>
+              <article class="card connection-result"><span class="label">TEST RESULT</span><div id="sqlConnectionResult" class="connection-empty">Execute o teste de conexão.</div></article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="connection-panel" id="connection-panel-validation">
+          <div class="validation-center-grid">
+            <article class="card"><span class="label oracle-label">ORACLE VALIDATION</span><h3>ORCLPRD Readiness Checklist</h3><div class="connection-checklist" id="oracleValidationChecklist"></div><button class="btn primary full" data-connection-action="oracle-full-validation">Executar validação Oracle</button></article>
+            <article class="card"><span class="label sql-label">SQL SERVER VALIDATION</span><h3>SQLPROD01 Readiness Checklist</h3><div class="connection-checklist" id="sqlValidationChecklist"></div><button class="btn primary full sql-primary" data-connection-action="sql-full-validation">Executar validação SQL Server</button></article>
+          </div>
+          <article class="card connection-log-card"><div class="connection-log-head"><div><span class="label">CONNECTION LOGS</span><h3>Onboarding and Monitoring Log</h3></div><button class="btn secondary" id="clearConnectionLog">Limpar logs</button></div><pre id="connectionLog">[READY] Connections Center initialized.\n</pre></article>
+        </section>
+
+        <section class="connection-panel" id="connection-panel-health">
+          <div class="health-topology card">
+            <div class="health-node online"><i></i><b>Management MX-01</b><small>ONLINE</small></div><span>→</span>
+            <div class="health-node online"><i></i><b>Gateway GW-01</b><small>ONLINE</small></div><span>→</span>
+            <div class="health-node" id="oracleHealthNode"><i></i><b>Oracle ORCLPRD</b><small>WAITING</small></div>
+            <div class="health-node" id="sqlHealthNode"><i></i><b>SQLPROD01</b><small>WAITING</small></div><span>→</span>
+            <div class="health-node online"><i></i><b>SIEM</b><small>CONNECTED</small></div>
+          </div>
+          <div class="health-metrics-grid">
+            <article class="card"><span>Oracle latency</span><strong id="oracleLatency">--</strong><small>Gateway to database</small></article>
+            <article class="card"><span>SQL latency</span><strong id="sqlLatency">--</strong><small>Gateway to instance</small></article>
+            <article class="card"><span>Events/min</span><strong id="connectionEventsRate">0</strong><small>Current capture rate</small></article>
+            <article class="card"><span>Coverage</span><strong id="connectionCoverage">0%</strong><small>Validated sources</small></article>
+          </div>
+        </section>
+      </section>
+
+      <section class="view lab-view" id="view-oracle">
+        <div class="page-head"><div><span class="label oracle-label">ORACLE DATABASE LAB</span><h1>Monitoramento Oracle</h1><p>Execute cenários SQL e observe como as políticas classificam cada atividade.</p></div><span class="status protected">● ORCLPRD PROTECTED</span></div>
+        <div class="lab-grid">
+          <div class="card editor-card">
+            <div class="editor-head"><span>SQL Worksheet · ORCLPRD</span><div><i></i> SYSTEM@ORCLPRD</div></div>
+            <textarea id="oracleEditor">SELECT cpf, nome, limite_credito
+FROM financeiro.clientes
+WHERE limite_credito > 25000;</textarea>
+            <div class="editor-actions"><select id="oracleScenario"><option value="sensitive">Consulta a dados sensíveis</option><option value="grant">Escalação de privilégio</option><option value="mass">Extração em massa</option><option value="drop">Exclusão de objeto crítico</option><option value="offhours">Acesso fora do horário</option><option value="auditoff">Desativação de auditoria</option><option value="createuser">Criação de usuário</option><option value="alteruser">Alteração de usuário privilegiado</option><option value="truncate">TRUNCATE em objeto crítico</option><option value="export">Exportação com UTL_FILE</option><option value="dblink">Criação de Database Link</option><option value="failedlogin">Falhas repetidas de login</option><option value="sysselect">Consulta direta por SYS</option><option value="ddlprod">DDL fora da mudança</option><option value="password">Alteração de senha crítica</option></select><button class="btn primary" id="runOracle">▶ Executar e monitorar</button></div>
+          </div>
+          <div class="card monitor-card"><div class="monitor-head"><span>IMPER<span>VA</span> EVENT ANALYZER</span><b id="oracleEventStatus">AGUARDANDO</b></div><div id="oracleOutput" class="event-placeholder"><div class="pulse-icon">⌁</div><h3>Nenhum evento selecionado</h3><p>Execute um cenário SQL para visualizar a análise.</p></div></div>
+        </div>
+        <div class="scenario-cards">
+          <button data-oracle="grant"><b>01</b><span>GRANT DBA</span><small>Privilege Escalation</small></button>
+          <button data-oracle="mass"><b>02</b><span>SELECT MASSIVO</span><small>Data Exfiltration</small></button>
+          <button data-oracle="drop"><b>03</b><span>DROP TABLE</span><small>Destructive Activity</small></button>
+          <button data-oracle="offhours"><b>04</b><span>ACESSO 02:18</span><small>Off-hours Access</small></button>
+        </div>
+<div class="extended-scenarios card"><div class="extended-head"><div><span class="label">ORACLE ADMINISTRATOR SCENARIOS</span><h3>Biblioteca adicional de testes</h3><p>Dez operações importantes para monitoramento diário.</p></div><span>10 NOVOS SCRIPTS</span></div><div class="extended-scenario-grid" id="oracleExtendedScenarios"></div></div>
+      </section>
+
+      <section class="view lab-view" id="view-sqlserver">
+        <div class="page-head"><div><span class="label sql-label">MICROSOFT SQL SERVER LAB</span><h1>Monitoramento SQL Server</h1><p>Simule operações administrativas, consultas sensíveis e violações de política.</p></div><span class="status protected">● SQLPROD01 PROTECTED</span></div>
+        <div class="lab-grid">
+          <div class="card editor-card">
+            <div class="editor-head sql-head"><span>T-SQL Worksheet · SQLPROD01</span><div><i></i> sa@SQLPROD01</div></div>
+            <textarea id="sqlEditor">SELECT cpf, nome, cartao
+FROM Financeiro.dbo.Clientes
+WHERE saldo > 50000;</textarea>
+            <div class="editor-actions"><select id="sqlScenario"><option value="sensitive">Consulta a dados sensíveis</option><option value="sysadmin">Concessão de SYSADMIN</option><option value="mass">Extração em massa</option><option value="drop">Exclusão de tabela crítica</option><option value="failed">Falhas de autenticação</option><option value="disableaudit">Desativação de auditoria</option><option value="createlogin">Criação de login</option><option value="alterlogin">Alteração de login privilegiado</option><option value="truncate">TRUNCATE em tabela crítica</option><option value="backup">Backup para destino não autorizado</option><option value="linkedserver">Criação de Linked Server</option><option value="impersonate">Concessão de IMPERSONATE</option><option value="xpcommand">Execução de xp_cmdshell</option><option value="ddlprod">DDL sem mudança</option><option value="password">Alteração da conta sa</option></select><button class="btn primary sql-primary" id="runSql">▶ Executar e monitorar</button></div>
+          </div>
+          <div class="card monitor-card"><div class="monitor-head"><span>IMPER<span>VA</span> EVENT ANALYZER</span><b id="sqlEventStatus">AGUARDANDO</b></div><div id="sqlOutput" class="event-placeholder"><div class="pulse-icon">⌁</div><h3>Nenhum evento selecionado</h3><p>Execute um cenário T-SQL para visualizar a análise.</p></div></div>
+        </div>
+        <div class="scenario-cards sql-scenarios">
+          <button data-sql="sysadmin"><b>01</b><span>ADD SYSADMIN</span><small>Privilege Escalation</small></button>
+          <button data-sql="mass"><b>02</b><span>SELECT MASSIVO</span><small>Data Exfiltration</small></button>
+          <button data-sql="drop"><b>03</b><span>DROP TABLE</span><small>Destructive Activity</small></button>
+          <button data-sql="failed"><b>04</b><span>LOGIN FAILURE</span><small>Brute Force Pattern</small></button>
+        </div>
+<div class="extended-scenarios card"><div class="extended-head"><div><span class="label">SQL SERVER ADMINISTRATOR SCENARIOS</span><h3>Biblioteca adicional de testes</h3><p>Dez operações importantes para monitoramento diário.</p></div><span>10 NOVOS SCRIPTS</span></div><div class="extended-scenario-grid" id="sqlExtendedScenarios"></div></div>
+      </section>
+
+      <section class="view" id="view-events">
+        <div class="page-head"><div><span class="label">SECURITY EVENTS</span><h1>Central de eventos</h1><p>Auditoria normalizada de atividades Oracle e SQL Server.</p></div><button class="btn primary" id="addEvent">+ Simular evento</button></div>
+        <div class="filters card"><input id="eventSearch" placeholder="Pesquisar usuário, banco, comando ou política..."><select id="severityFilter"><option value="all">Todas as severidades</option><option>CRITICAL</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option></select><select id="dbFilter"><option value="all">Todos os bancos</option><option value="Oracle">Oracle</option><option value="SQL Server">SQL Server</option></select></div>
+        <div class="table-card card"><table><thead><tr><th>Data/Hora</th><th>Banco</th><th>Usuário</th><th>Operação</th><th>Política</th><th>Severidade</th><th>Status</th></tr></thead><tbody id="eventsTable"></tbody></table></div>
+      </section>
+
+      <section class="view" id="view-policies">
+<div class="page-head"><div><span class="label">POLICY MANAGEMENT CENTER</span><h1>Políticas de segurança</h1><p>Configure, teste e investigue o comportamento de cada política.</p></div><button class="btn primary" id="testPolicies">⚡ Executar teste global</button></div>
+<div class="policy-kpis"><article class="policy-kpi card"><span>POLÍTICAS</span><strong>10</strong><small>Controles configurados</small></article><article class="policy-kpi card"><span>ATIVAS</span><strong id="policyEnabledKpi">10</strong><small>Em monitoramento</small></article><article class="policy-kpi card"><span>DESATIVADAS</span><strong id="policyDisabledKpi">0</strong><small>Fora de operação</small></article><article class="policy-kpi card"><span>ÚLTIMO DISPARO</span><strong id="policyLastTriggerKpi">2 min</strong><small>Grant de DBA no Oracle</small></article><article class="policy-kpi card"><span>CRÍTICAS</span><strong>4</strong><small>Maior prioridade</small></article></div>
+<div class="policy-toolbar card"><input id="policySearch" placeholder="Pesquisar política, banco ou severidade..."><select id="policySeverityFilter"><option value="all">Todas as severidades</option><option>CRITICAL</option><option>HIGH</option><option>MEDIUM</option></select><select id="policyDatabaseFilter"><option value="all">Todos os bancos</option><option>Oracle</option><option>SQL Server</option><option>Oracle + SQL Server</option></select></div>
+<div id="policiesGrid" class="policies-grid"></div><section class="global-policy-test card hidden" id="globalPolicyTestPanel"><header><div><span class="label">GLOBAL POLICY VALIDATION</span><h3>Execução de todas as políticas ativas</h3><p id="globalPolicyTestMessage">Preparando mecanismo de testes...</p></div><button class="module-close" id="closeGlobalPolicyTest">×</button></header><div class="global-policy-progress"><i id="globalPolicyProgress"></i></div><div class="global-policy-results" id="globalPolicyResults"></div><div class="global-policy-summary hidden" id="globalPolicySummary"><span><b id="globalCriticalCount">0</b>Critical</span><span><b id="globalHighCount">0</b>High</span><span><b id="globalMediumCount">0</b>Medium</span><span><b id="globalPassedCount">0</b>Testadas</span></div></section>
+</section>
+
+      <section class="view" id="view-investigation">
+        <div class="page-head"><div><span class="label">SOC INVESTIGATION CENTER</span><h1>Investigações de segurança</h1><p>Selecione um caso, analise evidências, execute testes e documente a decisão.</p></div><button class="btn primary" id="newInvestigationBtn">▶ Simular 6 incidentes</button></div>
+        <div class="investigation-kpis">
+          <article class="card"><span>INCIDENTES ABERTOS</span><strong id="openIncidentKpi">4</strong><small id="criticalIncidentKpi">2 críticos</small></article>
+          <article class="card"><span>EM INVESTIGAÇÃO</span><strong>2</strong><small>Analistas ativos</small></article>
+          <article class="card"><span>RISK SCORE MÉDIO</span><strong id="averageRiskKpi">82</strong><small>Últimas 24 horas</small></article>
+          <article class="card"><span>SLA CRÍTICO</span><strong>18 min</strong><small>Tempo restante</small></article>
+        </div>
+        <div class="new-incident-banner hidden" id="newIncidentBanner">
+  <span>⚡</span>
+  <div class="incident-run-copy">
+    <b id="newIncidentBannerTitle">Simulação de incidentes</b>
+    <small id="newIncidentBannerText"></small>
+    <div class="incident-run-progress"><i id="incidentRunProgress"></i></div>
+  </div>
+  <button id="openNewIncidentBtn">Abrir incidente atual →</button>
+</div><div class="investigation-shell">
+          <aside class="incident-queue card">
+            <div class="incident-queue-head"><span class="label">CASE QUEUE</span><h3>Incidentes</h3></div>
+            <div id="incidentList"></div>
+          </aside>
+          <section class="investigation-workbench card">
+            <div class="investigation-empty" id="investigationEmpty"><div>⌕</div><h2>Selecione um incidente</h2><p>Abra um caso para iniciar a análise guiada.</p></div>
+            <div class="hidden" id="investigationCase">
+              <header class="case-head"><div><span class="label" id="caseId"></span><h2 id="caseTitle"></h2><p id="caseDescription"></p></div><div class="case-head-risk"><span id="caseSeverity" class="severity CRITICAL"></span><strong id="caseRisk"></strong><small>Risk Score</small></div></header>
+              <nav class="case-tabs" id="caseTabs">
+                <button class="active" data-case-tab="summary">Resumo</button><button data-case-tab="sql">SQL</button><button data-case-tab="identity">Usuário e origem</button><button data-case-tab="risk">Risk Score</button><button data-case-tab="ai">Análise IA</button><button data-case-tab="containment">Contenção</button><button data-case-tab="playbook">Playbook</button><button data-case-tab="report">Relatório</button>
+              </nav>
+              <div class="case-panel active" id="case-panel-summary"><div class="case-summary-grid"><article><span>Database</span><b id="caseDb"></b></article><article><span>Host</span><b id="caseHost"></b></article><article><span>Database User</span><b id="caseUser"></b></article><article><span>OS User</span><b id="caseOsUser"></b></article><article><span>Client IP</span><b id="caseIp"></b></article><article><span>Program</span><b id="caseProgram"></b></article></div><div class="case-section"><span class="label">SESSION TIMELINE</span><div class="case-timeline" id="caseTimeline"></div></div></div>
+              <div class="case-panel" id="case-panel-sql"><div class="sql-investigation-grid"><article class="card"><span class="label">SQL CAPTURADO</span><pre id="caseSql"></pre><button class="btn primary" id="runCaseSql">▶ Executar simulação</button></article><article class="card"><span class="label">RESULTADO</span><div id="caseSqlResult" class="console-empty"><div>⌁</div><h4>Aguardando execução</h4></div></article></div><article class="card plan-card"><span class="label">EXECUTION PLAN</span><div id="casePlan" class="execution-plan"></div></article></div>
+              <div class="case-panel" id="case-panel-identity"><div class="identity-investigation-grid"><article class="card"><span class="label">USER PROFILE</span><div id="caseUserFacts"></div></article><article class="card"><span class="label">NETWORK PATH</span><div class="network-path" id="caseNetwork"></div></article><article class="card"><span class="label">SENSITIVE OBJECTS</span><div id="caseObjects" class="object-list"></div></article></div></div>
+              <div class="case-panel" id="case-panel-risk"><div class="risk-breakdown"><div class="risk-main"><strong id="riskBig"></strong><span>/100</span><small id="riskLabel"></small></div><div id="riskFactors"></div></div></div>
+              <div class="case-panel" id="case-panel-ai"><div class="ai-investigation card"><span class="label">AI-ASSISTED INVESTIGATION</span><h3>Análise explicativa do incidente</h3><button class="btn primary" id="runAiAnalysis">✦ Analisar incidente</button><div id="aiAnalysisOutput" class="ai-output hidden"></div></div></div>
+              <div class="case-panel" id="case-panel-containment"><div class="containment-grid" id="containmentActions"></div><div class="containment-log card"><span class="label">ACTION LOG</span><pre id="containmentLog">Nenhuma ação executada.</pre></div></div>
+              <div class="case-panel" id="case-panel-playbook"><div class="case-playbook"><div><span class="label">INVESTIGATION PLAYBOOK</span><h3>Conclua todas as etapas</h3></div><span id="casePlaybookProgress">0/5</span></div><div id="casePlaybookSteps"></div><button class="btn primary hidden" id="finishInvestigation">Concluir investigação</button></div>
+              <div class="case-panel" id="case-panel-report"><div class="report-preview card" id="investigationReport"><span class="label">EXECUTIVE INVESTIGATION REPORT</span><h2 id="reportTitle"></h2><div id="reportBody"></div><div class="report-decision"><span>DECISÃO</span><strong id="reportDecision">PENDENTE</strong></div></div><div class="report-actions"><button class="btn secondary" id="markLegitimate">✓ Marcar como legítimo</button><button class="btn danger" id="markConfirmed">⚠ Confirmar incidente</button><button class="btn primary" id="printInvestigation">⤓ Imprimir / Salvar PDF</button></div></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+
+      <section class="view" id="view-documentation">
+        <div class="page-head"><div><span class="label">KNOWLEDGE & OPERATIONS HUB</span><h1>Documentation Center</h1><p>Guias educacionais, referências oficiais da Imperva, instalação, configuração, operação e troubleshooting.</p></div><div class="doc-version"><span>CONTENT PACK</span><b>12 GUIAS + RECURSOS OFICIAIS</b></div></div>
+        <div class="doc-notice card"><span>ⓘ</span><div><b>Escopo educacional</b><p>Os procedimentos simulam um fluxo enterprise. Pacotes, telas, requisitos exatos e comandos devem ser confirmados na documentação oficial correspondente à versão licenciada.</p></div></div>
+        <section class="official-docs card">
+          <div class="official-docs-head"><div><span class="label">IMPER<span>VA</span> OFFICIAL RESOURCES</span><h2>Documentação oficial e referências</h2><p>Links externos organizados para consulta técnica. Cada recurso abre em uma nova aba.</p></div><div class="official-docs-tools"><input id="officialDocSearch" placeholder="Pesquisar Gateway, DAM, releases, API..."><button class="btn secondary" id="showFavoritesOnly">☆ Favoritos</button></div></div>
+          <div class="official-docs-grid" id="officialDocsGrid"></div>
+        </section>
+        <div class="knowledge-personalization">
+          <article class="card"><span class="label">⭐ FAVORITOS</span><h3>Documentações salvas</h3><div id="docFavorites" class="mini-doc-list"><p>Nenhum favorito salvo.</p></div></article>
+          <article class="card"><span class="label">◷ ATIVIDADE RECENTE</span><h3>Últimos acessos</h3><div id="recentActivity" class="mini-doc-list"><p>Nenhuma atividade registrada.</p></div></article>
+          <article class="card shortcut-card"><span class="label">⌨ ATALHOS</span><h3>Navegação rápida</h3><div><kbd>⌘/Ctrl K</kbd><span>Pesquisa global</span><kbd>⌘/Ctrl D</kbd><span>Dashboard</span><kbd>⌘/Ctrl I</kbd><span>Investigation</span><kbd>⌘/Ctrl L</kbd><span>Live Monitoring</span></div></article>
+        </div>
+        <div class="documentation-shell">
+          <aside class="doc-sidebar card">
+            <input id="docSearch" placeholder="Pesquisar documentação...">
+            <div class="doc-categories" id="docCategories"></div>
+          </aside>
+          <main class="doc-content card">
+            <div id="docWelcome" class="doc-welcome"><div>▥</div><h2>Central de conhecimento</h2><p>Selecione um guia para visualizar objetivo, pré-requisitos, procedimento, validações, erros comuns e checklist.</p></div>
+            <article id="docArticle" class="hidden">
+              <header class="doc-article-head"><div><span class="label" id="docCategory"></span><h2 id="docTitle"></h2><p id="docSummary"></p></div><span class="doc-level" id="docLevel"></span></header>
+              <div class="doc-tabs" id="docTabs"><button class="active" data-doc-tab="overview">Visão geral</button><button data-doc-tab="procedure">Procedimento</button><button data-doc-tab="validation">Validação</button><button data-doc-tab="troubleshooting">Troubleshooting</button><button data-doc-tab="checklist">Checklist</button></div>
+              <section class="doc-panel active" id="doc-panel-overview"><div class="doc-overview-grid"><article><span>OBJETIVO</span><p id="docObjective"></p></article><article><span>QUANDO UTILIZAR</span><p id="docWhen"></p></article><article><span>PRÉ-REQUISITOS</span><ul id="docPrereqs"></ul></article><article><span>RESULTADO ESPERADO</span><p id="docExpected"></p></article></div><div class="doc-architecture-flow" id="docFlow"></div></section>
+              <section class="doc-panel" id="doc-panel-procedure"><div class="doc-procedure" id="docProcedure"></div></section>
+              <section class="doc-panel" id="doc-panel-validation"><div class="validation-command card"><div><span class="label">VALIDATION CONSOLE</span><h3 id="docValidationTitle"></h3></div><button class="btn primary" id="runDocValidation">▶ Executar validação</button></div><div class="doc-validation-output" id="docValidationOutput"><div class="console-empty"><div>⌁</div><h4>Aguardando validação</h4></div></div></section>
+              <section class="doc-panel" id="doc-panel-troubleshooting"><div class="troubleshooting-table" id="docTroubleshooting"></div></section>
+              <section class="doc-panel" id="doc-panel-checklist"><div class="doc-checklist-head"><div><span class="label">OPERATIONAL CHECKLIST</span><h3>Confirme os itens executados</h3></div><b id="docChecklistProgress">0/0</b></div><div id="docChecklist"></div></section>
+            </article>
+          </main>
+        </div>
+      </section>
+
+      
+      <section class="view" id="view-official">
+        <div class="page-head"><div><span class="label">VERIFIED EXTERNAL REFERENCES</span><h1>Official Resources</h1><p>Recursos oficiais da Imperva e do portal de documentação Thales Cybersecurity, organizados por finalidade.</p></div><span class="official-verified">✓ LINKS VERIFICADOS</span></div>
+        <div class="official-explanation card"><span>ⓘ</span><div><h3>Por que alguns links exibem Thales?</h3><p>A Imperva faz parte da Thales. O portal <b>docs.imperva.com</b> é apresentado como Thales Cybersecurity Docs Hub e alguns recursos oficiais foram migrados para domínios Thales.</p></div></div>
+        <div class="official-filter-bar card"><input id="v2OfficialSearch" placeholder="Pesquisar DAM, DSF, suporte, treinamento, API..."><select id="v2OfficialCategory"><option value="all">Todas as categorias</option><option>Documentação</option><option>Produto</option><option>Suporte</option><option>Treinamento</option><option>Ferramentas</option></select></div>
+        <div class="official-resource-grid" id="v2OfficialGrid"></div>
+      </section>
+
+      <section class="view" id="view-downloads">
+        <div class="page-head"><div><span class="label">AUTHORIZED SOFTWARE ACCESS</span><h1>Downloads Center</h1><p>Entenda como obter software, appliances, agentes e atualizações pelos canais autorizados.</p></div><span class="download-lock">🔒 LICENSED ACCESS</span></div>
+        <div class="download-hero card"><div><span class="label">SOFTWARE DISTRIBUTION</span><h2>Não existe download público direto do DAM como ocorre com produtos gratuitos.</h2><p>O acesso normalmente depende de contrato, licença, direitos de suporte, conta autorizada ou orientação comercial/parceiro.</p></div><a class="btn primary" href="https://www.imperva.com/support/technical-support/" target="_blank" rel="noopener">Access Official Downloads ↗</a></div>
+        <div class="download-requirements">
+          <article class="card"><span>01</span><h3>Licença válida</h3><p>Produto e módulos devem estar associados ao contrato da organização.</p></article>
+          <article class="card"><span>02</span><h3>Portal de suporte</h3><p>Downloads e atualizações podem exigir autenticação e entitlement.</p></article>
+          <article class="card"><span>03</span><h3>Compatibilidade</h3><p>Confirme versão, banco, sistema operacional, hypervisor e método de coleta.</p></article>
+          <article class="card"><span>04</span><h3>Change control</h3><p>Valide checksum, origem, janela, rollback e aprovação antes de instalar.</p></article>
+        </div>
+        <div class="download-package-grid" id="downloadPackageGrid"></div>
+        <div class="download-process card"><span class="label">AUTHORIZED DOWNLOAD WORKFLOW</span><div><b>Entitlement</b><i>→</i><b>Support Portal</b><i>→</i><b>Version Selection</b><i>→</i><b>Compatibility</b><i>→</i><b>Checksum</b><i>→</i><b>Change Window</b></div></div>
+      </section>
+
+      <section class="view" id="view-installation">
+        <div class="page-head"><div><span class="label">GUIDED DEPLOYMENT WORKSPACE</span><h1>Installation Center</h1><p>Guia didático em 12 etapas para planejamento, implantação, integração e validação.</p></div><div class="install-progress-ring"><strong id="installPercent">0%</strong><small>concluído</small></div></div>
+        <div class="install-warning card"><span>⚠</span><p>Este fluxo é educacional. Nomes de pacotes, telas, comandos, sizing e portas devem ser confirmados nos guias oficiais da versão licenciada.</p></div>
+        <div class="installation-layout">
+          <aside class="install-steps card" id="installSteps"></aside>
+          <main class="install-workspace card">
+            <header><div><span class="label" id="installPhase">ETAPA 01</span><h2 id="installTitle"></h2><p id="installSummary"></p></div><span class="install-state" id="installState">READY</span></header>
+            <div class="install-tabs" id="installTabs"><button class="active" data-install-tab="overview">Visão geral</button><button data-install-tab="diagram">Diagrama</button><button data-install-tab="checklist">Checklist</button><button data-install-tab="practice">Prática</button><button data-install-tab="issues">Problemas comuns</button></div>
+            <section class="install-panel active" id="install-panel-overview"><div class="install-overview-grid"><article><span>OBJETIVO</span><p id="installObjective"></p></article><article><span>PRÉ-REQUISITOS</span><ul id="installPrereqs"></ul></article><article><span>BOAS PRÁTICAS</span><ul id="installPractices"></ul></article><article><span>RESULTADO</span><p id="installExpected"></p></article></div><a id="installOfficialLink" class="btn secondary" target="_blank" rel="noopener">Open Official Documentation ↗</a></section>
+            <section class="install-panel" id="install-panel-diagram"><div class="install-diagram" id="installDiagram"></div></section>
+            <section class="install-panel" id="install-panel-checklist"><div class="install-checklist" id="installChecklist"></div></section>
+            <section class="install-panel" id="install-panel-practice"><div class="install-practice-head"><div><span class="label">SIMULATED VALIDATION</span><h3>Executar teste da etapa</h3></div><button class="btn primary" id="runInstallPractice">▶ Executar</button></div><pre id="installConsole">[READY] Aguardando execução.</pre></section>
+            <section class="install-panel" id="install-panel-issues"><div id="installIssues" class="install-issues"></div></section>
+          </main>
+        </div>
+      </section>
+
+      <section class="view" id="view-training">
+        <div class="page-head"><div><span class="label">THALES CYBERSECURITY ACADEMY</span><h1>Training Center</h1><p>Recursos oficiais, trilhas sugeridas e laboratórios educacionais para evolução profissional.</p></div><a class="btn primary" href="https://www.imperva.com/support/imperva-university/" target="_blank" rel="noopener">Abrir treinamento oficial ↗</a></div>
+        <div class="training-stats"><article class="card"><strong>4</strong><span>Learning Paths</span></article><article class="card"><strong>8</strong><span>Hands-on Labs</span></article><article class="card"><strong>3</strong><span>Skill Levels</span></article><article class="card"><strong>1</strong><span>Official Catalog</span></article></div>
+        <div class="training-paths" id="trainingPaths"></div>
+        <div class="training-resources card"><div><span class="label">OFFICIAL TRAINING</span><h2>Catálogo e academia</h2><p>Após a aquisição, os treinamentos foram direcionados para a Thales Cybersecurity Academy. Consulte o catálogo atual e os requisitos de acesso.</p></div><div class="training-links"><a href="https://www.imperva.com/support/imperva-university/" target="_blank" rel="noopener">Imperva University / Academy ↗</a><a href="https://www.imperva.com/support/wp-content/uploads/sites/26/2025/08/Training-Catalog-2025-0829.pdf" target="_blank" rel="noopener">Training Catalog PDF ↗</a><a href="https://www.imperva.com/learn/" target="_blank" rel="noopener">Learning Center ↗</a></div></div>
+      </section>
+
+      <section class="view" id="view-monitoring">
+        <div class="page-head"><div><span class="label">REAL-TIME ACTIVITY CENTER</span><h1>Live Monitoring</h1><p>Fluxo simulado de conexões, comandos, políticas e respostas em tempo real.</p></div><div class="monitor-controls"><button class="btn secondary" id="pauseMonitor">Ⅱ Pausar</button><button class="btn primary" id="injectMonitorEvent">+ Injetar evento crítico</button></div></div>
+        <div class="live-health-grid">
+          <article class="card health-service"><i class="healthy"></i><div><span>Management Server</span><b>ONLINE</b><small>Latency 12 ms</small></div></article>
+          <article class="card health-service"><i class="healthy"></i><div><span>Gateway GW-01</span><b>HEALTHY</b><small>Queue 3%</small></div></article>
+          <article class="card health-service"><i class="healthy"></i><div><span>Oracle Agent</span><b>HEALTHY</b><small>Heartbeat 3s</small></div></article>
+          <article class="card health-service"><i class="healthy"></i><div><span>SQL Server Agent</span><b>HEALTHY</b><small>Heartbeat 5s</small></div></article>
+          <article class="card health-service"><i class="healthy"></i><div><span>SIEM Integration</span><b>ONLINE</b><small>Last ACK 8s</small></div></article>
+        </div>
+        <div class="live-monitor-layout">
+          <article class="card live-stream-card"><div class="live-stream-head"><div><span class="label">ACTIVITY STREAM</span><h3>Eventos capturados</h3></div><span class="stream-status"><i></i><b id="streamStatusText">STREAMING</b></span></div><div class="live-stream" id="liveStream"></div></article>
+          <aside class="live-side">
+            <article class="card live-counter"><span>EVENTS / MIN</span><strong id="eventsPerMinute">184</strong><small>+12% vs baseline</small></article>
+            <article class="card operation-mix"><span class="label">OPERATION MIX</span><div><span>SELECT<b>68%</b></span><i style="--w:68%"></i></div><div><span>DML<b>17%</b></span><i style="--w:17%"></i></div><div><span>DDL<b>8%</b></span><i style="--w:8%"></i></div><div><span>DCL<b>7%</b></span><i style="--w:7%"></i></div></article>
+            <article class="card top-users"><span class="label">TOP ACTIVE USERS</span><div><b>APP_WEB</b><span>4.284 events</span></div><div><b>APP_BATCH</b><span>2.918 events</span></div><div><b>REPORT_USER</b><span>1.742 events</span></div><div><b>SYSTEM</b><span>364 events</span></div></article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="page-head"><div><span class="label">ENTERPRISE REPORTING</span><h1>Reports Center</h1><p>Gere relatórios demonstrativos para gestão, operação, auditoria e compliance.</p></div><button class="btn primary" id="generateSelectedReport">▧ Gerar relatório</button></div>
+        <div class="report-templates" id="reportTemplates"></div>
+        <div class="reports-layout">
+          <aside class="card report-config"><span class="label">REPORT PARAMETERS</span><h3>Configuração</h3><label>Período<select id="reportPeriod"><option>Últimas 24 horas</option><option>Últimos 7 dias</option><option>Últimos 30 dias</option><option>Trimestre atual</option></select></label><label>Ambiente<select id="reportEnvironment"><option>Todos os ambientes</option><option>Oracle ORCLPRD</option><option>SQL Server SQLPROD01</option></select></label><label>Severidade<select id="reportSeverity"><option>Todas</option><option>Critical + High</option><option>Somente Critical</option></select></label><div class="report-options"><label><input type="checkbox" checked> Incluir gráficos</label><label><input type="checkbox" checked> Incluir recomendações</label><label><input type="checkbox" checked> Incluir evidências</label></div></aside>
+          <main class="card report-preview-enterprise" id="enterpriseReportPreview"><div class="report-placeholder"><div>▧</div><h2>Selecione um modelo</h2><p>Configure os parâmetros e gere uma visualização do relatório.</p></div></main>
+        </div>
+        <div class="report-export-actions hidden" id="reportExportActions"><button class="btn secondary" id="copyReport">Copiar resumo</button><button class="btn primary" id="printEnterpriseReport">⤓ Imprimir / Salvar PDF</button></div>
+      </section>
+
+      <section class="view" id="view-demos">
+        <div class="page-head"><div><span class="label">PRESENTATION MODE</span><h1>Demo Scenarios</h1><p>Cenários guiados para demonstrar o projeto em reuniões, entrevistas e LinkedIn.</p></div><span class="demo-mode-badge">6 CENÁRIOS PRONTOS</span></div>
+        <div class="demo-scenarios-grid" id="demoScenariosGrid"></div>
+        <section class="card demo-player hidden" id="demoPlayer">
+          <header><div><span class="label" id="demoPlayerCategory"></span><h2 id="demoPlayerTitle"></h2><p id="demoPlayerDescription"></p></div><button class="module-close" id="closeDemoPlayer">×</button></header>
+          <div class="demo-progress"><i id="demoProgressBar"></i></div>
+          <div class="demo-player-body"><aside id="demoSteps"></aside><main><div class="demo-screen" id="demoScreen"></div><div class="demo-player-actions"><button class="btn secondary" id="resetDemo">♻ Reiniciar</button><button class="btn primary" id="nextDemoStep">Executar próxima etapa →</button></div></main></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-terminal">
+        <div class="page-head"><div><span class="label">EDUCATIONAL CLI</span><h1>Terminal Imperva simulado</h1><p>Interface didática — os comandos abaixo não representam uma CLI oficial do produto.</p></div><button class="btn secondary" id="clearTerminal">♻ Limpar terminal</button></div>
+        <div class="terminal-window card"><div class="terminal-top"><i></i><i></i><i></i><span>imperva-demo@academy:~</span></div><div id="terminalOutput" class="terminal-output"></div><div class="terminal-input"><span>$</span><input id="terminalInput" autocomplete="off" placeholder="Digite help para listar os comandos"><button id="executeTerminal">Executar</button></div></div>
+        <div class="quick-commands"><button>imperva status</button><button>imperva databases</button><button>imperva events</button><button>imperva alerts</button><button>imperva policies</button><button>imperva sensitive-data</button><button>imperva gateways</button><button>imperva health</button><button>imperva agent-status</button><button>imperva queue</button><button>imperva integrations</button><button>imperva audit-summary</button><button>imperva privileged-users</button><button>imperva top-objects</button><button>imperva failed-logins</button><button>imperva system-check</button></div><article class="terminal-explanation card" id="terminalExplanation"><span class="label">COMMAND EXPLANATION</span><h3>Selecione ou execute um comando</h3><p>Após cada execução, esta área explicará o objetivo do comando, como interpretar o resultado e qual ação administrativa pode ser tomada.</p></article>
+      </section>
+
+      <section class="view" id="view-quiz">
+        <div class="page-head"><div><span class="label">KNOWLEDGE CHECK</span><h1>Quiz de segurança de dados</h1><p>Responda às questões e obtenha pelo menos 70% para aprovação.</p></div><div class="quiz-score"><strong id="quizScore">--</strong><small>resultado</small></div></div>
+        <div id="quizContainer" class="quiz-container"></div>
+        <button class="btn primary quiz-submit" id="submitQuiz">Finalizar avaliação</button>
+      </section>
+
+      <section class="view" id="view-certificate">
+        <div class="page-head"><div><span class="label">ACADEMY CERTIFICATION</span><h1>Certificado de conclusão</h1><p>Conclua os módulos e seja aprovado no quiz para liberar.</p></div></div>
+        <div class="certificate-lock card" id="certificateLock"><div>🔒</div><h2>Certificado bloqueado</h2><p>Requisitos: identificação do aluno, 20 módulos concluídos e nota mínima de 70% no quiz.</p><div class="requirements"><span id="reqName">○ Aluno identificado</span><span id="reqModules">○ Módulos concluídos</span><span id="reqQuiz">○ Quiz aprovado</span></div></div>
+        <div class="certificate hidden" id="certificate">
+          <div class="certificate-border">
+            <div class="cert-brand">IMPER<span>VA</span></div>
+            <span class="cert-sub">DATA SECURITY ACADEMY</span>
+            <h1>Certificado de Conclusão</h1>
+            <p>Certificamos que</p>
+            <h2 id="certName">Nome do Aluno</h2>
+            <p>concluiu com êxito a trilha demonstrativa</p>
+            <h3>Database Activity Monitoring<br>Oracle & Microsoft SQL Server</h3>
+            <div class="cert-details"><span><b>20 módulos</b>Trilha completa</span><span><b id="certScore">100%</b>Aproveitamento</span><span><b id="certDate">29/07/2026</b>Data de conclusão</span></div>
+            <div class="cert-footer"><div><b>Renato Barros</b><span>Autor do Projeto</span></div><div class="seal">DS<br><small>ACADEMY</small></div><div><b>Imperva Academy Demo</b><span>Projeto educacional</span></div></div>
+          </div>
+          <button class="btn primary" onclick="window.print()">⤓ Imprimir / Salvar PDF</button>
+        </div>
+      </section>
+
+<section class="view" id="view-about">
+        <div class="page-head"><div><span class="label">PLATFORM INFORMATION</span><h1>About Platform</h1><p>Objetivo, tecnologias, versões de referência, recursos, créditos e roadmap da academia.</p></div><span class="status protected">● FINAL RELEASE v3.0.2</span></div>
+        <div class="about-hero card"><div><span class="label">IMPER<span>VA</span> DATA SECURITY ACADEMY</span><h2>Enterprise Edition v3.0.2</h2><p>Plataforma web independente, interativa e educacional para demonstrar conceitos de Data Security, Database Activity Monitoring, políticas, conexões, investigação e operação em ambientes Oracle e Microsoft SQL Server.</p></div><div class="about-release"><strong>3.0.2</strong><span>FINAL RELEASE</span><small>Agosto · 2026</small></div></div>
+
+        <div class="about-grid">
+          <article class="card about-card"><span class="about-icon">◎</span><span class="label">OBJETIVO DO PROJETO</span><h3>Transformar conceitos complexos em experiência prática</h3><p>Organizar uma trilha completa desde arquitetura, onboarding e conexões até monitoramento, políticas, investigação, relatórios e resposta operacional.</p><ul><li>Treinamento técnico e demonstração</li><li>Laboratórios Oracle e SQL Server</li><li>Simulações de segurança de dados</li><li>Material de portfólio e apresentação</li></ul></article>
+          <article class="card about-card"><span class="about-icon">⌘</span><span class="label">TECNOLOGIAS UTILIZADAS</span><h3>Aplicação 100% front-end</h3><div class="tech-cloud"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>LocalStorage</span><span>SVG</span><span>GitHub Pages</span><span>Responsive UI</span><span>Print / PDF</span></div><p>Não utiliza backend, banco de dados real, agente real ou API externa. Todas as operações são simulações locais executadas no navegador.</p></article>
+        </div>
+
+        <div class="section-title"><div><span class="label">REFERENCE STACK</span><h2>Versões utilizadas como referência</h2></div><span class="live-pill">REFERÊNCIA EDUCACIONAL · NÃO É MATRIZ DE COMPATIBILIDADE</span></div>
+        <div class="reference-versions">
+          <article class="card"><div class="reference-logo purple">I</div><div><span>Imperva Data Security Fabric</span><strong>DAM / DSF 15.4</strong><small>Referência de conteúdo e documentação. Recursos reais variam por licenciamento, deployment e release.</small></div></article>
+          <article class="card"><div class="reference-logo red">O</div><div><span>Oracle Database</span><strong>19c e 23ai</strong><small>Os laboratórios simulam cenários amplamente utilizados em ambientes corporativos dessas releases.</small></div></article>
+          <article class="card"><div class="reference-logo cyan">S</div><div><span>Microsoft SQL Server</span><strong>2019 e 2022</strong><small>As simulações incluem T-SQL, sa, sysadmin, auditoria, logins e server roles.</small></div></article>
+        </div>
+
+        <div class="about-grid three">
+          <article class="card about-card"><span class="label">RECURSOS</span><h3>Plataforma completa</h3><div class="feature-list"><span>Dashboard Executivo</span><span>Módulos interativos</span><span>Architecture Center</span><span>Connections Center</span><span>Oracle Lab</span><span>SQL Server Lab</span><span>Policy Studio</span><span>SOC Investigation</span><span>Documentation</span><span>Installation Center</span><span>Live Monitoring</span><span>Reports</span><span>Terminal</span><span>Quiz e Certificado</span></div></article>
+          <article class="card about-card"><span class="label">ROADMAP</span><h3>Evolução do projeto</h3><div class="roadmap-list"><div class="done"><b>v1.x</b><span>Academy, labs, módulos e certificado</span></div><div class="done"><b>v2.x</b><span>Policy Studio, Investigation, documentação e arquitetura</span></div><div class="current"><b>v3.0</b><span>Connections Center, About Platform e Final Release</span></div><div><b>Futuro</b><span>Atualizações de conteúdo, links e novas releases</span></div></div></article>
+          <article class="card about-card"><span class="label">CRÉDITOS</span><h3>Autoria e identidade</h3><div class="credits-block"><strong>Renato Barros</strong><span>Desenvolvimento, arquitetura, conteúdo e experiência educacional</span><strong>Barros & Barros Consultoria e Suporte</strong><span>Oracle Database · SQL Server · Cyber Security · Data Security · Cloud Technologies</span></div></article>
+        </div>
+
+        <article class="card legal-notice"><span class="label">FINALIDADE EDUCACIONAL E AVISO LEGAL</span><h3>Projeto independente</h3><p>Esta plataforma foi desenvolvida exclusivamente para fins educacionais, treinamento técnico e demonstração de conceitos de segurança de dados. Não é um produto oficial, não mantém conexão com ambientes reais e não substitui documentação, treinamento, suporte, licenciamento ou matriz de compatibilidade do fabricante. Imperva, Oracle e Microsoft são marcas de seus respectivos proprietários.</p></article>
+      </section>
+    </main>
+  </div>
+
+  <div class="module-modal hidden" id="moduleModal">
+    <div class="module-modal-backdrop" id="moduleModalBackdrop"></div>
+    <section class="module-workspace">
+      <header class="module-workspace-head">
+        <div>
+          <span class="label" id="activityCategory">MÓDULO</span>
+          <h2 id="activityTitle">Atividade do módulo</h2>
+          <p id="activitySubtitle"></p>
+        </div>
+        <button class="module-close" id="closeModuleModal" aria-label="Fechar">×</button>
+      </header>
+
+      <div class="activity-progress">
+        <div class="activity-progress-top">
+          <span>PROGRESSO DA ATIVIDADE</span>
+          <b id="activityProgressText">0 de 4 etapas</b>
+        </div>
+        <div class="activity-progress-bar"><i id="activityProgressBar"></i></div>
+      </div>
+
+      <div class="module-workspace-body">
+        <aside class="activity-steps" id="activitySteps"></aside>
+
+        <main class="activity-content">
+          <section class="lesson-panel" id="lessonPanel">
+            <div class="lesson-intro">
+              <span class="lesson-number" id="lessonNumber">01</span>
+              <div>
+                <span class="label">CONTEÚDO DO MÓDULO</span>
+                <h3 id="lessonTitle"></h3>
+                <p id="lessonDescription"></p>
+              </div>
+            </div>
+
+            <div class="learning-grid">
+              <article>
+                <span class="learning-icon">◎</span>
+                <h4>Objetivo</h4>
+                <p id="lessonObjective"></p>
+              </article>
+              <article>
+                <span class="learning-icon">▦</span>
+                <h4>Conceito principal</h4>
+                <p id="lessonConcept"></p>
+              </article>
+              <article>
+                <span class="learning-icon">✓</span>
+                <h4>Resultado esperado</h4>
+                <p id="lessonExpected"></p>
+              </article>
+            </div>
+
+            <div class="procedure-card">
+              <div class="procedure-head">
+                <div>
+                  <span class="label">PROCEDIMENTO GUIADO</span>
+                  <h3>Fluxo de execução</h3>
+                </div>
+                <span class="demo-badge">SIMULAÇÃO EDUCACIONAL</span>
+              </div>
+              <ol id="procedureList"></ol>
+            </div>
+
+            <button class="btn primary activity-next" id="startScenariosBtn">
+              Iniciar simulações →
+            </button>
+          </section>
+
+          <section class="scenario-panel hidden" id="scenarioPanel">
+            <div class="scenario-header">
+              <div>
+                <span class="label">LABORATÓRIO INTERATIVO</span>
+                <h3>Execute os quatro cenários</h3>
+                <p>Cada cenário demonstra um comportamento diferente da plataforma.</p>
+              </div>
+              <span class="scenario-counter" id="scenarioCounter">0/4 executados</span>
+            </div>
+
+            <div class="module-scenario-grid" id="moduleScenarioGrid"></div>
+
+            <div class="scenario-console">
+              <div class="scenario-console-top">
+                <span>IMPER<span>VA</span> ACTIVITY ANALYZER</span>
+                <b id="scenarioConsoleStatus">READY</b>
+              </div>
+              <div class="scenario-console-body" id="scenarioConsoleBody">
+                <div class="console-empty">
+                  <div>⌁</div>
+                  <h4>Aguardando execução</h4>
+                  <p>Selecione um cenário para visualizar a análise.</p>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn primary activity-next hidden" id="goValidationBtn">
+              Avançar para validação →
+            </button>
+          </section>
+
+          <section class="validation-panel hidden" id="validationPanel">
+            <span class="label">VALIDAÇÃO DE APRENDIZADO</span>
+            <h3 id="validationQuestion"></h3>
+            <p>Selecione a alternativa correta para concluir o módulo.</p>
+            <div class="validation-options" id="validationOptions"></div>
+            <div class="validation-feedback hidden" id="validationFeedback"></div>
+            <button class="btn primary activity-next" id="validateModuleBtn">
+              Validar resposta
+            </button>
+          </section>
+
+          <section class="completion-panel hidden" id="completionPanel">
+            <div class="completion-check">✓</div>
+            <span class="label">MÓDULO CONCLUÍDO</span>
+            <h2 id="completionTitle"></h2>
+            <p>Você estudou o conteúdo, executou os cenários e concluiu a validação.</p>
+            <div class="completion-summary">
+              <span><b>1</b>Aula estudada</span>
+              <span><b>4</b>Cenários executados</span>
+              <span><b>1</b>Validação aprovada</span>
+            </div>
+            <button class="btn primary" id="finishModuleBtn">
+              Salvar conclusão e continuar
+            </button>
+          </section>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  <footer class="institutional-footer">
+    <div class="institutional-brand"><span class="footer-mark">B&B</span><div><strong>Desenvolvido por Renato Barros</strong><b>Barros &amp; Barros Consultoria e Suporte</b></div></div>
+    <div class="footer-version">Enterprise Edition v3.0.2</div>
+    <p>Oracle Database <i>•</i> SQL Server <i>•</i> Cyber Security <i>•</i> Data Security <i>•</i> Cloud Technologies</p>
+    <small>© 2026 Barros &amp; Barros Consultoria e Suporte. Todos os direitos reservados.</small>
+    <em>Plataforma desenvolvida exclusivamente para fins educacionais, treinamento técnico e demonstração de conceitos de segurança de dados.</em>
+  </footer>
+
+
+<div class="incident-detail-modal hidden" id="incidentDetailModal">
+  <div class="incident-detail-backdrop" id="incidentDetailBackdrop"></div>
+  <section class="incident-detail-window">
+    <header class="incident-detail-head">
+      <div>
+        <span class="label">SECURITY INCIDENT RECORD</span>
+        <h2 id="detailIncidentTitle">Detalhes do incidente</h2>
+        <p id="detailIncidentSubtitle"></p>
+      </div>
+      <div class="incident-detail-head-actions">
+        <span class="severity CRITICAL" id="detailIncidentSeverity">CRITICAL</span>
+        <button class="module-close" id="closeIncidentDetail">×</button>
+      </div>
+    </header>
+
+    <div class="incident-detail-statusbar">
+      <span>INCIDENT ID<b id="detailIncidentId"></b></span>
+      <span>STATUS<b id="detailIncidentStatus"></b></span>
+      <span>RISK SCORE<b id="detailIncidentRisk"></b></span>
+      <span>SLA<b id="detailIncidentSla"></b></span>
+      <span>PRIORIDADE<b id="detailIncidentPriority"></b></span>
+    </div>
+
+    <div class="incident-detail-body">
+      <main class="incident-detail-main">
+        <section class="incident-detail-section card">
+          <div class="incident-detail-section-title"><div><span class="label">RESUMO EXECUTIVO</span><h3>O que está acontecendo?</h3></div><span class="incident-record-state">NEW CASE</span></div>
+          <p id="detailExecutiveSummary"></p>
+          <div class="incident-detail-facts" id="detailCoreFacts"></div>
+        </section>
+
+        <section class="incident-detail-section card">
+          <span class="label">IMPACTO E CLASSIFICAÇÃO</span>
+          <h3>Avaliação inicial do incidente</h3>
+          <div class="impact-grid">
+            <article><small>Categoria</small><b id="detailCategory"></b></article>
+            <article><small>Impacto no negócio</small><b id="detailBusinessImpact"></b></article>
+            <article><small>Dados envolvidos</small><b id="detailSensitiveData"></b></article>
+            <article><small>Ambiente</small><b id="detailEnvironment"></b></article>
+          </div>
+          <div class="impact-description" id="detailImpactDescription"></div>
+        </section>
+
+        <section class="incident-detail-section card">
+          <span class="label">EVIDÊNCIAS COLETADAS</span>
+          <h3>Elementos disponíveis para análise</h3>
+          <div class="incident-evidence-grid" id="detailEvidenceGrid"></div>
+          <pre class="incident-command-preview" id="detailCommandPreview"></pre>
+        </section>
+
+        <section class="incident-detail-section card">
+          <span class="label">FLUXO DE ESCALONAMENTO</span>
+          <h3>Times que precisam atuar</h3>
+          <div class="escalation-flow" id="detailEscalationFlow"></div>
+        </section>
+      </main>
+
+      <aside class="incident-detail-side">
+        <article class="card assignment-card">
+          <span class="label">ASSIGNMENT</span>
+          <h3>Fila e departamento</h3>
+          <div class="assignment-list">
+            <span>Fila responsável<b id="detailQueue"></b></span>
+            <span>Departamento<b id="detailDepartment"></b></span>
+            <span>Equipe de apoio<b id="detailSupportTeam"></b></span>
+            <span>Incident Owner<b id="detailOwner"></b></span>
+            <span>Prazo de resposta<b id="detailResponseTime"></b></span>
+          </div>
+        </article>
+
+        <article class="card recommendation-card">
+          <span class="label">RECOMENDAÇÃO INICIAL</span>
+          <h3>Próxima ação sugerida</h3>
+          <p id="detailRecommendation"></p>
+        </article>
+
+        <article class="card routing-card">
+          <span class="label">ROUTING ACTION</span>
+          <h3>Encaminhamento</h3>
+          <select id="detailQueueSelect">
+            <option value="SOC N2 — Database Security">SOC N2 — Database Security</option>
+            <option value="DBA Oracle — Produção">DBA Oracle — Produção</option>
+            <option value="DBA SQL Server — Produção">DBA SQL Server — Produção</option>
+            <option value="IAM — Identity & Access">IAM — Identity & Access</option>
+            <option value="Cyber Incident Response">Cyber Incident Response</option>
+            <option value="Application Owner">Application Owner</option>
+          </select>
+          <textarea id="detailAnalystNote" placeholder="Registrar observação do analista..."></textarea>
+          <button class="btn primary full" id="assignIncidentBtn">→ Encaminhar para fila</button>
+          <button class="btn secondary full" id="createIncidentTicketBtn">＋ Abrir ticket ITSM</button>
+          <button class="btn danger full" id="openIncidentWorkbenchBtn">⌕ Abrir investigação completa</button>
+        </article>
+
+        <div class="incident-routing-log hidden" id="incidentRoutingLog"></div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<div class="policy-studio-modal hidden" id="policyStudioModal"><div class="policy-studio-backdrop" id="policyStudioBackdrop"></div><section class="policy-studio">
+<header class="policy-studio-head"><div><span class="label">IMPER<span>VA</span> POLICY STUDIO</span><h2 id="policyStudioTitle"></h2><p id="policyStudioDescription"></p></div><div class="policy-studio-actions"><span class="policy-status-pill" id="policyStudioStatus">ACTIVE</span><button class="module-close" id="closePolicyStudio">×</button></div></header>
+<nav class="policy-tabs" id="policyTabs"><button class="active" data-policy-tab="editor">Editor visual</button><button data-policy-tab="simulation">Simulação</button><button data-policy-tab="timeline">Timeline</button><button data-policy-tab="logs">Logs</button><button data-policy-tab="explanation">Explicação</button><button data-policy-tab="playbook">Playbook</button></nav>
+<div class="policy-studio-body">
+<section class="policy-tab-panel active" id="policy-tab-editor"><div class="policy-editor-layout"><div class="policy-editor-main">
+<article class="policy-editor-section card"><span class="label">CONFIGURAÇÃO</span><h3>Identificação da política</h3><div class="policy-form-grid"><label><span>Nome</span><input id="policyNameInput"></label><label><span>Categoria</span><input id="policyCategoryInput" readonly></label><label class="full"><span>Descrição</span><textarea id="policyDescriptionInput"></textarea></label></div></article>
+<article class="policy-editor-section card"><span class="label">SEVERIDADE</span><h3>Classificação de risco</h3><div class="severity-selector" id="policySeveritySelector"><button data-severity="LOW">LOW</button><button data-severity="MEDIUM">MEDIUM</button><button data-severity="HIGH">HIGH</button><button data-severity="CRITICAL">CRITICAL</button></div></article>
+<article class="policy-editor-section card"><span class="label">ESCOPO</span><h3>Bancos, usuários e operações</h3><div class="scope-grid"><label><input type="checkbox" id="scopeOracle"> Oracle</label><label><input type="checkbox" id="scopeSqlServer"> SQL Server</label></div><div class="policy-form-grid compact"><label><span>Usuários</span><input id="policyUsersInput"></label><label><span>Objetos</span><input id="policyObjectsInput"></label><label><span>Operações</span><input id="policyOperationsInput"></label><label><span>Janela</span><input id="policyWindowInput"></label></div></article>
+<article class="policy-editor-section card"><span class="label">AÇÕES</span><h3>Resposta ao disparo</h3><div class="action-checks" id="policyActionChecks"><label><input type="checkbox" value="alert"> Gerar alerta</label><label><input type="checkbox" value="siem"> Enviar ao SIEM</label><label><input type="checkbox" value="incident"> Abrir incidente</label><label><input type="checkbox" value="email"> Enviar e-mail</label><label><input type="checkbox" value="block"> Simular bloqueio</label></div></article>
+</div><aside class="policy-editor-side"><article class="card policy-preview"><span class="label">POLICY SUMMARY</span><h3 id="policyPreviewName"></h3><div class="policy-preview-risk"><span>Severity</span><b id="policyPreviewSeverity"></b></div><div class="policy-preview-list"><span>Database<b id="policyPreviewDatabase"></b></span><span>Last trigger<b>2 min ago</b></span><span>Triggers today<b id="policyPreviewTriggers"></b></span><span>False positives<b>0.8%</b></span></div></article><button class="btn primary full" id="savePolicyBtn">Salvar política</button><button class="btn secondary full" id="openSimulationBtn">▶ Executar teste</button></aside></div></section>
+<section class="policy-tab-panel" id="policy-tab-simulation"><div class="policy-simulation-layout"><article class="card policy-command-card"><div class="policy-command-head"><div><span class="label">TESTE CONTROLADO</span><h3>Cenário de disparo</h3></div><span id="policySimulationDb"></span></div><pre id="policySimulationCommand"></pre><div class="policy-command-actions"><button class="btn secondary" id="resetPolicySimulation">♻ Limpar</button><button class="btn primary" id="runPolicySimulation">▶ Executar teste</button></div></article><article class="card policy-result-card"><div class="policy-result-head"><span>IMPER<span>VA</span> POLICY ENGINE</span><b id="policyExecutionStatus">READY</b></div><div class="policy-result-body" id="policyResultBody"><div class="console-empty"><div>⌁</div><h4>Aguardando execução</h4><p>Execute o teste para visualizar o resultado.</p></div></div></article></div><div class="policy-test-cards"><article class="card"><span>POLICY MATCH</span><strong id="policyMatchMetric">--</strong><small>Resultado</small></article><article class="card"><span>RISK SCORE</span><strong id="policyRiskMetric">--</strong><small>Risco calculado</small></article><article class="card"><span>INCIDENT</span><strong id="policyIncidentMetric">--</strong><small>Workflow</small></article><article class="card"><span>SIEM</span><strong id="policySiemMetric">--</strong><small>Integração</small></article></div></section>
+<section class="policy-tab-panel" id="policy-tab-timeline"><article class="card policy-timeline-card"><div class="policy-section-title"><div><span class="label">EXECUTION TIMELINE</span><h3>Fluxo completo da detecção</h3></div><span id="policyTimelineIncident">INCIDENT PENDING</span></div><div class="policy-timeline" id="policyTimeline"></div></article></section>
+<section class="policy-tab-panel" id="policy-tab-logs"><article class="card policy-log-card"><div class="policy-section-title"><div><span class="label">TECHNICAL LOGS</span><h3>Registro da execução</h3></div><button class="btn secondary" id="copyPolicyLogs">Copiar logs</button></div><pre id="policyLogsOutput">Nenhuma execução registrada.</pre></article></section>
+<section class="policy-tab-panel" id="policy-tab-explanation"><div class="policy-explanation-grid"><article class="card"><span class="label">POR QUE DISPAROU?</span><h3 id="policyWhyTitle"></h3><p id="policyWhyText"></p></article><article class="card"><span class="label">O QUE FOI DETECTADO?</span><div class="explanation-facts" id="policyExplanationFacts"></div></article><article class="card"><span class="label">IMPACTO</span><h3 id="policyImpactTitle"></h3><p id="policyImpactText"></p></article><article class="card"><span class="label">RESULTADO</span><div class="policy-final-result"><strong id="policyFinalSeverity"></strong><span id="policyFinalAction"></span></div></article></div></section>
+<section class="policy-tab-panel" id="policy-tab-playbook"><div class="playbook-layout"><article class="card"><div class="policy-section-title"><div><span class="label">RESPONSE PLAYBOOK</span><h3>Procedimento do analista</h3></div><span class="playbook-progress" id="playbookProgress">0/5</span></div><div class="playbook-steps" id="policyPlaybookSteps"></div></article><aside class="playbook-side"><article class="card"><span class="label">REMEDIAÇÃO</span><h3>Recomendações</h3><ul id="policyRemediationList"></ul></article><button class="btn primary full hidden" id="finishPlaybookBtn">✓ Finalizar tratamento</button></aside></div></section>
+</div></section></div>
+
+
+      
+
+  <div class="global-search-modal hidden" id="globalSearchModal"><div class="global-search-backdrop" id="globalSearchBackdrop"></div><section class="global-search-box"><header><span>⌕</span><input id="globalSearchInput" placeholder="Pesquisar módulos, políticas, documentos, incidentes e recursos..."><kbd>ESC</kbd></header><div class="global-search-results" id="globalSearchResults"></div></section></div>
+
+  <div id="toast" class="toast"></div>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+---
+layout: layouts/base.njk
+bodyClass: pagina-post
+---
+{%- set toc = content | sumario %}
+{%- set viz = collections.posts | vizinhos(page.url) %}
+{%- set rel = collections.posts | relacionados(page.url) %}
+<article class="post" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="post-cabecalho">
+    <div class="container container-estreito">
+      <nav class="migalhas" aria-label="Você está em">
+        <a href="/">Início</a> <span>/</span>
+        {% if tipo == "artigo" %}<a href="/artigos/">Artigos</a>{% else %}<a href="/blog/">Blog</a>{% endif %}
+        {% if categoria %}<span>/</span> <a href="/categorias/{{ categoria | slug }}/">{{ categoria }}</a>{% endif %}
+      </nav>
+      <div class="post-meta">
+        <span class="selo selo-{{ tipo or 'blog' }}">{{ "Artigo" if tipo == "artigo" else "Blog" }}</span>
+        {% if categoria %}<a class="meta-cat" href="/categorias/{{ categoria | slug }}/">{{ categoria }}</a>{% endif %}
+      </div>
+      <h1 itemprop="headline">{{ title }}</h1>
+      {% if descricao %}<p class="post-lead">{{ descricao }}</p>{% endif %}
+      <div class="post-autor-linha">
+        <img src="{{ site.autor.foto }}" alt="" width="40" height="40">
+        <div>
+          <strong itemprop="author">{{ site.autor.nome }}</strong>
+          <span><time datetime="{{ page.date | dataISO }}" itemprop="datePublished">{{ page.date | dataBR }}</time> · {{ content | tempoLeitura }} min de leitura{% if atualizado %} · atualizado em {{ atualizado | dataBR }}{% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {% if capa %}<div class="container container-estreito"><img class="post-capa" src="{{ capa }}" alt="{{ capaAlt or '' }}"></div>{% endif %}
+
+  <div class="container post-layout{% if toc.length < 3 %} sem-toc{% endif %}">
+    <div class="post-conteudo prosa" itemprop="articleBody">
+      {{ content | safe }}
+
+      {% set postTags = tags | semPostsTag %}
+      {% if postTags.length %}
+      <div class="post-tags">
+        {% for t in postTags %}<a href="/tags/{{ t | slug }}/">#{{ t }}</a>{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="compartilhar">
+        <span>Compartilhar:</span>
+        <a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url={{ (site.url + page.url) | urlencode }}">LinkedIn</a>
+        <a target="_blank" rel="noopener" href="https://wa.me/?text={{ (title + ' — ' + site.url + page.url) | urlencode }}">WhatsApp</a>
+        <a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={{ (site.url + page.url) | urlencode }}&text={{ title | urlencode }}">X</a>
+        <button type="button" class="copiar-link" data-url="{{ site.url }}{{ page.url }}">Copiar link</button>
+      </div>
+
+      <div class="caixa-autor">
+        <img src="{{ site.autor.foto }}" alt="Foto de Renato Barros" width="72" height="72">
+        <div>
+          <small>Escrito por</small>
+          <h3>{{ site.autor.nome }}</h3>
+          <p>{{ site.autor.bio }}</p>
+          <a href="/sobre/">Sobre mim</a> · <a href="/curriculo/">Currículo</a> · <a href="{{ site.autor.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+
+      <nav class="post-navegacao" aria-label="Navegação entre posts">
+        {% if viz.antigo %}<a class="nav-ant" href="{{ viz.antigo.url }}"><small>← Anterior</small><span>{{ viz.antigo.data.title }}</span></a>{% else %}<span></span>{% endif %}
+        {% if viz.novo %}<a class="nav-prox" href="{{ viz.novo.url }}"><small>Próximo →</small><span>{{ viz.novo.data.title }}</span></a>{% endif %}
+      </nav>
+    </div>
+
+    {% if toc.length >= 3 %}
+    <aside class="post-toc" aria-label="Sumário">
+      <div class="toc-fixo">
+        <h2>Neste post</h2>
+        <ol>
+          {% for item in toc %}<li class="toc-n{{ item.nivel }}"><a href="#{{ item.id }}">{{ item.texto }}</a></li>{% endfor %}
+        </ol>
+      </div>
+    </aside>
+    {% endif %}
+  </div>
+
+  {% if rel.length %}
+  <section class="relacionados">
+    <div class="container">
+      <h2 class="secao-titulo">Leia também</h2>
+      <div class="grade-cards">
+        {% for post in rel %}{% include "partials/post-card.njk" %}{% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</article>

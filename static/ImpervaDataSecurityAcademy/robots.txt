@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rsbarros43.github.io/ImpervaDataSecurityAcademy/sitemap.xml

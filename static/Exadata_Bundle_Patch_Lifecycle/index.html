@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Exadata Bundle Patch Lifecycle Command Center</title>
+<meta name="description" content="Laboratório interativo gratuito que simula o ciclo completo de Bundle Patch em Oracle Exadata: Assessment, ExaChk, Backup, OL7→OL8, Grid Infrastructure RU, Database RU, PatchMgr, DCLI, CellCLI, Infiniband, troubleshooting, interview mode e certificado final.">
+<meta name="author" content="Renato Barros">
+<meta name="theme-color" content="#05080e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Exadata Bundle Patch Lifecycle Command Center">
+<meta property="og:description" content="Simulador interativo do ciclo completo de atualização Oracle Exadata: OL7→OL8, GI/DB RU, PatchMgr, DCLI, CellCLI, Infiniband e certificação final.">
+<meta property="og:url" content="https://rsbarros43.github.io/Exadata_Bundle_Patch_Lifecycle/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%2305080e'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23e11d2e' font-family='Arial,sans-serif' font-weight='bold'%3EX%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05080e;--panel:#0e1726;--panel2:#08111e;--ink:#edf4ff;--muted:#9fb0c2;
+  --red:#e11d2e;--cyan:#64d9ff;--green:#2ee59d;--yellow:#f7c948;--orange:#ff9f43;--purple:#7c5cff;
+  --line:rgba(100,217,255,.22);--shadow:0 18px 45px rgba(0,0,0,.44),0 0 0 1px rgba(100,217,255,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:Inter,system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(100,217,255,.12),transparent 30%),
+    radial-gradient(circle at 85% 4%,rgba(225,29,46,.13),transparent 28%),
+    linear-gradient(120deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(180deg,#05080e 0%,#08111e 48%,#05080e 100%);
+  background-size:auto,auto,42px 42px,auto;
+}
+.wrap{max-width:1760px;margin:0 auto;padding:24px}
+.panel{
+  background:linear-gradient(180deg,rgba(18,29,48,.95),rgba(7,13,23,.96));
+  border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px;overflow:hidden;
+}
+.hero{
+  min-height:360px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-color:rgba(225,29,46,.36);
+  background:linear-gradient(180deg,rgba(9,15,25,.96),rgba(7,11,18,.98)),radial-gradient(circle at center,rgba(225,29,46,.12),transparent 38%);
+}
+.brand{font-family:Rajdhani,sans-serif;font-weight:800;font-size:36px;letter-spacing:.04em;text-transform:uppercase}
+.oracle-red{color:var(--red);font-weight:800;letter-spacing:.05em}
+h1{font-family:Rajdhani,sans-serif;font-size:58px;line-height:1.0;letter-spacing:.08em;margin:20px 0 12px;text-transform:uppercase}
+.tagline{font-family:Share Tech Mono,monospace;color:#bdd7ee;font-size:17px;letter-spacing:.10em}
+.start-box{width:min(820px,96%);margin-top:24px;text-align:left;border-color:rgba(225,29,46,.35)}
+.start-box h2,.panel-title{font-family:Rajdhani,sans-serif;text-transform:uppercase;color:#ff5968;letter-spacing:.09em;font-size:26px;margin:0 0 14px}
+.start-box label{font-family:Share Tech Mono,monospace;display:block;margin-bottom:8px}
+.start-box input{width:100%;border:1px solid rgba(225,29,46,.55);background:#050b14;color:white;border-radius:12px;padding:14px;font-size:18px;font-family:Share Tech Mono,monospace}
+.main-btn{
+  border:0;border-radius:12px;background:linear-gradient(135deg,#e11d2e,#ff3b45);color:#fff;
+  box-shadow:0 16px 30px rgba(225,29,46,.25);padding:14px 18px;font-family:Rajdhani,sans-serif;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:14px;width:100%;
+}
+.main-btn:hover,.exec-btn:hover,.mini-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.notice{margin-top:14px;color:#dbe7f3;line-height:1.55;text-align:center}
+.warnbox{margin-top:18px;border:1px solid rgba(247,201,72,.45);background:rgba(247,201,72,.08);color:#f8e7b0;border-radius:16px;padding:14px;font-family:Share Tech Mono,monospace;line-height:1.55}
+.feature-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:18px 0;border:1px solid rgba(225,29,46,.22);background:rgba(5,8,14,.76);border-radius:18px;overflow:hidden}
+.feature{padding:16px;border-right:1px solid rgba(255,255,255,.08);font-family:Share Tech Mono,monospace}
+.feature b{display:block;font-family:Rajdhani,sans-serif;font-size:17px;color:white;letter-spacing:.08em}.feature span{color:var(--red);font-size:24px}
+.lab{display:grid;margin-top:22px;grid-template-columns:330px minmax(720px,1fr) 430px;gap:18px;align-items:start}
+.lab.show{display:grid}
+.left,.center,.right{display:flex;flex-direction:column;gap:14px}
+.steps{display:flex;flex-direction:column;gap:10px;max-height:850px;overflow:auto;padding-right:4px}
+.step{
+  display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;border:1px solid rgba(100,217,255,.14);
+  border-radius:16px;background:rgba(7,13,23,.72);padding:13px;min-height:76px;
+}
+.step.active{border-color:rgba(100,217,255,.8);background:linear-gradient(90deg,rgba(100,217,255,.18),rgba(7,13,23,.82))}
+.step.done{border-color:rgba(46,229,157,.68);background:linear-gradient(90deg,rgba(46,229,157,.16),rgba(7,13,23,.82))}
+.icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-family:Rajdhani,sans-serif;font-size:24px;font-weight:800;color:white;background:linear-gradient(135deg,#3f8cff,#7c5cff)}
+.step.done .icon{background:linear-gradient(135deg,#2ee59d,#0b9f6f);color:#04130d}
+.step b{font-family:Rajdhani,sans-serif;font-size:18px}
+.step p{font-family:Share Tech Mono,monospace;color:#d9e8f4;margin:5px 0 0;font-size:13px}
+.ticket{background:linear-gradient(135deg,#111827,#16324a)}
+.ticket-inner{border:1px solid rgba(100,217,255,.25);border-radius:16px;background:#050b14;padding:16px;font-family:Share Tech Mono,monospace}
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kv{border:1px solid rgba(100,217,255,.16);border-radius:12px;padding:10px;background:rgba(7,13,23,.72);font-family:Share Tech Mono,monospace;font-size:13px}
+.kv b{display:block;color:var(--yellow);margin-bottom:5px}
+.arch{
+  min-height:365px;border:1px solid rgba(100,217,255,.18);border-radius:18px;background:#050b14;padding:18px;
+  display:flex;flex-direction:column;justify-content:center;gap:18px;
+}
+.arch-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.arch-box{flex:1;border:2px solid var(--cyan);border-radius:14px;padding:12px;text-align:center;background:#101a2b;min-height:82px}
+.arch-box b{font-family:Rajdhani,sans-serif;font-size:20px}.arch-box small{display:block;font-family:Share Tech Mono;color:#cfe3f8;margin-top:6px}
+.arrow{font-size:30px;color:var(--cyan)}
+.status{
+  border:1px solid rgba(46,229,157,.35);border-radius:14px;padding:12px;color:var(--green);
+  font-family:Share Tech Mono,monospace;background:rgba(46,229,157,.06);font-size:16px;
+}
+.dash{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{border:1px solid rgba(100,217,255,.16);border-radius:14px;background:#050b14;padding:12px;font-family:Share Tech Mono,monospace;min-height:76px}
+.card b{display:block;color:var(--cyan);font-family:Rajdhani,sans-serif;letter-spacing:.08em}.card span{font-size:20px;color:var(--yellow)}
+.card.ok span{color:var(--green)}.card.bad span{color:#ff5c7a}
+.terminal{height:310px;border:1px solid rgba(100,217,255,.17);border-radius:18px;background:#03070d;overflow:hidden}
+.term-title{padding:10px 14px;border-bottom:1px solid rgba(100,217,255,.16);font-family:Rajdhani,sans-serif;color:#9fe9ff;text-transform:uppercase;letter-spacing:.08em}
+.term-out{height:230px;overflow:auto;padding:14px;font-family:Share Tech Mono,monospace;white-space:pre-wrap;line-height:1.42}
+.prompt{color:var(--green)}.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:#ff5c7a}.explain{color:#9fe9ff}
+.cli-input{height:58px;display:grid;grid-template-columns:1fr 110px;gap:10px;padding:8px;border-top:1px solid rgba(100,217,255,.16)}
+.cli-input input{background:#050b14;color:#eaffff;border:1px solid rgba(100,217,255,.35);border-radius:12px;padding:0 12px;font-family:Share Tech Mono,monospace}
+.exec-btn{border:0;border-radius:12px;background:linear-gradient(135deg,#e11d2e,#ff3b45);color:white;font-family:Rajdhani,sans-serif;font-weight:800;letter-spacing:.12em;cursor:pointer}
+.runbook-note,.global-progress-box{
+  border:1px solid rgba(100,217,255,.24);border-radius:14px;background:rgba(100,217,255,.08);padding:12px;
+  color:#dbe7f3;font-family:Share Tech Mono,monospace;font-size:13px;line-height:1.45;margin-bottom:12px;
+}
+.progress-title{display:flex;justify-content:space-between;color:var(--green);margin-bottom:8px}
+.progress-bar{height:11px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+.progress-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--yellow),var(--green));width:0}
+.hints{max-height:660px;overflow:auto;padding-right:6px}
+.chapter{margin-bottom:8px;border:1px solid rgba(100,217,255,.13);border-radius:14px;padding:10px;background:#050b14}
+.chapter-head{display:flex;justify-content:space-between;color:var(--yellow);font-family:Share Tech Mono,monospace}.chapter-progress{height:8px;background:rgba(255,255,255,.08);border-radius:99px;margin-top:7px;overflow:hidden}.chapter-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--green))}
+.hint-btn{
+  width:100%;text-align:left;margin:8px 0;border:1px solid rgba(100,217,255,.16);border-radius:14px;background:#050b14;
+  color:#dbe7f3;padding:12px;font-family:Share Tech Mono,monospace;cursor:pointer;
+}
+.hint-btn.done{border-color:rgba(46,229,157,.68);background:linear-gradient(90deg,rgba(46,229,157,.15),rgba(7,13,23,.82));color:#d9ffef}
+.hint-btn.current{border-color:rgba(100,217,255,.8);background:linear-gradient(90deg,rgba(100,217,255,.18),rgba(7,13,23,.82))}
+.mark{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;margin-right:8px;background:rgba(143,163,184,.13)}
+.done .mark{background:rgba(46,229,157,.2);color:var(--green)}.current .mark{background:rgba(100,217,255,.18);color:var(--cyan)}
+.status-line{display:block;margin-top:7px;color:#91a8ba}.done .status-line{color:var(--green)}.current .status-line{color:var(--cyan)}
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.score-box{border:1px solid rgba(100,217,255,.16);border-radius:12px;background:#050b14;padding:10px;text-align:center;font-family:Share Tech Mono,monospace}.score-box b{color:var(--cyan);display:block;font-size:12px}.score-box div{font-size:22px;color:white}
+.timeline{font-family:Share Tech Mono,monospace;font-size:13px;line-height:1.55;color:#d9e8f4;background:#050b14;border:1px solid rgba(100,217,255,.16);border-radius:14px;padding:14px;white-space:pre-wrap}
+.trouble-grid,.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini-btn{border:1px solid rgba(100,217,255,.16);border-radius:10px;background:#050b14;color:#eaf7ff;padding:9px;font-family:Share Tech Mono,monospace;cursor:pointer}
+.info-box{margin-top:10px;border:1px solid rgba(247,201,72,.35);border-radius:12px;background:rgba(247,201,72,.08);padding:12px;color:#f8e7b0;font-family:Share Tech Mono,monospace;line-height:1.45}
+.cert-panel{display:none;margin-top:14px}.cert-panel.show{display:block}
+.cert-layout{display:grid;grid-template-columns:minmax(620px,1fr) 330px;gap:16px}
+.cert{
+  background:#fbfbfb;color:#111;border:2px solid #cfd5dd;border-radius:14px;min-height:620px;position:relative;padding:30px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)
+}
+.cert:before{content:"";position:absolute;inset:14px;border:2px solid var(--red);pointer-events:none}.cert:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,0,0,.018) 0 1px,transparent 1px 10px);pointer-events:none}
+.cert > *{position:relative;z-index:2}
+.cert-top{display:flex;justify-content:space-between}.cert-logo{font-family:Rajdhani,sans-serif;font-size:38px;font-weight:800}.cert-logo small{display:block;background:var(--red);color:white;width:max-content;padding:4px 12px;border-radius:6px;font-size:14px}.cert-id{font-family:Share Tech Mono,monospace;color:#333}
+.cert-body{text-align:center;padding:54px 24px 20px}.cert-body h3{font-family:Rajdhani,sans-serif;font-size:40px;letter-spacing:.08em;margin:0 0 18px}.cert-name{font-family:Great Vibes,cursive;font-size:76px;border-bottom:1px solid #999;max-width:760px;margin:12px auto}.cert-title{font-family:Rajdhani,sans-serif;color:var(--red);font-size:34px;font-weight:800;letter-spacing:.08em}.cert-sub{font-family:Share Tech Mono,monospace;color:#444;margin-top:8px}
+.cert-foot{display:grid;grid-template-columns:1fr 145px 1fr;gap:12px;align-items:end;margin-top:34px}.seal{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#4b2d14,#16110c);border:6px solid #b78938;color:white;display:grid;place-items:center;text-align:center;font-family:Rajdhani,sans-serif;font-weight:800}.sign{text-align:center;border-top:1px solid #777;padding-top:6px}.sign span{font-family:Great Vibes,cursive;font-size:42px}.locked{opacity:.42;filter:grayscale(.65)}.watermark{position:absolute;right:30px;bottom:30px;z-index:3;color:var(--red);border:2px solid var(--red);padding:6px 12px;font-family:Rajdhani,sans-serif;font-size:22px;font-weight:800;transform:rotate(-8deg)}
+.cert-side{display:flex;flex-direction:column;justify-content:center}.cert-side p{line-height:1.55}.cert-actions button{width:auto;margin-right:8px}
+.flow-modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px}.flow-modal.show{display:flex}
+.flow-box{width:min(760px,94vw);border:1px solid rgba(225,29,46,.55);border-radius:22px;background:linear-gradient(180deg,rgba(18,24,39,.98),rgba(7,11,18,.98));box-shadow:0 30px 90px rgba(0,0,0,.65);padding:30px;text-align:center}
+.flow-box h2{font-family:Rajdhani,sans-serif;font-size:34px;color:#ff4d5f;margin:0 0 14px;text-transform:uppercase}.flow-box p{font-size:17px;line-height:1.55}.flow-command{margin:18px auto;padding:16px;border:1px solid rgba(100,217,255,.36);border-radius:14px;background:#050b14;color:#9fe9ff;font-family:Share Tech Mono,monospace;text-align:left;white-space:pre-wrap}.flow-actions{display:flex;gap:12px;justify-content:center}.flow-actions button{border:0;border-radius:12px;padding:13px 18px;font-family:Rajdhani,sans-serif;font-weight:800;letter-spacing:.10em;text-transform:uppercase;cursor:pointer}.flow-primary{background:linear-gradient(135deg,#e11d2e,#ff3b45);color:#fff}.flow-secondary{background:#101827;color:#dbe7f3;border:1px solid rgba(100,217,255,.22)!important}
+.toast{position:fixed;right:20px;bottom:20px;background:#0b1220;border:1px solid rgba(100,217,255,.25);border-radius:14px;padding:14px 16px;display:none;z-index:99999}.toast.show{display:block}
+@media(max-width:1280px){.lab{grid-template-columns:1fr}.cert-layout,.feature-strip{grid-template-columns:1fr}.dash{grid-template-columns:1fr 1fr}}
+
+/* ENTERPRISE V2 - PatchMgr, DCLI, CellCLI Advanced, AWR/ASH */
+.enterprise-badge{display:inline-block;margin-top:12px;padding:8px 14px;border:1px solid rgba(46,229,157,.45);border-radius:999px;background:rgba(46,229,157,.08);color:#2ee59d;font-family:Share Tech Mono,monospace;letter-spacing:.08em}
+.enterprise-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.enterprise-card{border:1px solid rgba(100,217,255,.16);border-radius:14px;background:#050b14;padding:12px;font-family:Share Tech Mono,monospace;min-height:80px}
+.enterprise-card b{display:block;color:#64d9ff;font-family:Rajdhani,sans-serif;letter-spacing:.08em;margin-bottom:6px}.enterprise-card span{color:#dbe7f3;font-size:13px}
+@media(max-width:1280px){.enterprise-grid{grid-template-columns:1fr 1fr}}
+
+
+/* ==========================================================
+   FIX V2.1 - Console Operacional / Campo EXEC
+   Corrige corte do input e botão EXEC no rodapé do terminal.
+   ========================================================== */
+.terminal{
+  height:340px !important;
+}
+.term-out{
+  height:238px !important;
+}
+.cli-input{
+  min-height:76px !important;
+  height:auto !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 140px !important;
+  gap:12px !important;
+  padding:12px !important;
+  border-top:1px solid rgba(100,217,255,.16) !important;
+  align-items:center !important;
+  overflow:visible !important;
+}
+.cli-input input{
+  height:48px !important;
+  min-height:48px !important;
+  background:#050b14 !important;
+  color:#eaffff !important;
+  border:1px solid rgba(100,217,255,.35) !important;
+  border-radius:12px !important;
+  padding:0 14px !important;
+  font-family:Share Tech Mono,monospace !important;
+  font-size:14px !important;
+  line-height:48px !important;
+  width:100% !important;
+}
+.exec-btn{
+  height:48px !important;
+  min-height:48px !important;
+  border:0 !important;
+  border-radius:12px !important;
+  background:linear-gradient(135deg,#e11d2e,#ff3b45) !important;
+  color:white !important;
+  font-family:Rajdhani,sans-serif !important;
+  font-weight:800 !important;
+  letter-spacing:.12em !important;
+  cursor:pointer !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 18px !important;
+}
+
+
+/* ==========================================================
+   V2.2 - Certificado em modo conclusão / largura total
+   Corrige corte do painel "Sobre o Certificado"
+   ========================================================== */
+
+#certPanel{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow:visible !important;
+  margin-top:24px !important;
+  padding:22px !important;
+}
+
+.cert-layout{
+  display:grid !important;
+  grid-template-columns:minmax(720px,1.6fr) minmax(360px,.8fr) !important;
+  gap:24px !important;
+  align-items:stretch !important;
+  width:100% !important;
+}
+
+.cert{
+  width:100% !important;
+  min-height:760px !important;
+  height:auto !important;
+  padding:36px !important;
+  overflow:hidden !important;
+}
+
+.cert-side{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:760px !important;
+  padding:30px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  overflow:visible !important;
+}
+
+.cert-logo{
+  font-size:42px !important;
+}
+.cert-logo small{
+  font-size:15px !important;
+  padding:5px 14px !important;
+}
+.cert-id{
+  font-size:14px !important;
+}
+.cert-body{
+  padding:74px 30px 26px !important;
+}
+.cert-body h3{
+  font-size:44px !important;
+  line-height:1.1 !important;
+}
+.cert-name{
+  font-size:86px !important;
+  max-width:900px !important;
+}
+.cert-title{
+  font-size:38px !important;
+  line-height:1.15 !important;
+}
+.cert-sub{
+  font-size:15px !important;
+  line-height:1.45 !important;
+}
+.cert-foot{
+  grid-template-columns:1fr 170px 1fr !important;
+  gap:18px !important;
+  margin-top:46px !important;
+}
+.seal{
+  width:160px !important;
+  height:160px !important;
+  font-size:16px !important;
+}
+.sign span{
+  font-size:46px !important;
+}
+
+.cert-side .panel-title{
+  font-size:30px !important;
+}
+.cert-side p{
+  font-size:17px !important;
+  line-height:1.6 !important;
+}
+.cert-side .info-box{
+  font-size:15px !important;
+  line-height:1.5 !important;
+}
+.cert-actions .main-btn,
+.cert-side .main-btn{
+  width:100% !important;
+  min-height:52px !important;
+}
+
+@media(max-width:1380px){
+  .cert-layout{
+    grid-template-columns:1fr !important;
+  }
+  .cert,
+  .cert-side{
+    min-height:auto !important;
+  }
+}
+
+@media(max-width:1600px){
+  .cert{
+    min-height:690px !important;
+    padding:30px !important;
+  }
+  .cert-side{
+    min-height:690px !important;
+  }
+  .cert-body{
+    padding:54px 24px 22px !important;
+  }
+  .cert-body h3{
+    font-size:38px !important;
+  }
+  .cert-name{
+    font-size:74px !important;
+  }
+  .cert-title{
+    font-size:32px !important;
+  }
+  .seal{
+    width:140px !important;
+    height:140px !important;
+  }
+  .cert-foot{
+    grid-template-columns:1fr 150px 1fr !important;
+  }
+}
+
+
+/* ==========================================================
+   FINAL - Fundamentos Exadata Bundle Patch Lifecycle
+   ========================================================== */
+.fundamentos-exadata{
+  margin-top:18px;
+  padding:22px;
+}
+.fundamentos-exadata .fund-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
+}
+.fundamentos-exadata .fund-card{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:16px;
+  background:#050b14;
+  padding:22px;
+  min-height:230px;
+}
+.fundamentos-exadata h4{
+  margin:0 0 14px;
+  color:#f7c948;
+  font-family:Share Tech Mono,monospace;
+  text-align:center;
+}
+.fundamentos-exadata p{
+  margin:0 0 14px;
+  color:#e8f2ff;
+  font-family:Share Tech Mono,monospace;
+  line-height:1.6;
+  text-align:center;
+}
+.fundamentos-exadata strong{
+  color:#f7c948;
+}
+.doc-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:18px;
+}
+.doc-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+  color:#04130d;
+  background:linear-gradient(135deg,#64d9ff,#2ee59d);
+  box-shadow:0 16px 30px rgba(46,229,157,.18);
+}
+.doc-link.secondary{
+  color:#f8e7b0;
+  background:rgba(247,201,72,.08);
+  border:1px solid rgba(247,201,72,.35);
+  box-shadow:none;
+}
+@media(max-width:1100px){
+  .fundamentos-exadata .fund-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   FINAL FIX - Certificado igual à V2.3 Certificate Centered
+   Remove definitivamente a borda/moldura externa do bloco
+   "Certificado do Laboratório".
+   ========================================================== */
+
+#certPanel,
+section#certPanel,
+.panel#certPanel{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  outline:0 !important;
+  padding:28px 0 18px !important;
+  margin:36px auto 28px !important;
+  max-width:1500px !important;
+  width:100% !important;
+  overflow:visible !important;
+}
+
+/* Remove qualquer pseudo-borda herdada do panel */
+#certPanel::before,
+#certPanel::after,
+section#certPanel::before,
+section#certPanel::after,
+.panel#certPanel::before,
+.panel#certPanel::after{
+  display:none !important;
+  content:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+
+/* Mantém somente o título e o layout interno */
+#certPanel > .panel-title{
+  max-width:1420px !important;
+  margin:0 auto 20px !important;
+  padding-left:8px !important;
+}
+
+#certPanel .cert-layout{
+  max-width:1420px !important;
+  margin:0 auto !important;
+  display:grid !important;
+  grid-template-columns:minmax(780px,1.8fr) minmax(360px,.7fr) !important;
+  gap:28px !important;
+  align-items:stretch !important;
+  justify-content:center !important;
+}
+
+#certPanel .cert{
+  min-height:720px !important;
+  max-width:1000px !important;
+  justify-self:center !important;
+  width:100% !important;
+}
+
+#certPanel .cert-side{
+  max-width:390px !important;
+  justify-self:center !important;
+  width:100% !important;
+  min-height:720px !important;
+  border-radius:18px !important;
+}
+
+/* Em telas menores, mantém o layout sem corte */
+@media(max-width:1380px){
+  #certPanel{
+    max-width:1180px !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  #certPanel .cert-layout{
+    grid-template-columns:1fr !important;
+    max-width:980px !important;
+  }
+  #certPanel .cert,
+  #certPanel .cert-side{
+    max-width:980px !important;
+    min-height:auto !important;
+  }
+}
+
+
+/* ==========================================================
+   FINAL PLUS - Arquitetura Exadata Patch Lifecycle
+   Seção visual própria, inspirada no conceito do processo,
+   sem copiar layout/imagem original.
+   ========================================================== */
+
+.exa-journey{
+  margin-top:18px;
+  padding:24px;
+}
+
+.exa-journey .journey-subtitle{
+  text-align:center;
+  color:#bdd7ee;
+  font-family:Share Tech Mono,monospace;
+  margin-top:-6px;
+  margin-bottom:22px;
+  letter-spacing:.04em;
+}
+
+.journey-canvas{
+  border:1px solid rgba(100,217,255,.22);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(100,217,255,.09),transparent 30%),
+    radial-gradient(circle at 80% 10%,rgba(225,29,46,.10),transparent 28%),
+    #050b14;
+  padding:22px;
+  overflow:hidden;
+}
+
+.journey-top{
+  display:grid;
+  grid-template-columns:1fr 1.35fr 1fr;
+  gap:18px;
+  align-items:stretch;
+}
+
+.journey-block{
+  border:1px solid rgba(100,217,255,.24);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(18,29,48,.96),rgba(7,13,23,.98));
+  padding:18px;
+  min-height:310px;
+  position:relative;
+}
+
+.journey-block.before{
+  border-color:rgba(255,95,108,.35);
+}
+
+.journey-block.after{
+  border-color:rgba(46,229,157,.38);
+}
+
+.journey-block h4{
+  margin:0 0 14px;
+  font-family:Rajdhani,sans-serif;
+  font-size:22px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:#64d9ff;
+}
+
+.journey-block.before h4{
+  color:#ff5968;
+}
+
+.journey-block.after h4{
+  color:#2ee59d;
+}
+
+.stack-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;
+  background:rgba(5,11,20,.72);
+  padding:11px 12px;
+  margin-bottom:10px;
+  font-family:Share Tech Mono,monospace;
+  color:#e8f2ff;
+}
+
+.stack-icon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-family:Rajdhani,sans-serif;
+  font-weight:800;
+  color:#050b14;
+  background:linear-gradient(135deg,#64d9ff,#2ee59d);
+  flex:0 0 auto;
+}
+
+.before .stack-icon{
+  background:linear-gradient(135deg,#ff5968,#f7c948);
+}
+
+.after .stack-icon{
+  background:linear-gradient(135deg,#2ee59d,#64d9ff);
+}
+
+.pipeline{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.pipe-step{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  align-items:center;
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:14px;
+  background:rgba(100,217,255,.055);
+  padding:10px;
+  font-family:Share Tech Mono,monospace;
+  position:relative;
+}
+
+.pipe-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  left:28px;
+  bottom:-11px;
+  width:2px;
+  height:10px;
+  background:linear-gradient(180deg,#64d9ff,#2ee59d);
+}
+
+.pipe-num{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(135deg,#e11d2e,#7c5cff);
+  font-family:Rajdhani,sans-serif;
+  font-size:20px;
+  font-weight:800;
+}
+
+.pipe-step b{
+  color:#fff;
+  font-family:Rajdhani,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.pipe-step small{
+  display:block;
+  color:#9fb3c8;
+  margin-top:3px;
+}
+
+.component-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.component-card{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:16px;
+  background:rgba(7,13,23,.74);
+  padding:16px 12px;
+  text-align:center;
+  min-height:120px;
+}
+
+.component-card .big-icon{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.component-card b{
+  display:block;
+  color:#64d9ff;
+  font-family:Rajdhani,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.component-card span{
+  color:#dbe7f3;
+  font-family:Share Tech Mono,monospace;
+  font-size:12px;
+  line-height:1.35;
+}
+
+.journey-footer{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+}
+
+.journey-note{
+  border:1px solid rgba(247,201,72,.30);
+  border-radius:14px;
+  background:rgba(247,201,72,.07);
+  color:#f8e7b0;
+  padding:14px;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.journey-note b{
+  display:block;
+  color:#f7c948;
+  margin-bottom:6px;
+}
+
+@media(max-width:1280px){
+  .journey-top{
+    grid-template-columns:1fr;
+  }
+  .component-row{
+    grid-template-columns:1fr 1fr;
+  }
+  .journey-footer{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   FINAL PLUS V2 - DESENHO DO PROJETO EXADATA PATCH LIFECYCLE
+   ========================================================== */
+.exa-journey{
+  margin-top:18px;
+  padding:24px !important;
+}
+.exa-journey .journey-subtitle{
+  text-align:center;
+  color:#bdd7ee;
+  font-family:Share Tech Mono,monospace;
+  margin-top:-6px;
+  margin-bottom:22px;
+  letter-spacing:.04em;
+}
+.journey-canvas{
+  border:1px solid rgba(100,217,255,.22);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(100,217,255,.09),transparent 30%),
+    radial-gradient(circle at 80% 10%,rgba(225,29,46,.10),transparent 28%),
+    #050b14;
+  padding:22px;
+  overflow:hidden;
+}
+.journey-top{
+  display:grid;
+  grid-template-columns:1fr 1.35fr 1fr;
+  gap:18px;
+  align-items:stretch;
+}
+.journey-block{
+  border:1px solid rgba(100,217,255,.24);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(18,29,48,.96),rgba(7,13,23,.98));
+  padding:18px;
+  min-height:310px;
+  position:relative;
+}
+.journey-block.before{border-color:rgba(255,95,108,.40)}
+.journey-block.after{border-color:rgba(46,229,157,.42)}
+.journey-block h4{
+  margin:0 0 14px;
+  font-family:Rajdhani,sans-serif;
+  font-size:22px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:#64d9ff;
+}
+.journey-block.before h4{color:#ff5968}
+.journey-block.after h4{color:#2ee59d}
+.stack-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;
+  background:rgba(5,11,20,.72);
+  padding:11px 12px;
+  margin-bottom:10px;
+  font-family:Share Tech Mono,monospace;
+  color:#e8f2ff;
+}
+.stack-icon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-family:Rajdhani,sans-serif;
+  font-weight:800;
+  color:#050b14;
+  background:linear-gradient(135deg,#64d9ff,#2ee59d);
+  flex:0 0 auto;
+}
+.before .stack-icon{background:linear-gradient(135deg,#ff5968,#f7c948)}
+.after .stack-icon{background:linear-gradient(135deg,#2ee59d,#64d9ff)}
+.pipeline{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.pipe-step{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  align-items:center;
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:14px;
+  background:rgba(100,217,255,.055);
+  padding:10px;
+  font-family:Share Tech Mono,monospace;
+  position:relative;
+}
+.pipe-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  left:28px;
+  bottom:-11px;
+  width:2px;
+  height:10px;
+  background:linear-gradient(180deg,#64d9ff,#2ee59d);
+}
+.pipe-num{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(135deg,#e11d2e,#7c5cff);
+  font-family:Rajdhani,sans-serif;
+  font-size:20px;
+  font-weight:800;
+}
+.pipe-step b{
+  color:#fff;
+  font-family:Rajdhani,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.pipe-step small{
+  display:block;
+  color:#9fb3c8;
+  margin-top:3px;
+}
+.component-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+.component-card{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:16px;
+  background:rgba(7,13,23,.74);
+  padding:16px 12px;
+  text-align:center;
+  min-height:120px;
+}
+.component-card .big-icon{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.component-card b{
+  display:block;
+  color:#64d9ff;
+  font-family:Rajdhani,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.component-card span{
+  color:#dbe7f3;
+  font-family:Share Tech Mono,monospace;
+  font-size:12px;
+  line-height:1.35;
+}
+.journey-footer{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+}
+.journey-note{
+  border:1px solid rgba(247,201,72,.30);
+  border-radius:14px;
+  background:rgba(247,201,72,.07);
+  color:#f8e7b0;
+  padding:14px;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+  line-height:1.45;
+}
+.journey-note b{
+  display:block;
+  color:#f7c948;
+  margin-bottom:6px;
+}
+@media(max-width:1280px){
+  .journey-top{grid-template-columns:1fr}
+  .component-row{grid-template-columns:1fr 1fr}
+  .journey-footer{grid-template-columns:1fr}
+}
+
+
+/* ==========================================================
+   FINAL FIX - Console EXEC sem corte
+   Ajuste fino da área inferior do terminal operacional.
+   ========================================================== */
+
+.terminal{
+  height:360px !important;
+  overflow:visible !important;
+  padding-bottom:0 !important;
+}
+
+.term-out{
+  height:252px !important;
+  overflow:auto !important;
+}
+
+.cli-input{
+  min-height:82px !important;
+  height:82px !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 150px !important;
+  gap:14px !important;
+  padding:14px 14px 16px !important;
+  border-top:1px solid rgba(100,217,255,.16) !important;
+  align-items:center !important;
+  overflow:visible !important;
+  background:#03070d !important;
+}
+
+.cli-input input{
+  height:52px !important;
+  min-height:52px !important;
+  width:100% !important;
+  line-height:52px !important;
+  padding:0 16px !important;
+  border-radius:13px !important;
+  font-size:14px !important;
+  overflow:visible !important;
+}
+
+.exec-btn{
+  height:52px !important;
+  min-height:52px !important;
+  width:150px !important;
+  padding:0 18px !important;
+  border-radius:13px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:visible !important;
+}
+
+.panel:has(.terminal){
+  overflow:visible !important;
+  padding-bottom:22px !important;
+}
+
+
+/* ==========================================================
+   FINAL V4 - Interview Mode Expandido
+   Perguntas clicáveis com resposta técnica abaixo.
+   ========================================================== */
+
+.interview-enterprise{
+  margin-top:18px;
+  padding:24px !important;
+}
+
+.interview-enterprise .interview-subtitle{
+  text-align:center;
+  color:#bdd7ee;
+  font-family:Share Tech Mono,monospace;
+  margin-top:-6px;
+  margin-bottom:22px;
+  letter-spacing:.04em;
+}
+
+.qa-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.qa-item{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:16px;
+  background:#050b14;
+  overflow:hidden;
+}
+
+.qa-question{
+  width:100%;
+  border:0;
+  background:linear-gradient(90deg,rgba(100,217,255,.10),rgba(225,29,46,.06));
+  color:#eef6ff;
+  padding:15px 16px;
+  text-align:left;
+  font-family:Share Tech Mono,monospace;
+  font-size:14px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+
+.qa-question b{
+  color:#64d9ff;
+}
+
+.qa-question span{
+  color:#f7c948;
+  font-weight:800;
+}
+
+.qa-answer{
+  display:none;
+  padding:15px 16px 18px;
+  color:#dbe7f3;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+  line-height:1.55;
+  border-top:1px solid rgba(100,217,255,.12);
+}
+
+.qa-item.open{
+  border-color:rgba(46,229,157,.42);
+  box-shadow:0 0 0 1px rgba(46,229,157,.08),0 18px 35px rgba(0,0,0,.25);
+}
+
+.qa-item.open .qa-answer{
+  display:block;
+}
+
+.qa-item.open .qa-question span{
+  color:#2ee59d;
+}
+
+@media(max-width:1100px){
+  .qa-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="panel hero">
+    <div class="brand"><span class="oracle-red">ORACLE</span> DBA ACADEMY</div>
+    <h1>EXADATA BUNDLE PATCH<br>LIFECYCLE COMMAND CENTER</h1>
+    <div class="tagline">OL7 → OL8 • RU 19.31 • PATCHMGR • DCLI • CELLCLI • IB • AWR/ASH • GO LIVE</div>
+    <div class="panel start-box">
+      <h2>Identificação do DBA</h2>
+      <label>Nome do aluno/cliente</label>
+      <input id="studentName" placeholder="Digite seu nome completo" value="">
+      <button class="main-btn" onclick="startLab()">INICIAR / CONTINUAR LAB COMPLETO</button>
+      <div class="notice">Laboratório interativo completo para simular uma jornada crítica de atualização Oracle Exadata, com execução guiada, dashboard, validação, troubleshooting, interview mode e certificado.<br>Seu progresso é salvo automaticamente neste navegador. <a href="#" id="resetProgress" style="color:#ff8b96">Zerar progresso</a></div>
+    </div>
+  </section>
+
+  <div class="feature-strip">
+    <div class="feature"><span>▣</span><b>ASSESSMENT</b>Inventário inicial</div>
+    <div class="feature"><span>◎</span><b>EXACHK</b>Health Score</div>
+    <div class="feature"><span>⇧</span><b>OL7 → OL8</b>Upgrade OS</div>
+    <div class="feature"><span>⚙</span><b>GI / DB RU</b>Patch lifecycle</div>
+    <div class="feature"><span>⌁</span><b>INFINIBAND</b>Fabric validation</div>
+    <div class="feature"><span>✓</span><b>CERTIFICAÇÃO</b>Conclusão final</div>
+  </div>
+
+
+  <section class="panel fundamentos-exadata">
+    <h3 class="panel-title" style="text-align:center">Fundamentos do Exadata Bundle Patch Lifecycle</h3>
+    <div class="fund-grid">
+      <div class="fund-card">
+        <h4>O que é o Exadata Bundle Patch Lifecycle?</h4>
+        <p>
+          É o ciclo operacional de atualização de uma plataforma Oracle Exadata, envolvendo validação prévia,
+          aplicação controlada de patches, atualização de componentes de infraestrutura e confirmação da saúde
+          do ambiente após a mudança.
+        </p>
+        <p>
+          Em uma jornada real, o processo pode envolver <strong>Oracle Linux</strong>, <strong>Grid Infrastructure</strong>,
+          <strong>Oracle Database RU</strong>, <strong>Storage Cells</strong>, <strong>Infiniband/RoCE</strong>,
+          <strong>ExaChk</strong>, <strong>PatchMgr</strong>, validação de performance e testes funcionais.
+        </p>
+      </div>
+      <div class="fund-card">
+        <h4>O que este lab simula?</h4>
+        <p>
+          Este handbook guia o aluno por uma jornada simulada de atualização crítica em Exadata:
+          assessment, ExaChk, backup, upgrade OL7 para OL8, GI RU, DB RU 19.31, Datapatch,
+          PatchMgr, DCLI, CellCLI Advanced, Infiniband, AWR/ASH, smoke test e encerramento da mudança.
+        </p>
+        <p>
+          Ao concluir todos os comandos obrigatórios, o certificado final em PNG é liberado automaticamente.
+        </p>
+        <div class="doc-actions">
+          <a class="doc-link" href="https://docs.oracle.com/en/engineered-systems/exadata-database-machine/dbmmn/updating-exadata-software1.html" target="_blank" rel="noopener">
+            DOC OFICIAL ORACLE EXADATA
+          </a>
+          <a class="doc-link secondary" href="https://support.oracle.com/epmos/faces/DocumentDisplay?id=1347961.2" target="_blank" rel="noopener">
+            MOS DOC ID 1347961.2
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="panel exa-journey">
+  <h3 class="panel-title" style="text-align:center">Desenho do Projeto — Exadata Patch Lifecycle</h3>
+  <div class="journey-subtitle">
+    Visão executiva do processo: estado inicial, pipeline de atualização, componentes impactados e estado final validado.
+  </div>
+
+  <div class="journey-canvas">
+    <div class="journey-top">
+
+      <div class="journey-block before">
+        <h4>Antes da Janela</h4>
+        <div class="stack-item"><div class="stack-icon">OS</div><div><b>Oracle Linux 7</b><br><small>Imagem anterior do ambiente</small></div></div>
+        <div class="stack-item"><div class="stack-icon">GI</div><div><b>Grid Infrastructure 19c</b><br><small>Clusterware / ASM / OCR</small></div></div>
+        <div class="stack-item"><div class="stack-icon">DB</div><div><b>Oracle Database 19c</b><br><small>RU anterior ao 19.31</small></div></div>
+        <div class="stack-item"><div class="stack-icon">IB</div><div><b>Infiniband / Fabric</b><br><small>Firmware e conectividade pré-patch</small></div></div>
+      </div>
+
+      <div class="journey-block">
+        <h4>Pipeline de Atualização</h4>
+        <div class="pipeline">
+          <div class="pipe-step"><div class="pipe-num">1</div><div><b>Pré-Patch</b><small>Documentação, inventário, versões, logs e pré-requisitos</small></div></div>
+          <div class="pipe-step"><div class="pipe-num">2</div><div><b>ExaChk + Backup</b><small>Health check, RMAN, OCR, voting disk e rollback plan</small></div></div>
+          <div class="pipe-step"><div class="pipe-num">3</div><div><b>Oracle Linux 8</b><small>Upgrade controlado OL7 → OL8</small></div></div>
+          <div class="pipe-step"><div class="pipe-num">4</div><div><b>GI + DB RU 19.31</b><small>OPatchAuto, DB RU e Datapatch</small></div></div>
+          <div class="pipe-step"><div class="pipe-num">5</div><div><b>IB + Cells</b><small>PatchMgr, DCLI, CellCLI e validação da fabric</small></div></div>
+          <div class="pipe-step"><div class="pipe-num">6</div><div><b>Pós-Patch</b><small>AWR/ASH, smoke test, ExaChk final e Go Live</small></div></div>
+        </div>
+      </div>
+
+      <div class="journey-block after">
+        <h4>Depois da Janela</h4>
+        <div class="stack-item"><div class="stack-icon">OS</div><div><b>Oracle Linux 8</b><br><small>Ambiente atualizado</small></div></div>
+        <div class="stack-item"><div class="stack-icon">GI</div><div><b>Grid Infrastructure Patched</b><br><small>Cluster validado</small></div></div>
+        <div class="stack-item"><div class="stack-icon">RU</div><div><b>Database RU 19.31</b><br><small>Datapatch aplicado</small></div></div>
+        <div class="stack-item"><div class="stack-icon">OK</div><div><b>Fabric Validada</b><br><small>IB / Cells / Performance OK</small></div></div>
+      </div>
+
+    </div>
+
+    <div class="component-row">
+      <div class="component-card"><div class="big-icon">🖥️</div><b>Compute Nodes</b><span>DB Nodes, OS, Oracle Homes e serviços RAC</span></div>
+      <div class="component-card"><div class="big-icon">⚙️</div><b>Grid / ASM</b><span>Clusterware, ASM, OCR, Voting e SCAN</span></div>
+      <div class="component-card"><div class="big-icon">🗄️</div><b>Database</b><span>Oracle 19c, RU 19.31, SQL Patch e PDBs</span></div>
+      <div class="component-card"><div class="big-icon">📦</div><b>Storage Cells</b><span>CellCLI, celldisk, griddisk, flashcache e metrics</span></div>
+      <div class="component-card"><div class="big-icon">🔗</div><b>Network Fabric</b><span>Infiniband/RoCE, switches, links e conectividade</span></div>
+    </div>
+
+    <div class="journey-footer">
+      <div class="journey-note"><b>Objetivo</b>Atualizar a stack Exadata com segurança, controle operacional e evidências técnicas.</div>
+      <div class="journey-note"><b>Resultado Esperado</b>Ambiente atualizado, validado, com melhor estabilidade e em conformidade.</div>
+      <div class="journey-note"><b>Critério de Sucesso</b>ExaChk final, AWR/ASH, smoke test, logs e checklist aprovados.</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel interview-enterprise">
+  <h3 class="panel-title" style="text-align:center">Interview Mode – Exadata Patching</h3>
+  <div class="interview-subtitle">
+    Perguntas técnicas para entrevista, revisão de conhecimento e explicação profissional do processo.
+  </div>
+
+  <div class="qa-grid">
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>01. Quando usar PatchMgr?</b><span>+</span></button>
+      <div class="qa-answer">Use PatchMgr para orquestrar prechecks, aplicação e validações em componentes Exadata, como DB Nodes, Storage Cells e switches Infiniband/RoCE. Ele ajuda a padronizar a execução, reduzir risco operacional e registrar evidências da janela.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>02. Diferença entre GI RU e DB RU?</b><span>+</span></button>
+      <div class="qa-answer">GI RU atualiza o Grid Infrastructure, incluindo Clusterware, ASM, OCR, Voting Disk e recursos RAC. DB RU atualiza o Oracle Database Home. Após DB RU, normalmente é necessário executar Datapatch para aplicar mudanças SQL no banco.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>03. O que valida o ExaChk?</b><span>+</span></button>
+      <div class="qa-answer">ExaChk valida boas práticas, configurações, versões, riscos conhecidos, alta disponibilidade, storage, rede, banco de dados, Grid Infrastructure e recomendações específicas para Exadata. É usado antes e depois da mudança.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>04. Como validar Datapatch?</b><span>+</span></button>
+      <div class="qa-answer">Valide com datapatch -verbose e depois consulte DBA_REGISTRY_SQLPATCH para confirmar status SUCCESS. Também é importante garantir que CDB/PDBs estejam abertos conforme necessário e revisar logs do Datapatch.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>05. Como validar Infiniband/RoCE?</b><span>+</span></button>
+      <div class="qa-answer">Valide com ibstat, ibswitches, iblinkinfo, dcli e ferramentas de diagnóstico da plataforma. O objetivo é confirmar links ativos, switches saudáveis, ausência de erros críticos e conectividade entre DB Nodes e Storage Cells.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>06. Como executar rollback?</b><span>+</span></button>
+      <div class="qa-answer">Rollback depende do componente afetado. Antes da janela, deve existir plano aprovado contendo backups RMAN, OCR, Oracle Homes, configuração das células, versão anterior, critérios de retorno e responsáveis pela decisão.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>07. Como verificar versão das Cells?</b><span>+</span></button>
+      <div class="qa-answer">Use CellCLI e DCLI, por exemplo: cellcli -e list cell detail, dcli -g cell_group imageinfo e comandos equivalentes para validar imagem, serviços MS/RS/CELLSRV e estado dos discos.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>08. Como validar CRS após patch?</b><span>+</span></button>
+      <div class="qa-answer">Use crsctl check crs, crsctl check cluster e crsctl stat res -t. Também valide recursos RAC, ASM, listeners, SCAN, VIPs, databases via srvctl e logs do Clusterware.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>09. Rolling x Non-Rolling?</b><span>+</span></button>
+      <div class="qa-answer">Rolling aplica por nó ou componente, reduzindo indisponibilidade. Non-rolling exige parada maior ou total, mas pode ser necessário dependendo do patch, compatibilidade, firmware ou requisito da Oracle.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>10. O que validar no AWR/ASH?</b><span>+</span></button>
+      <div class="qa-answer">Compare período antes e depois do patch. Avalie DB Time, CPU, IO, Top SQL, wait events, execução de batch, regressão de planos e qualquer aumento anormal de latência.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>11. Por que validar aplicação?</b><span>+</span></button>
+      <div class="qa-answer">Porque patch de infraestrutura pode afetar conectividade, performance, jobs, integrações e comportamento funcional. Smoke test deve incluir login, CRUD, relatórios, batch e integrações críticas.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>12. O que é precheck?</b><span>+</span></button>
+      <div class="qa-answer">Precheck é a validação antes da execução. Ele verifica pré-requisitos, espaço, versões, conflitos de patches, saúde do cluster, conectividade, backups e riscos que podem impedir a mudança.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>13. O que é OPatchAuto?</b><span>+</span></button>
+      <div class="qa-answer">OPatchAuto automatiza etapas de patch em ambientes Grid/RAC, incluindo parada e subida controlada de recursos quando aplicável. Deve ser usado conforme documentação e plano de mudança aprovado.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>14. O que verificar no alert log?</b><span>+</span></button>
+      <div class="qa-answer">Procure ORA-00600, ORA-07445, erros ASM, problemas de recovery, falhas de background process, mensagens de listener, problemas de PDB e eventos anormais após a janela.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>15. Como validar ASM?</b><span>+</span></button>
+      <div class="qa-answer">Use asmcmd lsdg, crsctl stat res -t, alert ASM, status dos diskgroups, redundância, rebalance, espaço livre e integridade dos discos apresentados pelas Storage Cells.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>16. Como documentar evidências?</b><span>+</span></button>
+      <div class="qa-answer">Registre outputs principais, versões antes/depois, ExaChk, AWR, logs, checklist, aprovação de Go Live, horário de execução, responsáveis e qualquer desvio ocorrido na janela.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>17. Como validar Storage Cells?</b><span>+</span></button>
+      <div class="qa-answer">Use cellcli para list cell detail, list celldisk, list griddisk, list flashcache, list physicaldisk e list metriccurrent. Verifique MS, RS, CELLSRV, discos, flashcache e métricas.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>18. Qual papel do DCLI?</b><span>+</span></button>
+      <div class="qa-answer">DCLI permite executar comandos distribuídos em grupos de servidores, como dbs_group e cell_group. É útil para coletar informações, validar versões e executar verificações de forma padronizada.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>19. Quando envolver Oracle Support?</b><span>+</span></button>
+      <div class="qa-answer">Em erros críticos, falhas de patch, inconsistência de versão, problema de firmware, incidentes em Storage Cells/IB, ORA-600/ORA-7445, ou qualquer situação fora do procedimento validado.</div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-question" onclick="toggleQA(this)"><b>20. Critério de Go Live?</b><span>+</span></button>
+      <div class="qa-answer">Go Live deve ocorrer quando cluster, banco, ASM, cells, IB, ExaChk final, AWR/ASH, alert logs, smoke test e checklist operacional estiverem validados sem erro crítico impeditivo.</div>
+    </div>
+  </div>
+</section>
+
+
+
+  <section class="panel warnbox">
+    <b>AVISO TÉCNICO IMPORTANTE</b><br>
+    Este material é um laboratório educacional simulado. Para produção, valide versões, MOS Notes, compatibilidade Exadata, backup/rollback, janela de mudança, Grid Infrastructure, Database Homes, Storage Cells, Infiniband/RoCE, firmwares, dependências de aplicações e procedimento aprovado pela Oracle/cliente.
+  </section>
+
+
+  <section class="panel" style="margin-top:18px">
+    <h3 class="panel-title">Projeto Completo — Conteúdo Entregue</h3>
+    <div class="kv-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kv"><b>01. Arquitetura Exadata</b>Compute Nodes, Grid, ASM, Database, Storage Cells e Infiniband.</div>
+      <div class="kv"><b>02. Assessment</b>imageinfo, CRS, nodes, cells e dcli.</div>
+      <div class="kv"><b>03. ExaChk Inicial</b>Health score, warnings e critical findings.</div>
+      <div class="kv"><b>04. Backup Strategy</b>RMAN, OCR, voting disk, Oracle Homes e rollback.</div>
+      <div class="kv"><b>05. Oracle Linux Upgrade</b>OL7 para OL8 com preupgrade, upgrade e reboot rolling.</div>
+      <div class="kv"><b>06. Grid Infrastructure RU</b>Inventário, opatchauto e validação CRS.</div>
+      <div class="kv"><b>07. Database RU 19.31</b>OPatch, datapatch e DBA_REGISTRY_SQLPATCH.</div>
+      <div class="kv"><b>08. Infiniband Upgrade</b>ibstat, ibswitches, iblinkinfo e validação da fabric.</div>
+      <div class="kv"><b>09. Storage Cells</b>cell detail, celldisk, griddisk e imageinfo.</div>
+      <div class="kv"><b>10. Pós-Patch Validation</b>srvctl, asmcmd, CRS, alert log e smoke test.</div>
+      <div class="kv"><b>11. Troubleshooting</b>CRS-4535, ORA-15032, IB-LINK e correção simulada.</div>
+      <div class="kv"><b>12. Certificação</b>Certificado liberado ao concluir 100% do Runbook.</div>
+    </div>
+  </section>
+
+  <section class="lab" id="labArea">
+    <aside class="left">
+      <div class="panel">
+        <h3 class="panel-title">Trilha Operacional</h3>
+        <div class="steps" id="steps"></div>
+      </div>
+      <div class="panel ticket">
+        <h3 class="panel-title">Acesso Técnico</h3>
+        <div class="ticket-inner" id="ticket">DBA: -<br>CASO: EXADATA BP<br>VERSÃO ALVO: OL8 + RU 19.31</div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Parâmetros-chave</h3>
+        <div class="kv-grid">
+          <div class="kv"><b>EXACHK</b>Health check obrigatório.</div>
+          <div class="kv"><b>BACKUP</b>RMAN, OCR, GI/DB Home.</div>
+          <div class="kv"><b>OPATCHAUTO</b>Automação GI/RAC.</div>
+          <div class="kv"><b>DATAPATCH</b>SQL patch no banco.</div>
+          <div class="kv"><b>IB FABRIC</b>Rede crítica Exadata.</div>
+          <div class="kv"><b>ROLLBACK</b>Plano aprovado antes do GO.</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="center">
+      <div class="panel">
+        <h3 class="panel-title">Arquitetura Exadata</h3>
+        <div class="arch">
+          <div class="arch-row">
+            <div class="arch-box"><b>CLIENTES</b><small>Aplicações / SCAN / VIP</small></div><div class="arrow">→</div>
+            <div class="arch-box"><b>COMPUTE NODES</b><small>DB Servers / OL7 → OL8</small></div><div class="arrow">→</div>
+            <div class="arch-box"><b>GRID + ASM</b><small>GI • OCR • Voting • ASM</small></div>
+          </div>
+          <div class="arch-row">
+            <div class="arch-box"><b>DATABASE 19c</b><small>RU 19.31 • datapatch</small></div><div class="arrow">↔</div>
+            <div class="arch-box"><b>STORAGE CELLS</b><small>cellcli • grid/celldisks</small></div><div class="arrow">↔</div>
+            <div class="arch-box"><b>INFINIBAND</b><small>Fabric • switches • links</small></div>
+          </div>
+          <div class="status" id="status">● LAB ABERTO: aguardando início</div>
+        </div>
+      </div>
+
+
+      <div class="panel">
+        <h3 class="panel-title">Enterprise Production Add-ons</h3>
+        <div class="enterprise-badge">REAL-WORLD EXADATA PATCHING PRACTICES</div>
+        <div class="enterprise-grid">
+          <div class="enterprise-card"><b>PATCHMGR</b><span>Precheck, rolling, non-rolling, DB nodes, Cells e IB switches.</span></div>
+          <div class="enterprise-card"><b>DCLI</b><span>Execução distribuída em dbs_group e cell_group.</span></div>
+          <div class="enterprise-card"><b>CELLCLI ADVANCED</b><span>Flashcache, physicaldisk, metrics e saúde das células.</span></div>
+          <div class="enterprise-card"><b>AWR / ASH</b><span>Validação de performance antes e depois do patch.</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Exadata Health Dashboard</h3>
+        <div class="dash">
+          <div class="card ok"><b>OS TARGET</b><span id="dOs">OL8</span></div>
+          <div class="card"><b>DB RU</b><span id="dDb">19.31</span></div>
+          <div class="card"><b>GI</b><span id="dGi">PENDING</span></div>
+          <div class="card"><b>IB</b><span id="dIb">UNKNOWN</span></div>
+          <div class="card"><b>EXACHK</b><span id="dExa">--</span></div>
+          <div class="card"><b>CELLS</b><span id="dCells">--</span></div>
+          <div class="card"><b>PATCH</b><span id="dPatch">0%</span></div>
+          <div class="card"><b>HEALTH</b><span id="dHealth">0%</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Console Operacional</h3>
+        <div class="terminal">
+          <div class="term-title">EXADATA PATCH CLI</div>
+          <div class="term-out" id="termOut">Clique no primeiro comando marcado com <span class="warn">➜</span> no Runbook.</div>
+          <div class="cli-input"><input id="cliInput" placeholder="próximo comando"><button class="exec-btn" onclick="runTyped()">EXEC</button></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Runbook de Comandos</h3>
+        <div class="runbook-note">Fluxo guiado ativo: clique no comando marcado com <b>➜</b>. Ele será executado automaticamente. Comandos verdes já foram executados. Comandos cinza ficam bloqueados pela sequência.</div>
+        <div class="global-progress-box"><div class="progress-title"><span>Progresso geral do Runbook</span><b id="globalText">0/0 • 0%</b></div><div class="progress-bar"><span id="globalBar"></span></div></div>
+        <div class="hints" id="hints"></div>
+      </div>
+
+      <section class="panel cert-panel" id="certPanel">
+        <h3 class="panel-title">Certificado do Laboratório</h3>
+        <div class="cert-layout">
+          <div class="cert locked" id="certificate">
+            <div class="watermark" id="watermark">BLOQUEADO</div>
+            <div class="cert-top"><div class="cert-logo"><span class="oracle-red">ORACLE</span><small>DBA ACADEMY</small></div><div class="cert-id">ID: <span id="certId">EXA-LAB</span></div></div>
+            <div class="cert-body">
+              <h3>CERTIFICADO DE CONCLUSÃO</h3>
+              <p>Certificamos que</p>
+              <div class="cert-name" id="certName">DBA_ORACLE</div>
+              <p>concluiu com sucesso todos os laboratórios do</p>
+              <div class="cert-title">EXADATA BUNDLE PATCH LIFECYCLE COMMAND CENTER</div>
+              <div class="cert-sub">Assessment • ExaChk • Backup • OL8 • GI • DB RU 19.31 • PatchMgr • DCLI • CellCLI • IB • AWR/ASH • Go Live</div>
+            </div>
+            <div class="cert-foot">
+              <div><b>CONCLUÍDO EM</b><br><span id="certDate"></span></div>
+              <div class="seal">EXADATA<br>PATCH<br>CERTIFIED</div>
+              <div class="sign"><span>Renato Barros</span><br>Database Engineer Specialist</div>
+            </div>
+          </div>
+          <div class="panel cert-side">
+            <h3 class="panel-title">Sobre o Certificado</h3>
+            <p>O certificado será liberado automaticamente quando todos os comandos obrigatórios forem executados em sequência.</p>
+            <p>Ele reconhece a conclusão simulada da jornada de patch Exadata.</p>
+            <div class="info-box" id="certAlert">Status: certificado bloqueado. Conclua 100% dos comandos para liberar.</div>
+            <div class="cert-actions"><button class="main-btn" id="downloadBtn" disabled>BAIXAR PNG</button></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="right">
+      <div class="panel">
+        <h3 class="panel-title">Status do Lab</h3>
+        <div class="score-row">
+          <div class="score-box"><b>ASSESS</b><div id="sAssess">0/5</div></div>
+          <div class="score-box"><b>PATCH</b><div id="sPatch">0/14</div></div>
+          <div class="score-box"><b>VALID</b><div id="sValid">0/5</div></div>
+          <div class="score-box"><b>APPLY</b><div id="sPct">0%</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Bundle Patch Journey</h3>
+        <div class="timeline" id="timeline">Assessment
+  └─ ExaChk Inicial
+     └─ Backup Strategy
+        └─ Oracle Linux 7 → 8
+           └─ Grid Infrastructure RU
+              └─ Database RU 19.31
+                 └─ Infiniband Upgrade
+                    └─ Storage Cells
+                       └─ ExaChk Final
+                          └─ Go Live</div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Troubleshooting Center</h3>
+        <div class="trouble-grid">
+          <button class="mini-btn" onclick="showTrouble('OPATCH')">OPATCH</button>
+          <button class="mini-btn" onclick="showTrouble('CRS-4535')">CRS-4535</button>
+          <button class="mini-btn" onclick="showTrouble('ORA-600')">ORA-600</button>
+          <button class="mini-btn" onclick="showTrouble('ORA-15032')">ORA-15032</button>
+          <button class="mini-btn" onclick="showTrouble('IB-LINK')">IB-LINK</button>
+          <button class="mini-btn" onclick="showTrouble('CELLSRV')">CELLSRV</button>
+          <button class="mini-btn" onclick="showTrouble('DATAPATCH')">DATAPATCH</button>
+        </div>
+        <div class="info-box" id="troubleInfo">Selecione um erro para ver causa, diagnóstico e correção.</div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Interview Mode</h3>
+        <div class="mode-grid">
+          <button class="mini-btn" onclick="showInterview('ru')">RU x BP</button>
+          <button class="mini-btn" onclick="showInterview('exachk')">ExaChk</button>
+          <button class="mini-btn" onclick="showInterview('ib')">IB Fabric</button>
+          <button class="mini-btn" onclick="showInterview('patchmgr')">PatchMgr</button>
+          <button class="mini-btn" onclick="showInterview('rolling')">Rolling</button>
+          <button class="mini-btn" onclick="showInterview('datapatch')">Datapatch</button>
+        </div>
+        <div class="info-box" id="interviewInfo">Clique em uma pergunta para revisar a resposta técnica.</div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Change Management</h3>
+        <div class="timeline">T-30: Planejamento e escopo
+T-15: ExaChk e compatibilidade
+T-7 : Backup e rollback
+T-1 : Freeze e aprovação
+GO  : Execução controlada
+PÓS : Validação e evidências
+END : Closure report</div>
+      </div>
+    </aside>
+  </section>
+
+  <footer class="panel" style="margin-top:18px;text-align:center;font-family:Share Tech Mono;color:#dbe7f3">
+    Renato Barros | Database Engineer Specialist | Oracle, Exadata, RAC, Data Guard & Cloud<br>
+    Material simulado para treinamento. Em produção, valide MOS Notes, versions, rollback, backups, firmwares, GI/DB Homes, IB Fabric e requisitos específicos do ambiente.
+  </footer>
+</div>
+
+<div class="flow-modal" id="flowModal" role="dialog" aria-modal="true" aria-labelledby="flowTitle">
+  <div class="flow-box">
+    <h2 id="flowTitle">Atenção</h2>
+    <p id="flowMessage"></p>
+    <div class="flow-command" id="flowCommand" style="display:none"></div>
+    <div class="flow-actions"><button class="flow-primary" id="flowPrimary">OK</button><button class="flow-secondary" id="flowSecondary" style="display:none">Fechar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const STORAGE_KEY='exadata_bp_lab_progress_v1';
+const lab={started:false,student:'',validate:false,done:{}};
+
+const modules=[
+ ['1. Assessment & Discovery','Inventário completo'],['2. ExaChk Assessment','Health Check'],['3. Backup Strategy','Rollback seguro'],['4. Oracle Linux Upgrade','OL7 → OL8'],
+ ['5. Grid Infrastructure RU','GI Patch'],['6. Database RU 19.31','DB Patch'],['7. PatchMgr Command Center','DB Nodes / Cells / IB'],['8. DCLI Command Center','Execução distribuída'],
+ ['9. CellCLI Advanced','Storage profundo'],['10. Infiniband Validation','IB Fabric'],['11. Performance Validation','AWR / ASH'],['12. Application Smoke Test','Validação funcional'],
+ ['13. Change Closure','Evidências e GO'],['14. Troubleshooting','Erros comuns'],['15. Interview Mode','Perguntas técnicas'],['16. Certificação','Certificado final']
+];
+
+const chapters=[
+ {title:'Assessment & Discovery',cmds:['imageinfo','crsctl query crs softwareversion','opatch lsinventory','crsctl stat res -t','olsnodes -n','cellcli -e list cell','dcli -g dbs_group uptime']},
+ {title:'ExaChk Assessment',cmds:['./exachk','./exachk -a','review exachk critical','review exachk warnings','review exachk failed checks']},
+ {title:'Backup Strategy',cmds:['rman backup database plus archivelog','ocrconfig -showbackup','crsctl query css votedisk','md_backup','backup oracle homes','validate rollback plan']},
+ {title:'Oracle Linux Upgrade',cmds:['yum update --assumeno','leapp preupgrade','leapp upgrade','reboot node rolling','cat /etc/os-release','uname -r']},
+ {title:'Grid Infrastructure RU',cmds:['opatch lsinventory -oh $GRID_HOME','opatchauto apply gi_ru_19_31','crsctl check cluster','crsctl check crs','crsctl stat res -t']},
+ {title:'Database RU 19.31',cmds:['opatch lsinventory -oh $ORACLE_HOME','datapatch -prereq','opatch apply db_ru_19_31','datapatch -verbose','select patch_id,status from dba_registry_sqlpatch;']},
+ {title:'PatchMgr Command Center',cmds:['patchmgr --dbnodes','patchmgr --cells','patchmgr --ibswitches','patchmgr --precheck','patchmgr --rolling','patchmgr --nonrolling']},
+ {title:'DCLI Command Center',cmds:['dcli -g dbs_group hostname','dcli -g dbs_group uptime','dcli -g dbs_group imageinfo','dcli -g cell_group cellcli -e list cell','dcli -g cell_group cellcli -e list metriccurrent']},
+ {title:'CellCLI Advanced',cmds:['cellcli -e list cell detail','cellcli -e list celldisk','cellcli -e list griddisk','cellcli -e list flashcache','cellcli -e list physicaldisk','cellcli -e list metriccurrent','cellcli -e list metricdefinition']},
+ {title:'Infiniband Validation',cmds:['ibstat','ibswitches','iblinkinfo','patchmgr --ibswitches','validate ib fabric']},
+ {title:'Performance Validation',cmds:['@awrrpt.sql','select * from dba_hist_snapshot;','select * from v$active_session_history;','review top sql after patch','review wait events after patch']},
+ {title:'Application Smoke Test',cmds:['validate application login','validate application crud','validate application reports','validate batch jobs','validate integrations']},
+ {title:'Change Closure',cmds:['./exachk -a -postpatch','compare exachk reports','record change evidence','update implementation plan','send closure report','approve go live']},
+ {title:'Troubleshooting',cmds:['simulate opatch failed','simulate datapatch failed','simulate CRS-4535','simulate ORA-600','simulate ORA-15032','simulate IB-LINK','fix patch issue']},
+ {title:'Interview Mode',cmds:['interview patchmgr','interview ru_bp','interview rolling_nonrolling','interview exachk','interview ib_fabric','interview datapatch']}
+];
+
+function key(c){return String(c||'').trim().replace(/\s+/g,' ').toLowerCase()}
+function flat(){let a=[];chapters.forEach((ch,ci)=>ch.cmds.forEach((cmd,idx)=>a.push({chapter:ch.title,cmd,key:key(cmd),id:ci+'|'+idx+'|'+key(cmd)})));return a}
+function next(){return flat().find(x=>!lab.done[x.id])||null}
+function doneCount(){return flat().filter(x=>lab.done[x.id]).length}
+function pct(){return Math.round(doneCount()/flat().length*100)}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2500)}
+
+function saveProgress(){
+ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(lab)); }catch(e){ /* localStorage indisponível: progresso não será salvo */ }
+}
+function loadProgress(){
+ try{
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw) return false;
+  const saved=JSON.parse(raw);
+  if(saved && typeof saved==='object'){
+   lab.started=!!saved.started; lab.student=saved.student||''; lab.validate=!!saved.validate; lab.done=saved.done||{};
+   return lab.started;
+  }
+ }catch(e){ /* dado corrompido: ignora e começa do zero */ }
+ return false;
+}
+function clearProgress(){
+ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+ lab.started=false; lab.student=''; lab.validate=false; lab.done={};
+ $('labArea').classList.remove('show'); $('certPanel').classList.remove('show');
+ $('studentName').value=''; $('termOut').innerHTML='';
+ toast('Progresso zerado.');
+}
+
+function flow(o){
+ $('flowTitle').textContent=o.title||'Atenção';$('flowMessage').innerHTML=o.message||'';$('flowCommand').style.display=o.command?'block':'none';$('flowCommand').textContent=o.command||'';
+ $('flowPrimary').textContent=o.primary||'OK';$('flowSecondary').style.display=o.secondary?'inline-block':'none';$('flowSecondary').textContent=o.secondary||'Fechar';
+ $('flowModal').classList.add('show');$('flowPrimary').onclick=()=>{$('flowModal').classList.remove('show'); if(o.onPrimary)o.onPrimary()};$('flowSecondary').onclick=()=>$('flowModal').classList.remove('show');
+ $('flowPrimary').focus();
+}
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && $('flowModal').classList.contains('show')){ $('flowModal').classList.remove('show'); } });
+
+function startLab(){
+ const resuming=loadProgress();
+ const typedName=$('studentName').value.trim();
+ const name=resuming ? (lab.student||typedName||'DBA Oracle') : (typedName||'DBA Oracle');
+ lab.started=true; lab.student=name;
+ $('labArea').classList.add('show');$('ticket').innerHTML=`DBA: ${name}<br>CASO: EXADATA BP<br>VERSÃO ALVO: OL8 + RU 19.31`;
+ $('certName').textContent=name;$('certDate').textContent=new Date().toLocaleDateString('pt-BR');
+ $('certId').textContent='EXA-LAB-'+new Date().getFullYear()+'-'+Math.random().toString(16).slice(2,10).toUpperCase();
+ renderAll();
+ saveProgress();
+ const n=next();
+ if(!n){ finish(); }
+ else{
+  $('cliInput').value=n.cmd;
+  $('labArea').scrollIntoView({behavior:'smooth'});
+  if(resuming && doneCount()>0){
+   flow({title:'Progresso restaurado',message:'Você já tinha avançado neste laboratório. Continuando de onde parou.',command:n.cmd,primary:'Continuar',secondary:'Fechar',onPrimary:()=>{}});
+  } else {
+   flow({title:'Fluxo guiado iniciado',message:'Clique no comando marcado com ➜. O laboratório executa em sequência obrigatória para liberar o certificado.',command:n.cmd,primary:'Iniciar',secondary:'Fechar',onPrimary:()=>execute(n.cmd)});
+  }
+ }
+}
+
+function hasChapter(title){return flat().filter(x=>x.chapter===title).every(x=>lab.done[x.id])}
+function stageStatus(){
+ const status=chapters.map(ch=>hasChapter(ch.title));
+ status.push(lab.validate);
+ return status;
+}
+function renderSteps(){
+ const st=stageStatus();let cur=st.findIndex(v=>!v);if(cur<0)cur=st.length-1;
+ $('steps').innerHTML=modules.map((m,i)=>`<div class="step ${st[i]?'done':i===cur?'active':''}"><div class="icon">${st[i]?'✓':i+1}</div><div><b>${m[0]}</b><p>${m[1]}</p></div></div>`).join('');
+}
+function renderRunbook(){
+ const n=next();
+ $('hints').innerHTML=chapters.map((ch,ci)=>{
+  const items=ch.cmds.map((cmd,idx)=>({chapter:ch.title,cmd,key:key(cmd),id:ci+'|'+idx+'|'+key(cmd)}));
+  const dc=items.filter(x=>lab.done[x.id]).length; const pp=Math.round(dc/items.length*100);
+  return `<div class="chapter"><div class="chapter-head"><b>${ch.title}</b><small>${dc}/${items.length} executados</small></div><div class="chapter-progress"><span style="width:${pp}%"></span></div></div>`+
+  items.map(it=>{
+    const isDone=lab.done[it.id], isCur=n&&n.id===it.id;
+    return `<button class="hint-btn ${isDone?'done':isCur?'current':''}" onclick="fillCmd('${it.cmd.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"><b><span class="mark">${isDone?'✓':isCur?'➜':'□'}</span>${it.cmd}</b><span class="status-line">${isDone?'executado com sucesso':isCur?'próximo comando sugerido':'pendente — etapa: '+ch.title}</span></button>`
+  }).join('');
+ }).join('');
+}
+function renderDashboard(){
+ const p=pct();$('globalText').textContent=`${doneCount()}/${flat().length} comandos • ${p}%`;$('globalBar').style.width=p+'%';$('sPct').textContent=p+'%';$('dPatch').textContent=p+'%';$('dHealth').textContent=p+'%';
+ const count=s=>flat().filter(x=>x.chapter===s && lab.done[x.id]).length;
+ $('sAssess').textContent=count('Assessment & Discovery')+'/7';
+ $('sPatch').textContent=(count('Oracle Linux Upgrade')+count('Grid Infrastructure RU')+count('Database RU 19.31')+count('PatchMgr Command Center'))+'/22';
+ $('sValid').textContent=(count('Performance Validation')+count('Application Smoke Test')+count('Change Closure'))+'/16';
+ if(p>=10){$('dExa').textContent='92%';$('dExa').parentElement.classList.add('ok')}
+ if(p>=35){$('dGi').textContent='OK';$('dGi').parentElement.classList.add('ok')}
+ if(p>=58){$('dIb').textContent='OK';$('dIb').parentElement.classList.add('ok')}
+ if(p>=70){$('dCells').textContent='OK';$('dCells').parentElement.classList.add('ok')}
+ if(p===100){$('dExa').textContent='98%';$('status').textContent='● AMBIENTE ATUALIZADO, VALIDADO E EM CONFORMIDADE'}
+}
+function renderAll(){renderSteps();renderRunbook();renderDashboard()}
+
+function outputFor(cmd){
+ const c=key(cmd);
+ const map={
+ 'imageinfo':'Kernel version: 4.14.x\nImage version: OL7 Exadata Image\nTarget: Oracle Linux 8 + RU 19.31\n<span class="explain">Inventário inicial coletado.</span>',
+ 'crsctl query crs softwareversion':'Oracle Clusterware version on node [exa01db01] is [19.0.0.0.0]\n<span class="explain">Versão do Clusterware coletada.</span>',
+ 'opatch lsinventory':'Oracle Home inventory loaded.\n<span class="explain">Inventário OPatch geral coletado.</span>',
+ 'crsctl stat res -t':'Cluster Resources\nora.asm ONLINE\nora.LISTENER_SCAN1 ONLINE\nora.prod.db ONLINE\n<span class="explain">Clusterware e recursos RAC validados.</span>',
+ 'olsnodes -n':'exa01db01 1\nexa01db02 2\n<span class="explain">Nós RAC identificados.</span>',
+ 'cellcli -e list cell':'exa01cel01 online\nexa01cel02 online\nexa01cel03 online\n<span class="explain">Storage Cells acessíveis.</span>',
+ 'dcli -g dbs_group uptime':'exa01db01 up 230 days\nexa01db02 up 228 days\n<span class="explain">DCLI funcional nos DB Servers.</span>',
+ './exachk':'EXACHK QUICK RUN\nPASS: 210\nWARNING: 14\nCRITICAL: 0\n<span class="explain">Execução rápida do ExaChk concluída.</span>',
+ './exachk -a':'EXACHK SUMMARY\nPASS: 214\nWARNING: 12\nCRITICAL: 0\nHEALTH SCORE: 92%\n<span class="explain">Health Check inicial sem bloqueio crítico.</span>',
+ 'review exachk critical':'CRITICAL FINDINGS: 0\n<span class="explain">Sem item crítico impeditivo.</span>',
+ 'review exachk warnings':'WARNINGS: 12\nAções documentadas para acompanhamento.\n<span class="explain">Warnings revisados antes da mudança.</span>',
+ 'review exachk failed checks':'FAILED CHECKS: 0\n<span class="explain">Sem checks falhos impeditivos para o patch.</span>',
+ 'rman backup database plus archivelog':'RMAN backup completed successfully.\n<span class="explain">Backup validado para rollback.</span>',
+ 'ocrconfig -showbackup':'PROT-25: Manual backups available.\n<span class="explain">Backup OCR localizado.</span>',
+ 'crsctl query css votedisk':'Voting disk status: ONLINE\n<span class="explain">Voting disks conferidos.</span>',
+ 'md_backup':'ASM metadata backup completed.\n<span class="explain">Metadata ASM protegida antes da janela.</span>',
+ 'backup oracle homes':'GI_HOME backup: OK\nDB_HOME backup: OK\n<span class="explain">Oracle Homes protegidos.</span>',
+ 'validate rollback plan':'Rollback Plan: APPROVED\n<span class="explain">Plano de retorno aprovado antes da execução.</span>',
+ 'yum update --assumeno':'Dependencies resolved. No transaction executed.\n<span class="explain">Simulação de update sem aplicar alterações.</span>',
+ 'leapp preupgrade':'Preupgrade completed. Report generated.\nNo inhibitor found.\n<span class="explain">Pré-validação OL7 → OL8 aprovada.</span>',
+ 'leapp upgrade':'Upgrade transaction prepared.\n<span class="explain">Upgrade Oracle Linux simulado.</span>',
+ 'reboot node rolling':'Node rebooted in rolling mode.\nCluster remains available.\n<span class="explain">Reboot controlado por nó.</span>',
+ 'cat /etc/os-release':'NAME="Oracle Linux Server"\nVERSION="8.x"\n<span class="explain">Sistema operacional validado em Oracle Linux 8.</span>',
+ 'uname -r':'5.15.0-ol8uek.x86_64\n<span class="explain">Kernel OL8/UEK validado.</span>',
+ 'opatch lsinventory -oh $grid_home':'Grid Infrastructure 19c inventory loaded.\n<span class="explain">Inventário GI coletado.</span>',
+ 'opatchauto apply gi_ru_19_31':'OPatchAuto successful.\nGI RU 19.31 applied rolling.\n<span class="explain">Patch GI aplicado com sucesso.</span>',
+ 'crsctl check cluster':'All nodes are online.\n<span class="explain">Cluster completo validado.</span>',
+ 'crsctl check crs':'CRS-4638: Oracle High Availability Services is online\nCRS-4537: Cluster Ready Services is online\n<span class="explain">Clusterware saudável.</span>',
+ 'opatch lsinventory -oh $oracle_home':'Database Home inventory loaded.\n<span class="explain">Inventário DB Home coletado.</span>',
+ 'datapatch -prereq':'Datapatch prereq check: PASSED\n<span class="explain">Pré-requisitos SQL Patch aprovados.</span>',
+ 'opatch apply db_ru_19_31':'OPatch succeeded.\n<span class="explain">Database RU 19.31 aplicado no Oracle Home.</span>',
+ 'datapatch -verbose':'SQL Patching tool complete.\nPatch 19.31 applied successfully.\n<span class="explain">Datapatch executado no banco.</span>',
+ 'select patch_id,status from dba_registry_sqlpatch;':'PATCH_ID   STATUS\n---------  -------\n19310000   SUCCESS\n<span class="explain">SQL patch validado no dicionário.</span>',
+ 'patchmgr --dbnodes':'PatchMgr DB Nodes mode selected.\nPrecheck: PASSED\n<span class="explain">DB nodes prontos para ciclo de patch.</span>',
+ 'patchmgr --cells':'PatchMgr Storage Cells mode selected.\nCells: READY\n<span class="explain">Storage Cells preparadas para patch/validação.</span>',
+ 'patchmgr --ibswitches':'PatchMgr IB Switches mode selected.\nIB switches: READY\n<span class="explain">Switches Infiniband preparados.</span>',
+ 'patchmgr --precheck':'PatchMgr precheck completed.\nResult: PASSED\n<span class="explain">Precheck patchmgr aprovado.</span>',
+ 'patchmgr --rolling':'Rolling patch mode simulated.\nService availability maintained.\n<span class="explain">Modo rolling validado para reduzir indisponibilidade.</span>',
+ 'patchmgr --nonrolling':'Non-rolling patch mode simulated.\nFull outage window required.\n<span class="explain">Modo non-rolling documentado para janela controlada.</span>',
+ 'dcli -g dbs_group hostname':'exa01db01\nexa01db02\n<span class="explain">Execução distribuída nos DB nodes confirmada.</span>',
+ 'dcli -g dbs_group imageinfo':'exa01db01: OL8 Exadata image target\nexa01db02: OL8 Exadata image target\n<span class="explain">Imageinfo distribuído nos DB nodes.</span>',
+ 'dcli -g cell_group cellcli -e list cell':'exa01cel01: online\nexa01cel02: online\nexa01cel03: online\n<span class="explain">CellCLI via dcli executado com sucesso.</span>',
+ 'dcli -g cell_group cellcli -e list metriccurrent':'Metric current summary: NORMAL\n<span class="explain">Métricas atuais das células sem anomalias.</span>',
+ 'cellcli -e list cell detail':'Cell detail: ONLINE\nMS/RS/CELLSRV: running\n<span class="explain">Serviços das células saudáveis.</span>',
+ 'cellcli -e list celldisk':'All celldisks normal.\n<span class="explain">Celldisks validados.</span>',
+ 'cellcli -e list griddisk':'All griddisks active.\n<span class="explain">Griddisks ativos.</span>',
+ 'cellcli -e list flashcache':'FlashCache: normal\n<span class="explain">FlashCache validado.</span>',
+ 'cellcli -e list physicaldisk':'PhysicalDisks: normal\nPredictive Failure: false\n<span class="explain">Discos físicos saudáveis.</span>',
+ 'cellcli -e list metriccurrent':'Current metrics: normal\n<span class="explain">Métricas atuais sem alerta.</span>',
+ 'cellcli -e list metricdefinition':'Metric definitions loaded.\n<span class="explain">Catálogo de métricas disponível.</span>',
+ 'ibstat':'CA state: Active\nPhysical state: LinkUp\nRate: 100 Gb/sec\n<span class="explain">Interfaces IB ativas.</span>',
+ 'ibswitches':'Switches discovered: 2\n<span class="explain">Switches Infiniband detectados.</span>',
+ 'iblinkinfo':'All links: ACTIVE\nErrors: 0\n<span class="explain">Fabric Infiniband saudável.</span>',
+ 'validate ib fabric':'Fabric Healthy\n<span class="explain">Malha IB validada após patch.</span>',
+ '@awrrpt.sql':'AWR report generated.\nDB Time: stable\nTop waits: no regression\n<span class="explain">AWR pós-patch gerado para validação.</span>',
+ 'select * from dba_hist_snapshot;':'SNAP_ID  BEGIN_INTERVAL_TIME\n1001     before patch\n1002     after patch\n<span class="explain">Snapshots AWR disponíveis para comparação.</span>',
+ 'select * from v$active_session_history;':'ASH sample reviewed.\nNo abnormal session spike detected.\n<span class="explain">ASH validado sem anomalia.</span>',
+ 'review top sql after patch':'Top SQL reviewed.\nNo execution plan regression identified.\n<span class="explain">Top SQL sem regressão relevante.</span>',
+ 'review wait events after patch':'Wait events reviewed.\nNo critical IO/cluster wait regression.\n<span class="explain">Eventos de espera dentro do esperado.</span>',
+ 'validate application login':'Application login test: PASSED\n<span class="explain">Login da aplicação validado.</span>',
+ 'validate application crud':'CRUD test: PASSED\n<span class="explain">Operações transacionais validadas.</span>',
+ 'validate application reports':'Reports test: PASSED\n<span class="explain">Relatórios validados.</span>',
+ 'validate batch jobs':'Batch jobs: PASSED\n<span class="explain">Rotinas batch validadas.</span>',
+ 'validate integrations':'Integrations: PASSED\n<span class="explain">Integrações validadas.</span>',
+ './exachk -a -postpatch':'EXACHK FINAL\nPASS: 228\nWARNING: 5\nCRITICAL: 0\nHEALTH SCORE: 98%\n<span class="explain">ExaChk final melhorado após patch.</span>',
+ 'compare exachk reports':'Before: 92%\nAfter : 98%\nDelta : +6%\n<span class="explain">Comparativo documentado.</span>',
+ 'record change evidence':'Evidence recorded: logs, outputs, versions, screenshots.\n<span class="explain">Evidências salvas para auditoria.</span>',
+ 'update implementation plan':'Implementation plan updated with results and timings.\n<span class="explain">Plano de mudança atualizado.</span>',
+ 'send closure report':'Closure report sent to stakeholders.\n<span class="explain">Encerramento formal registrado.</span>',
+ 'approve go live':'GO LIVE APPROVED\n<span class="explain">Ambiente liberado para operação.</span>',
+ 'simulate opatch failed':'OPATCH FAILED simulated.\nCause: inventory lock or missing prerequisite.\nCorrection: check logs, inventory, conflicts and rerun prereq.',
+ 'simulate datapatch failed':'DATAPATCH FAILED simulated.\nCause: invalid objects or PDB state.\nCorrection: open PDBs, rerun datapatch -verbose, validate registry.',
+ 'simulate crs-4535':'CRS-4535 simulated.\nCause: CRS daemon unavailable.\nDiagnosis: crsctl check crs, logs OHASD/CRSD.\nCorrection: validate services, resources and node health.',
+ 'simulate ora-600':'ORA-600 simulated.\nCause: internal Oracle error.\nDiagnosis: alert.log, trace files, IPS package, MOS.\nCorrection: open SR and check known issues for the applied patch.',
+ 'simulate ora-15032':'ORA-15032 simulated.\nCause: ASM diskgroup operation failed.\nDiagnosis: asmcmd lsdg, alert ASM.\nCorrection: validate disks/cells and ASM metadata.',
+ 'simulate ib-link':'IB link down simulated.\nDiagnosis: ibstat, iblinkinfo, switch logs.\nCorrection: validate cable, port, firmware and fabric.',
+ 'fix patch issue':'Issue corrected. Validation rerun successful.\n<span class="explain">Troubleshooting concluído.</span>',
+ 'interview patchmgr':'Pergunta: O que é patchmgr?\nResposta: Ferramenta usada no ciclo Exadata para orquestrar prechecks, patching e validações em DB nodes, Storage Cells e IB switches.',
+ 'interview ru_bp':'Pergunta: Qual a diferença entre RU e Bundle Patch?\nResposta: RU atualiza Database/GI; em Exadata a jornada envolve stack completo: OS, GI, DB, cells, IB, validações e ferramentas Exadata.',
+ 'interview rolling_nonrolling':'Pergunta: Quando usar rolling e non-rolling?\nResposta: Rolling reduz indisponibilidade aplicando por nó/componente; non-rolling exige janela total e deve ser aprovado no plano de mudança.',
+ 'interview exachk':'Pergunta: O que valida o ExaChk?\nResposta: Best practices, versões, configurações, HA, storage, rede, banco, GI e riscos conhecidos.',
+ 'interview ib_fabric':'Pergunta: Como validar Infiniband?\nResposta: ibstat, iblinkinfo, ibswitches, dcli, latência, erros de porta e saúde dos switches.',
+ 'interview datapatch':'Pergunta: Para que serve o datapatch?\nResposta: Aplica mudanças SQL no banco após patch binário do Oracle Home e deve ser validado em DBA_REGISTRY_SQLPATCH.'
+ };
+ return map[c]||`<span class="good">Comando executado com sucesso.</span>\n${cmd}\n<span class="explain">Etapa registrada.</span>`;
+}
+
+function execute(cmd){
+ if(!lab.started){startLab();}
+ const n=next(); if(!n){finish();return}
+ if(key(cmd)!==n.key){
+   flow({title:'Comando fora de sequência',message:'Execute primeiro o próximo comando obrigatório.',command:n.cmd+'\n\nEtapa: '+n.chapter,primary:'Executar correto',secondary:'Fechar',onPrimary:()=>execute(n.cmd)});
+   return;
+ }
+ $('termOut').innerHTML += `\n\n<span class="prompt">[oracle@exadata-bp-lab]$</span> ${cmd}\n${outputFor(cmd)}`;
+ $('termOut').scrollTop=$('termOut').scrollHeight;
+ lab.done[n.id]=true;
+ renderAll();
+ saveProgress();
+ const upcoming=next();$('cliInput').value=upcoming?upcoming.cmd:'';
+ if(!upcoming)finish();
+}
+function fillCmd(cmd){execute(cmd)}
+function runTyped(){execute($('cliInput').value.trim())}
+function finish(){
+ if(lab.validate)return;
+ lab.validate=true;renderAll();saveProgress();
+ $('certPanel').classList.add('show');$('certificate').classList.remove('locked');$('watermark').textContent='LIBERADO';$('downloadBtn').disabled=false;$('certAlert').textContent='Status: processo finalizado com sucesso. Certificado liberado.';
+ flow({title:'Processo finalizado com sucesso',message:'Todos os comandos foram executados na sequência correta. O certificado foi liberado.',command:'Exadata Bundle Patch Lifecycle\nStatus: 100% concluído',primary:'Ver certificado',secondary:'Fechar',onPrimary:()=>$('certPanel').scrollIntoView({behavior:'smooth'})});
+}
+function showTrouble(c){
+ const data={
+ 'OPATCH':'Causa: falha no OPatch/opatchauto. Diagnóstico: prereq, conflitos, inventory, logs OPatch. Correção: resolver conflito, validar inventory e repetir precheck.',
+ 'CRS-4535':'Causa: CRS daemon indisponível. Diagnóstico: crsctl check crs, logs CRSD/OHASD. Correção: validar clusterware, recursos e node health.',
+ 'ORA-600':'Causa: erro interno Oracle. Diagnóstico: alert.log, trace, IPS package, MOS. Correção: abrir SR e validar patch known issue.',
+ 'ORA-15032':'Causa: falha ASM/diskgroup. Diagnóstico: asmcmd lsdg, cellcli, alert ASM. Correção: validar disks, cells e redundância.',
+ 'IB-LINK':'Causa: link Infiniband down/erro. Diagnóstico: ibstat, iblinkinfo. Correção: porta/cabo/firmware/switch.',
+ 'CELLSRV':'Causa: serviço cell afetado. Diagnóstico: cellcli list cell detail. Correção: validar MS/RS/CELLSRV e logs.',
+ 'DATAPATCH':'Causa: SQL patch incompleto. Diagnóstico: dba_registry_sqlpatch, PDBs, invalid objects. Correção: abrir PDBs, rerun datapatch -verbose e validar registry.'
+ };
+ $('troubleInfo').textContent=data[c];
+}
+function showInterview(c){
+ const data={
+ patchmgr:'PatchMgr orquestra prechecks, patching e validações em DB nodes, Storage Cells e IB switches. É fundamental em janelas Exadata reais.',
+ ru:'RU atualiza componentes Oracle; no contexto Exadata, o lifecycle considera stack completo: OS, GI, DB, Storage Cells, IB, ExaChk e validação funcional.',
+ rolling:'Rolling aplica por componente/nó para reduzir indisponibilidade. Non-rolling exige janela total e plano de comunicação aprovado.',
+ exachk:'ExaChk valida best practices, riscos, configurações, versões, HA, storage, rede e recomendações Oracle.',
+ ib:'Infiniband é a malha de baixa latência entre DB Servers e Storage Cells. Validar link, portas, switches e erros é obrigatório.',
+ datapatch:'Datapatch aplica mudanças SQL no banco após patch binário do Oracle Home e deve ser validado em DBA_REGISTRY_SQLPATCH.'
+ };
+ $('interviewInfo').textContent=data[c];
+}
+$('downloadBtn').onclick=async()=>{
+ if(!window.html2canvas){toast('Biblioteca PNG carregando. Tente novamente.');return}
+ const canvas=await html2canvas($('certificate'),{scale:3,backgroundColor:null});
+ const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='Exadata_Patch_Lifecycle_Certificado.png';a.click();
+}
+$('resetProgress').addEventListener('click',(e)=>{
+ e.preventDefault();
+ flow({title:'Zerar progresso?',message:'Isso apaga todo o seu avanço salvo neste navegador. Essa ação não pode ser desfeita.',primary:'Zerar progresso',secondary:'Cancelar',onPrimary:clearProgress});
+});
+
+function toggleQA(btn){
+  const item = btn.closest('.qa-item');
+  const opened = item.classList.contains('open');
+  item.classList.toggle('open');
+  const symbol = btn.querySelector('span');
+  if(symbol){ symbol.textContent = opened ? '+' : '✓'; }
+}
+
+(function init(){
+ const resumed=loadProgress();
+ if(resumed){
+  $('studentName').value=lab.student;
+  $('labArea').classList.add('show');
+  $('ticket').innerHTML=`DBA: ${lab.student}<br>CASO: EXADATA BP<br>VERSÃO ALVO: OL8 + RU 19.31`;
+  $('certName').textContent=lab.student;$('certDate').textContent=new Date().toLocaleDateString('pt-BR');
+  $('certId').textContent='EXA-LAB-'+new Date().getFullYear()+'-'+Math.random().toString(16).slice(2,10).toUpperCase();
+  const rebuilt=flat().filter(x=>lab.done[x.id]).map(x=>`\n\n<span class="prompt">[oracle@exadata-bp-lab]$</span> ${x.cmd}\n${outputFor(x.cmd)}`).join('');
+  $('termOut').innerHTML=rebuilt;
+  if(lab.validate){
+   $('certPanel').classList.add('show');$('certificate').classList.remove('locked');$('watermark').textContent='LIBERADO';$('downloadBtn').disabled=false;$('certAlert').textContent='Status: processo finalizado com sucesso. Certificado liberado.';
+  }
+ }
+ renderSteps();renderRunbook();renderDashboard();
+ if(next()) $('cliInput').value=next().cmd;
+})();
+const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';document.body.appendChild(sc);
+</script>
+
+</body>
+</html>

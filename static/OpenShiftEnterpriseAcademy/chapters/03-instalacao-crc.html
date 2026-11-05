@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="2">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Instalação do CRC</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(2)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson"><h2>Capítulo 03 — Instalação do CRC / OpenShift Local</h2><p>O CRC cria uma VM local contendo um cluster OpenShift pronto para estudos. A instalação real envolve baixar o binário, extrair, configurar o ambiente e iniciar o cluster com o pull secret.</p><div class="callout"><b>Download oficial:</b> o binário do CRC e o pull secret são obtidos na mesma página, direto no portal da Red Hat: <a href="https://console.redhat.com/openshift/create/local" target="_blank" rel="noopener">console.redhat.com/openshift/create/local</a>. É necessária uma conta gratuita Red Hat Developer para acessar.</div><h3>Fluxo de instalação (visão geral)</h3><div class="lesson-list"><div class="lesson-item"><b>1. Baixar CRC:</b> na página oficial acima, escolha o pacote do seu sistema operacional (Linux, macOS ou Windows) e baixe também o pull secret.</div><div class="lesson-item"><b>2. Instalar binário:</b> no Linux, extraia o `.tar.xz` e mova o executável <code>crc</code> para um diretório no PATH (ex: <code>/usr/local/bin</code>). No macOS e Windows, execute o instalador guiado (`.pkg` ou `.msi`) — ele já cuida do PATH automaticamente.</div><div class="lesson-item"><b>3. Executar setup:</b> rode <code>crc setup</code>. No Linux, esse comando prepara libvirt, NetworkManager e as dependências de rede. No macOS ele configura o HyperKit/vfkit, e no Windows o Hyper-V.</div><div class="lesson-item"><b>4. Start:</b> rode <code>crc start -p pull-secret.txt</code> para iniciar o cluster. A primeira inicialização baixa a imagem do cluster e pode levar de 5 a 15 minutos.</div><div class="lesson-item"><b>5. Configurar o CLI:</b> rode <code>eval $(crc oc-env)</code> para adicionar o <code>oc</code> ao PATH da sessão atual automaticamente.</div></div>
+<div class="okbox"><b>Diferença por sistema operacional:</b> os requisitos de hardware (CPU, RAM, disco) são os mesmos em qualquer SO. O que muda é apenas a camada de virtualização por baixo dos panos — libvirt/KVM no Linux, HyperKit/vfkit no macOS, Hyper-V no Windows — e o formato do instalador.</div><h3>Runbook principal</h3><div class="command-block terminal-send" onclick="fillCommand(`crc setup
+crc start --pull-secret-file ~/Downloads/pull-secret.txt
+crc status`)" title="Clique para enviar este comando para a linha do terminal">crc setup
+crc start --pull-secret-file ~/Downloads/pull-secret.txt
+crc status</div><div class="run-row"><button class="run" onclick="runStep('crc setup',this)">Executar crc setup</button><button class="run" onclick="runStep('crc start',this)">Executar crc start</button><button class="run" onclick="runStep('crc status',this)">Executar crc status</button><span class="status-msg">✓ Instalação simulada com sucesso.</span></div><div class="okbox"><b>Resultado esperado:</b> CRC VM Running e OpenShift Running.</div></div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+crc setup
+crc start
+crc console
+oc login
+oc whoami
+oc get projects
+oc get pods
+oc get nodes
+oc get all
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc get pods\')">oc get pods</button><button onclick="fillCommand(\'oc get nodes\')">oc get nodes</button><button onclick="fillCommand(\'oc get projects\')">oc get projects</button><button onclick="fillCommand(\'crc status\')">crc status</button><button onclick="fillCommand(\'oc whoami\')">oc whoami</button></div></div></div></div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

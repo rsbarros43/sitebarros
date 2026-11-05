@@ -1,0 +1,17 @@
+---
+layout: layouts/pagina.njk
+title: Blog
+kicker: Notas do dia a dia
+descricao: Posts curtos, dicas rápidas, scripts e aprendizados do dia a dia com Oracle, Exadata, Cloud e automação.
+pagination:
+  data: collections.blogPosts
+  size: 8
+  alias: posts
+permalink: "/blog/{% if pagination.pageNumber > 0 %}pagina/{{ pagination.pageNumber + 1 }}/{% endif %}"
+---
+<div class="container layout-com-sidebar">
+  <div class="coluna-principal">
+    {% include "partials/lista-paginada.njk" %}
+  </div>
+  {% include "partials/sidebar.njk" %}
+</div>

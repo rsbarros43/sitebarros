@@ -1,0 +1,16 @@
+---
+layout: layouts/base.njk
+title: Currículo
+descricao: Currículo de Renato Barros — Principal Engineer Multidatabase. Oracle, Exadata, RAC, Data Guard, GoldenGate, OCI, AWS, Azure, DBRE e SRE.
+permalink: /curriculo/
+bodyClass: pagina-cv
+---
+{% set c = cv.pt %}
+{% set en = false %}
+{% set L = {
+  kicker: "Currículo", pdf: "/CV_Renato_Barros_2026.pdf", baixar: "BAIXAR CURRÍCULO PDF", imprimir: "IMPRIMIR CV", contato: "CONTATO", contatoUrl: "/contato/",
+  secoes: "Seções do currículo", navResumo: "Resumo", navExp: "Experiência", navComp: "Competências", navCert: "Certificações", navProj: "Projetos",
+  projTitulo: "Projetos técnicos & portfólio", projIntro: "Projetos práticos em bancos de dados, Cloud, alta disponibilidade, automação e plataformas.", abrir: "Abrir projeto",
+  infografico: "Ver currículo visual (infográfico)", infograficoAlt: "Currículo visual de Renato Barros"
+} %}
+{% include "partials/curriculo.njk" %}

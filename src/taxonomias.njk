@@ -1,0 +1,20 @@
+---
+layout: layouts/pagina.njk
+pagination:
+  data: collections.listaCategorias
+  size: 1
+  alias: grupo
+permalink: "/categorias/{{ grupo.slug }}/"
+eleventyComputed:
+  title: "Categoria: {{ grupo.nome }}"
+  descricao: "{{ grupo.posts.length }} publicação(ões) na categoria {{ grupo.nome }}."
+kicker: Categoria
+---
+{% set posts = grupo.posts %}
+<div class="container layout-com-sidebar">
+  <div class="coluna-principal">
+    <div class="lista-posts">{% for post in posts %}{% include "partials/post-card.njk" %}{% endfor %}</div>
+    <p><a class="link-seta" href="/categorias/">← Todas as categorias</a></p>
+  </div>
+  {% include "partials/sidebar.njk" %}
+</div>

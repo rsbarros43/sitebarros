@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MySQL Database — DBA Cheat Sheet Completo · Renato Barros</title>
+<style>
+:root {
+  --bg:#1a1a1a; --bg2:#232323; --bg3:#2c2c2c; --green:#4CAF50; --green2:#66BB6A; --green3:#81C784; --green-dim:#2e7d32;
+  --orange:#FF9800; --orange2:#FFB74D; --red:#F44336; --red2:#EF9A9A; --yellow:#FFEB3B; --yellow2:#FFF176;
+  --cyan:#00BCD4; --cyan2:#80DEEA; --purple:#CE93D8; --blue:#64B5F6; --text:#E0E0E0; --text2:#BDBDBD; --text3:#9E9E9E;
+  --border:#3a3a3a; --border2:#4a4a4a; --nav-h:56px;
+  --font-mono:'SF Mono','Cascadia Code','Consolas','Menlo','DejaVu Sans Mono','Liberation Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-mono);font-size:14px;line-height:1.6;min-height:100vh}
+header{background:linear-gradient(135deg,#0d1117 0%,#1a2332 45%,#0f2027 100%);border-bottom:2px solid var(--green-dim);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 24px,rgba(76,175,80,.03) 24px,rgba(76,175,80,.03) 25px);pointer-events:none}
+.header-badge{display:inline-block;background:var(--green-dim);color:var(--green3);font-size:11px;padding:3px 12px;border-radius:2px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;border:1px solid var(--green)}
+header h1{font-size:clamp(28px,5vw,52px);font-weight:700;color:var(--green);letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+header h1 span{color:var(--text3);font-weight:300}
+.subtitle{font-size:13px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:32px}
+.stats-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.stat{background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.25);border-radius:4px;padding:8px 18px;text-align:center}
+.stat .val{display:block;font-size:20px;font-weight:700;color:var(--green);line-height:1}
+.stat .lbl{display:block;font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.prompt-line{font-size:13px;color:var(--text3);margin-top:16px}
+.prompt-line .user{color:var(--orange)} .prompt-line .host{color:var(--blue)} .prompt-line .path{color:var(--cyan)} .prompt-line .dollar{color:var(--green)} .prompt-line .cmd{color:var(--text)}
+.compat{background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:10px 20px;text-align:center;font-size:11px;color:#666;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.compat span:not(:first-child){background:#1e2e1e;border:1px solid #2e7d32;color:#81C784;padding:2px 10px;border-radius:4px}
+.compat strong{color:#4CAF50;letter-spacing:.5px}
+nav{position:sticky;top:0;z-index:100;background:#0d1117;border-bottom:2px solid var(--green-dim);height:var(--nav-h);display:flex;align-items:center;overflow-x:auto;padding:0 16px;gap:2px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav .brand{font-size:13px;color:var(--green);font-weight:700;padding-right:16px;border-right:1px solid var(--border2);margin-right:8px;white-space:nowrap;flex-shrink:0}
+nav a{color:var(--text3);text-decoration:none;font-size:11px;padding:6px 10px;border-radius:3px;transition:.2s;white-space:nowrap;flex-shrink:0;border:1px solid transparent}
+nav a:hover{background:rgba(76,175,80,.1);border-color:rgba(76,175,80,.3);color:var(--green3)}
+.level-basic .section-num,.level-basic .level-tag{background:rgba(76,175,80,.15);color:var(--green3);border:1px solid var(--green-dim)}
+.level-inter .section-num,.level-inter .level-tag{background:rgba(255,152,0,.15);color:var(--orange2);border:1px solid #e65100}
+.level-adv .section-num,.level-adv .level-tag{background:rgba(244,67,54,.15);color:var(--red2);border:1px solid #b71c1c}
+.level-expert .section-num,.level-expert .level-tag{background:rgba(206,147,216,.15);color:var(--purple);border:1px solid #6a1b9a}
+main{max-width:1400px;margin:0 auto;padding:32px 16px 80px}
+.section{margin-bottom:48px;scroll-margin-top:calc(var(--nav-h) + 16px)}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{width:44px;height:44px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.section-title{flex:1}.section-title h2{font-size:clamp(16px,2.5vw,22px);font-weight:700;line-height:1.2}.section-title .pct{font-size:11px;color:var(--text3);letter-spacing:1px}
+.level-tag{font-size:10px;padding:3px 8px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
+.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}.grid-3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}.card-header{background:var(--bg3);padding:10px 16px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}.card-body{padding:16px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}.dot-green{background:var(--green);box-shadow:0 0 6px var(--green)}.dot-orange{background:var(--orange);box-shadow:0 0 6px var(--orange)}.dot-red{background:var(--red);box-shadow:0 0 6px var(--red)}.dot-cyan{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}.dot-purple{background:var(--purple);box-shadow:0 0 6px var(--purple)}.dot-blue{background:var(--blue);box-shadow:0 0 6px var(--blue)}
+.tbl-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12.5px}th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border2)}td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top}td:first-child{color:var(--cyan2);white-space:nowrap}tr:hover td{background:rgba(255,255,255,.02)}
+.term{background:#0d1117;border:1px solid #2a3540;border-radius:5px;overflow:hidden;margin:8px 0;font-size:13px}.term-bar{background:#1c2533;padding:6px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #2a3540}.dot-close,.dot-min,.dot-max{width:10px;height:10px;border-radius:50%}.dot-close{background:#ff5f56}.dot-min{background:#ffbd2e}.dot-max{background:#27c93f}.term-title{font-size:11px;color:var(--text3);margin-left:8px}.term-body{padding:12px 16px;line-height:1.8;white-space:pre-wrap}.p{color:var(--green)}.cmd{color:var(--text)}.cmt{color:#4a5568;font-style:italic}.ok{color:var(--green3)}.err{color:var(--red2)}.out{color:var(--text3)}code{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.2);border-radius:3px;padding:1px 5px;font-size:12px;color:var(--green3)}
+ul.ref{list-style:none;padding:0}ul.ref li{padding:5px 0 5px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--text2)}ul.ref li:before{content:'▸';position:absolute;left:0;color:var(--green)}ul.ref li strong{color:var(--text)}
+.callout{border-left:3px solid var(--cyan);padding:10px 14px;border-radius:0 4px 4px 0;margin:12px 0;font-size:12.5px;background:rgba(0,188,212,.06);color:var(--cyan2)}
+.lab-layout{display:grid;grid-template-columns:minmax(320px,0.9fr) minmax(420px,1.1fr);gap:16px;align-items:start}.command-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;margin:10px 0 14px}.cmd-btn{background:#111827;border:1px solid #2e7d32;color:#81C784;border-radius:4px;padding:8px 10px;text-align:left;font-family:var(--font-mono);font-size:11px;cursor:pointer}.cmd-btn:hover{background:#17321d;color:#fff}.mysql-input{width:100%;background:#050b12;border:1px solid #2a3540;color:#e0e0e0;border-radius:4px;padding:11px 12px;font-family:var(--font-mono);font-size:13px}.run-btn{margin-top:10px;background:#2e7d32;border:1px solid #4CAF50;color:#eaffea;padding:9px 16px;border-radius:4px;font-family:var(--font-mono);cursor:pointer}.run-btn:hover{background:#3d9a42}
+.visual-map{background:#0d1117;border:1px solid #2a3540;border-radius:8px;padding:18px;overflow:hidden;text-align:center}.visual-title{color:#80DEEA;font-weight:700;letter-spacing:2px;margin-bottom:8px}.mysql-logo{font-size:34px;font-weight:900;color:#64B5F6;letter-spacing:4px;text-shadow:0 0 14px rgba(100,181,246,.45)}.diagram{width:100%;max-width:760px;margin:0 auto}.quote{margin-top:18px;color:#81C784;font-size:13px}.author{color:#FFB74D;margin-top:4px}.dba-mini{margin-top:16px;color:#80DEEA;font-size:12px;line-height:1.2;white-space:pre}
+footer{background:#0d1117;border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12px;color:var(--text3)}footer .brand{color:var(--green);font-weight:700}
+@media(max-width:900px){.lab-layout{grid-template-columns:1fr}}@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}header{padding:28px 14px 24px}nav{padding:0 8px;height:auto;min-height:48px}nav a{font-size:9px;padding:5px 7px}.section-header{flex-wrap:wrap}.term-body{font-size:11.5px}.card-body{padding:12px}}@media(max-width:480px){header h1{font-size:20px}.subtitle{font-size:11px}.stat{min-width:60px;padding:8px 4px}.stat .val{font-size:14px}nav .brand{display:none}main{padding:16px 10px 48px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-badge">MySQL Database · DBA · Guia Completo · Curso Prático</div>
+  <h1><span>mysql&gt;</span> MySQL <span>--</span>dba<span>-</span>cheat<span>-</span>sheet</h1>
+  <div class="subtitle">Do básico ao expert · Administração · Backup · Tuning · Replication · InnoDB Cluster · HeatWave</div>
+  <div class="stats-bar">
+    <div class="stat"><span class="val">12</span><span class="lbl">Módulos</span></div>
+    <div class="stat"><span class="val">220+</span><span class="lbl">Comandos</span></div>
+    <div class="stat"><span class="val">4</span><span class="lbl">Níveis</span></div>
+    <div class="stat"><span class="val">5.7</span><span class="lbl">Legado</span></div>
+    <div class="stat"><span class="val">8.0/8.4</span><span class="lbl">LTS</span></div>
+    <div class="stat"><span class="val">9.x</span><span class="lbl">Innovation</span></div>
+  </div>
+  <div class="prompt-line">
+    <span class="user">renato</span>@<span class="host">mysql-lab</span>:<span class="path">~</span><span class="dollar">$</span>
+    <span class="cmd"> mysql -uroot -p &amp;&amp; echo "MySQL DBA Training — Renato Barros"</span>
+  </div>
+</header>
+
+<div class="compat">
+  <strong>COMPATIBILIDADE:</strong>
+  <span>MySQL 5.7 legado</span><span>MySQL 8.0</span><span>MySQL 8.4 LTS</span><span>MySQL 9.x Innovation</span><span>MySQL 9.7 LTS</span><span>InnoDB · Replication · HeatWave</span>
+</div>
+
+<nav>
+  <div class="brand">mysql&gt; MySQL</div>
+  <a onclick="gotoSection('s1')" class="level-basic">01·Fundamentos</a>
+  <a onclick="gotoSection('s2')" class="level-basic">02·Instalação</a>
+  <a onclick="gotoSection('s3')" class="level-basic">03·Client</a>
+  <a onclick="gotoSection('s4')" class="level-inter">04·InnoDB</a>
+  <a onclick="gotoSection('s5')" class="level-inter">05·Backup</a>
+  <a onclick="gotoSection('s6')" class="level-inter">06·Tuning</a>
+  <a onclick="gotoSection('s7')" class="level-inter">07·Security</a>
+  <a onclick="gotoSection('s8')" class="level-adv">08·Replication</a>
+  <a onclick="gotoSection('s9')" class="level-adv">09·Cluster</a>
+  <a onclick="gotoSection('s10')" class="level-adv">10·Upgrade</a>
+  <a onclick="gotoSection('s11')" class="level-expert">11·Troubleshooting</a>
+  <a onclick="gotoSection('s12')" class="level-expert">12·Cloud</a>
+  <a onclick="gotoSection('lab')" style="color:var(--yellow2)">⚡Lab</a>
+</nav>
+
+<main>
+<section id="s1" class="section level-basic"><div class="section-header"><div class="section-num">01</div><div class="section-title"><h2>Fundamentos & Arquitetura MySQL</h2><div class="pct">mysqld · Client · Databases · Schemas · Storage Engines · InnoDB</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Conceitos Essenciais</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>mysqld</td><td>Processo servidor MySQL responsável por conexões, SQL, cache, storage engines e transações.</td></tr><tr><td>mysql client</td><td>Cliente de linha de comando usado para conectar e administrar o servidor.</td></tr><tr><td>Database/Schema</td><td>No MySQL, database e schema são usados praticamente como sinônimos.</td></tr><tr><td>Storage Engine</td><td>Camada responsável pelo armazenamento físico e comportamento transacional.</td></tr><tr><td>InnoDB</td><td>Engine padrão moderna: ACID, MVCC, row-level locking, foreign keys e crash recovery.</td></tr><tr><td>Data Dictionary</td><td>Metadados armazenados no próprio servidor a partir do MySQL 8.0.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Arquivos e Diretórios</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>datadir</td><td>Diretório físico dos dados, por exemplo <code>/var/lib/mysql</code>.</td></tr><tr><td>my.cnf</td><td>Arquivo principal de configuração do MySQL.</td></tr><tr><td>error log</td><td>Log de inicialização, falhas, warnings e mensagens críticas.</td></tr><tr><td>binary log</td><td>Registra eventos de mudanças; usado em replication e point-in-time recovery.</td></tr><tr><td>redo log</td><td>Log transacional do InnoDB para crash recovery.</td></tr><tr><td>undo log</td><td>Usado por rollback, MVCC e leituras consistentes.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Comandos rápidos</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">mysql@dbserver</span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysql -uroot -p</span>
+<span class="p">mysql&gt;</span> <span class="cmd">status;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select @@version, @@hostname, @@port;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show databases;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show engines;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'datadir';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Views e Schemas do Sistema</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>information_schema</td><td>Metadados SQL padrão: tabelas, colunas, constraints e estatísticas.</td></tr><tr><td>performance_schema</td><td>Instrumentação de waits, statements, locks, I/O e memória.</td></tr><tr><td>sys</td><td>Views amigáveis sobre o Performance Schema para troubleshooting.</td></tr><tr><td>mysql</td><td>Usuários, privilégios, roles, plugins e tabelas internas.</td></tr></table></div></div></div>
+</div></section>
+
+<section id="s2" class="section level-basic"><div class="section-header"><div class="section-num">02</div><div class="section-title"><h2>Instalação & Configuração</h2><div class="pct">Linux · Repositórios · systemd · my.cnf · Inicialização segura</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Instalação Linux</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">root@linux</span></div><div class="term-body"><span class="p">#</span> <span class="cmd">dnf install mysql-community-server</span>
+<span class="p">#</span> <span class="cmd">systemctl enable --now mysqld</span>
+<span class="p">#</span> <span class="cmd">systemctl status mysqld</span>
+<span class="p">#</span> <span class="cmd">grep 'temporary password' /var/log/mysqld.log</span>
+<span class="p">#</span> <span class="cmd">mysql_secure_installation</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Parâmetros importantes</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Parâmetro</th><th>Uso</th></tr><tr><td>innodb_buffer_pool_size</td><td>Principal cache do InnoDB; normalmente o maior consumidor de memória.</td></tr><tr><td>max_connections</td><td>Quantidade máxima de conexões simultâneas.</td></tr><tr><td>log_bin</td><td>Habilita binary log para replication e PITR.</td></tr><tr><td>server_id</td><td>Identificador único em ambientes replicados.</td></tr><tr><td>slow_query_log</td><td>Habilita log de queries lentas.</td></tr><tr><td>long_query_time</td><td>Threshold para slow query log.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Exemplo my.cnf</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body">[mysqld]
+server_id=10
+datadir=/var/lib/mysql
+port=3306
+default_authentication_plugin=caching_sha2_password
+innodb_buffer_pool_size=4G
+innodb_redo_log_capacity=2G
+log_bin=mysql-bin
+binlog_expire_logs_seconds=604800
+slow_query_log=ON
+long_query_time=1</div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Validação</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqladmin -uroot -p ping</span>
+<span class="p">$</span> <span class="cmd">mysql -uroot -p -e "select @@version, @@datadir"</span>
+<span class="p">$</span> <span class="cmd">ss -lntp | grep 3306</span>
+<span class="p">$</span> <span class="cmd">journalctl -u mysqld -n 100 --no-pager</span></div></div></div></div>
+</div></section>
+
+<section id="s3" class="section level-basic"><div class="section-header"><div class="section-num">03</div><div class="section-title"><h2>MySQL Client & Administração Básica</h2><div class="pct">Conexão · Usuários · Grants · Schemas · Processlist</div></div><div class="level-tag">Básico</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Comandos do mysql</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Comando</th><th>Descrição</th></tr><tr><td>status;</td><td>Mostra conexão, versão, charset, uptime e SSL.</td></tr><tr><td>show databases;</td><td>Lista databases/schemas.</td></tr><tr><td>use appdb;</td><td>Seleciona database.</td></tr><tr><td>show tables;</td><td>Lista tabelas do database atual.</td></tr><tr><td>desc tabela;</td><td>Descreve colunas de uma tabela.</td></tr><tr><td>show processlist;</td><td>Mostra sessões e comandos em execução.</td></tr><tr><td>show grants;</td><td>Mostra privilégios do usuário atual.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Usuários e privilégios</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">create database appdb;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">create user 'app'@'%' identified by 'Senha#2026';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">grant select, insert, update, delete on appdb.* to 'app'@'%';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show grants for 'app'@'%';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">alter user 'app'@'%' identified by 'NovaSenha#2026';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Sessões</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show full processlist;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from information_schema.processlist order by time desc;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">kill 12345;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show global status like 'Threads_connected';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Metadados úteis</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">select table_schema, table_name, engine from information_schema.tables where table_schema='appdb';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select table_schema, round(sum(data_length+index_length)/1024/1024,2) mb from information_schema.tables group by table_schema;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select user, host, account_locked from mysql.user;</span></div></div></div></div>
+</div></section>
+
+<section id="s4" class="section level-inter"><div class="section-header"><div class="section-num">04</div><div class="section-title"><h2>InnoDB Storage Engine</h2><div class="pct">Buffer Pool · Redo · Undo · MVCC · Locks · Tablespaces</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Componentes InnoDB</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>Buffer Pool</td><td>Cache de páginas de dados e índices.</td></tr><tr><td>Redo Log</td><td>Garante durabilidade e crash recovery.</td></tr><tr><td>Undo Log</td><td>Permite rollback e MVCC.</td></tr><tr><td>Doublewrite Buffer</td><td>Proteção contra partial page writes.</td></tr><tr><td>Change Buffer</td><td>Otimiza mudanças em índices secundários.</td></tr><tr><td>Adaptive Hash Index</td><td>Otimização de lookup para workloads específicos.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Monitorar InnoDB</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show engine innodb status\G</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'innodb_buffer_pool_size';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show global status like 'Innodb_buffer_pool%';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from sys.innodb_lock_waits\G</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Tablespaces</div><div class="card-body"><ul class="ref"><li><strong>file-per-table</strong> — um arquivo <code>.ibd</code> por tabela quando habilitado.</li><li><strong>system tablespace</strong> — arquivo <code>ibdata1</code> para estruturas internas e, em versões antigas, dados.</li><li><strong>undo tablespace</strong> — armazena undo fora do system tablespace em versões modernas.</li><li><strong>temporary tablespace</strong> — usado para objetos temporários InnoDB.</li></ul></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Locks</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Lock</th><th>Descrição</th></tr><tr><td>Record lock</td><td>Bloqueio de registro de índice.</td></tr><tr><td>Gap lock</td><td>Bloqueio de intervalo entre registros.</td></tr><tr><td>Next-key lock</td><td>Record + gap lock, comum em REPEATABLE READ.</td></tr><tr><td>Metadata lock</td><td>Bloqueio de DDL/estrutura de objetos.</td></tr><tr><td>Deadlock</td><td>Ciclo de dependência entre transações; InnoDB escolhe uma vítima.</td></tr></table></div></div></div>
+</div></section>
+
+<section id="s5" class="section level-inter"><div class="section-header"><div class="section-num">05</div><div class="section-title"><h2>Backup & Restore</h2><div class="pct">mysqldump · MySQL Shell · MyDumper · XtraBackup · PITR</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Estratégias</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Ferramenta</th><th>Uso</th></tr><tr><td>mysqldump</td><td>Backup lógico simples, portátil, bom para bancos menores.</td></tr><tr><td>mysqlpump</td><td>Dump lógico com paralelismo em versões compatíveis.</td></tr><tr><td>MySQL Shell Dump</td><td>Dump/load moderno e paralelo com util.dumpInstance/util.loadDump.</td></tr><tr><td>MyDumper</td><td>Backup lógico paralelo muito usado em ambientes grandes.</td></tr><tr><td>XtraBackup</td><td>Backup físico online para InnoDB.</td></tr><tr><td>Binary Logs</td><td>Base para point-in-time recovery.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>mysqldump</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqldump -uroot -p --single-transaction --routines --triggers --events appdb > appdb.sql</span>
+<span class="p">$</span> <span class="cmd">mysqldump -uroot -p --all-databases --single-transaction --master-data=2 > full.sql</span>
+<span class="p">$</span> <span class="cmd">mysql -uroot -p appdb < appdb.sql</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>MySQL Shell</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqlsh root@localhost:3306</span>
+<span class="p">JS&gt;</span> <span class="cmd">util.dumpInstance("/backup/full", {threads: 8})</span>
+<span class="p">JS&gt;</span> <span class="cmd">util.dumpSchemas(["appdb"], "/backup/appdb", {threads: 8})</span>
+<span class="p">JS&gt;</span> <span class="cmd">util.loadDump("/backup/appdb", {threads: 8})</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>PITR com binlog</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqlbinlog --start-datetime="2026-06-12 10:00:00" --stop-datetime="2026-06-12 11:00:00" mysql-bin.000123 > pitr.sql</span>
+<span class="p">$</span> <span class="cmd">mysql -uroot -p < pitr.sql</span></div></div></div></div>
+</div></section>
+
+<section id="s6" class="section level-inter"><div class="section-header"><div class="section-num">06</div><div class="section-title"><h2>Performance Tuning</h2><div class="pct">EXPLAIN · Slow Query · Performance Schema · Índices · Observabilidade</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Fluxo de análise</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Etapa</th><th>Ação</th></tr><tr><td>1. Sintoma</td><td>CPU, I/O, lock, query lenta ou saturação de conexões.</td></tr><tr><td>2. Evidência</td><td>Slow log, Performance Schema, sys schema e métricas de host.</td></tr><tr><td>3. Plano</td><td>EXPLAIN, EXPLAIN ANALYZE, cardinalidade e índices.</td></tr><tr><td>4. Correção</td><td>Índice, rewrite, particionamento, parâmetro ou arquitetura.</td></tr><tr><td>5. Validação</td><td>Comparar tempo, rows examined, locks, I/O e CPU antes/depois.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>SQL Tuning</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">explain select * from pedidos where cliente_id=10;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">explain analyze select * from pedidos where cliente_id=10;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show index from pedidos;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">analyze table pedidos;</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Slow Query Log</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">set global slow_query_log=ON;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">set global long_query_time=1;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'slow_query_log%';</span>
+<span class="p">$</span> <span class="cmd">mysqldumpslow -s t -t 20 /var/lib/mysql/*slow*.log</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>sys schema</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">select * from sys.statement_analysis limit 10;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from sys.schema_table_statistics order by total_latency desc limit 10;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from sys.user_summary_by_statement_latency;</span></div></div></div></div>
+</div></section>
+
+<section id="s7" class="section level-inter"><div class="section-header"><div class="section-num">07</div><div class="section-title"><h2>Segurança</h2><div class="pct">Usuários · Roles · TLS · Password Policy · Auditoria</div></div><div class="level-tag">Intermediário</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Boas práticas</div><div class="card-body"><ul class="ref"><li><strong>Menor privilégio</strong> — conceder apenas o necessário por schema/tabela.</li><li><strong>Não usar root em aplicação</strong> — criar usuários específicos por serviço.</li><li><strong>TLS</strong> — exigir conexão criptografada em rede não confiável.</li><li><strong>Rotação de senhas</strong> — controlar validade e política de senha.</li><li><strong>Auditoria</strong> — usar logs/plugins conforme edição e necessidade regulatória.</li></ul></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Roles e grants</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">create role app_readonly;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">grant select on appdb.* to app_readonly;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">grant app_readonly to 'app'@'%';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">set default role app_readonly to 'app'@'%';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>TLS</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show variables like '%ssl%';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">alter user 'app'@'%' require ssl;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">status;</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Auditoria básica</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show variables like 'general_log';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">set global general_log=ON;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select user, host from mysql.user;</span></div></div><div class="callout">Em produção, general_log pode gerar alto volume. Use com critério.</div></div></div>
+</div></section>
+
+<section id="s8" class="section level-adv"><div class="section-header"><div class="section-num">08</div><div class="section-title"><h2>Replication</h2><div class="pct">Source/Replica · GTID · Binlog · Relay Log · Lag</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-blue"></span>Conceitos</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>Source</td><td>Servidor origem que grava binary logs.</td></tr><tr><td>Replica</td><td>Servidor que recebe e aplica eventos.</td></tr><tr><td>GTID</td><td>Identificador global de transação; simplifica failover e reconfiguração.</td></tr><tr><td>Binary Log</td><td>Eventos gerados no source.</td></tr><tr><td>Relay Log</td><td>Eventos recebidos pela replica antes da aplicação.</td></tr><tr><td>Replica Lag</td><td>Atraso entre source e replica.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-blue"></span>Comandos</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show binary logs;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show master status;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show replica status\G</span>
+<span class="p">mysql&gt;</span> <span class="cmd">start replica;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">stop replica;</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-blue"></span>GTID</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show variables like 'gtid_mode';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'enforce_gtid_consistency';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select @@global.gtid_executed;</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-blue"></span>Lag</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">show replica status\G</span>
+<span class="out">Seconds_Behind_Source: 0
+Replica_IO_Running: Yes
+Replica_SQL_Running: Yes</span></div></div></div></div>
+</div></section>
+
+<section id="s9" class="section level-adv"><div class="section-header"><div class="section-num">09</div><div class="section-title"><h2>Group Replication & InnoDB Cluster</h2><div class="pct">HA · MySQL Shell · MySQL Router · Failover</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Componentes</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>Group Replication</td><td>Replicação em grupo com coordenação e tolerância a falhas.</td></tr><tr><td>InnoDB Cluster</td><td>Solução HA usando Group Replication, MySQL Shell e Router.</td></tr><tr><td>MySQL Shell</td><td>AdminAPI para criar e administrar cluster.</td></tr><tr><td>MySQL Router</td><td>Roteia aplicação para primary/replicas.</td></tr><tr><td>Single-primary</td><td>Modo comum com um writer e múltiplos readers.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>AdminAPI</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqlsh root@mysql01:3306</span>
+<span class="p">JS&gt;</span> <span class="cmd">dba.checkInstanceConfiguration('root@mysql01:3306')</span>
+<span class="p">JS&gt;</span> <span class="cmd">cluster = dba.createCluster('cluster01')</span>
+<span class="p">JS&gt;</span> <span class="cmd">cluster.addInstance('root@mysql02:3306')</span>
+<span class="p">JS&gt;</span> <span class="cmd">cluster.status()</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Router</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">mysqlrouter --bootstrap root@mysql01:3306 --user=mysqlrouter</span>
+<span class="p">$</span> <span class="cmd">systemctl enable --now mysqlrouter</span>
+<span class="p">$</span> <span class="cmd">mysql -uapp -p -h router01 -P 6446</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Checklist HA</div><div class="card-body"><ul class="ref"><li>Validar DNS/hosts entre nós.</li><li>Sincronizar horário com NTP/chrony.</li><li>Garantir usuários administrativos e recovery user.</li><li>Testar failover planejado e não planejado.</li><li>Monitorar quorum, latência e estado dos membros.</li></ul></div></div>
+</div></section>
+
+<section id="s10" class="section level-adv"><div class="section-header"><div class="section-num">10</div><div class="section-title"><h2>Upgrade & Versionamento</h2><div class="pct">5.7 → 8.0 → 8.4 LTS → 9.x · Compatibilidade · Deprecações</div></div><div class="level-tag">Avançado</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Trilha recomendada</div><div class="card-body"><ul class="ref"><li><strong>MySQL 5.7</strong> — versão legada, comum em ambientes antigos.</li><li><strong>MySQL 8.0</strong> — série bugfix antes do modelo LTS/Innovation.</li><li><strong>MySQL 8.4 LTS</strong> — linha LTS moderna para produção estável.</li><li><strong>MySQL 9.x</strong> — linha Innovation/LTS atual conforme disponibilidade.</li></ul><div class="callout">Para upgrades antigos, valide caminho, compatibilidade, reserved words, authentication plugin e mudanças de data dictionary.</div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Pré-checks</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">select @@version;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'sql_mode';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'default_authentication_plugin';</span>
+<span class="p">$</span> <span class="cmd">mysqlsh -- util checkForServerUpgrade root@localhost:3306</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Checklist</div><div class="card-body"><ul class="ref"><li>Backup full validado antes do upgrade.</li><li>Teste em homologação com cópia realista.</li><li>Validar aplicação, drivers e conectores.</li><li>Revisar plugins, charset/collation e autenticação.</li><li>Planejar rollback e janela de manutenção.</li></ul></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-orange"></span>Pós-upgrade</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">systemctl restart mysqld</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select @@version;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">check table appdb.pedidos;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">analyze table appdb.pedidos;</span></div></div></div></div>
+</div></section>
+
+<section id="s11" class="section level-expert"><div class="section-header"><div class="section-num">11</div><div class="section-title"><h2>Troubleshooting DBA</h2><div class="pct">Locks · Deadlocks · Conexões · I/O · Replication Lag · Logs</div></div><div class="level-tag">Expert</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Primeiros comandos</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">systemctl status mysqld</span>
+<span class="p">$</span> <span class="cmd">tail -100 /var/log/mysqld.log</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show full processlist;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show engine innodb status\G</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show global status like 'Threads%';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Problemas comuns</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Sintoma</th><th>Onde olhar</th></tr><tr><td>Conexões esgotadas</td><td>max_connections, Threads_connected, application pool.</td></tr><tr><td>Deadlock</td><td>show engine innodb status\G e logs da aplicação.</td></tr><tr><td>Replication lag</td><td>show replica status\G, I/O, queries longas e rede.</td></tr><tr><td>Disco cheio</td><td>datadir, binlogs, temp, backups e logs.</td></tr><tr><td>CPU alta</td><td>Top SQL, EXPLAIN ANALYZE, índices e plano.</td></tr><tr><td>I/O alto</td><td>Buffer pool hit ratio, flush, redo, scans e disco.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Locks</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">select * from performance_schema.data_locks\G</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from performance_schema.data_lock_waits\G</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select * from sys.innodb_lock_waits\G</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-red"></span>Espaço</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">$</span> <span class="cmd">df -h</span>
+<span class="p">$</span> <span class="cmd">du -sh /var/lib/mysql/* | sort -h</span>
+<span class="p">mysql&gt;</span> <span class="cmd">select table_schema, round(sum(data_length+index_length)/1024/1024/1024,2) gb from information_schema.tables group by table_schema order by gb desc;</span></div></div></div></div>
+</div></section>
+
+<section id="s12" class="section level-expert"><div class="section-header"><div class="section-num">12</div><div class="section-title"><h2>Cloud & MySQL HeatWave</h2><div class="pct">OCI · HeatWave · DB Systems · Backup · Monitoring · Migration</div></div><div class="level-tag">Expert</div></div><div class="grid grid-2">
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Cloud DBA</div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Item</th><th>Descrição</th></tr><tr><td>MySQL HeatWave</td><td>Serviço gerenciado MySQL com aceleração analítica HeatWave.</td></tr><tr><td>DB System</td><td>Instância gerenciada com compute, storage, backups e rede.</td></tr><tr><td>Backup automático</td><td>Retenção e restore gerenciados pela plataforma.</td></tr><tr><td>Monitoring</td><td>Métricas de CPU, memória, conexões, storage e queries.</td></tr><tr><td>HA</td><td>Arquiteturas gerenciadas com alta disponibilidade conforme serviço.</td></tr></table></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Migração</div><div class="card-body"><ul class="ref"><li>Inventariar versão, tamanho, engines, usuários e rotinas.</li><li>Validar compatibilidade 5.7/8.0/8.4.</li><li>Escolher método: dump lógico, replication, MySQL Shell ou ferramenta cloud.</li><li>Planejar cutover, rollback e janela.</li><li>Executar validação de dados, performance e aplicação.</li></ul></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Comandos úteis</div><div class="card-body"><div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span></div><div class="term-body"><span class="p">mysql&gt;</span> <span class="cmd">select @@version, @@hostname;</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show variables like 'innodb_buffer_pool_size';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show global status like 'Threads_connected';</span>
+<span class="p">mysql&gt;</span> <span class="cmd">show global status like 'Queries';</span></div></div></div></div>
+<div class="card"><div class="card-header"><span class="dot dot-purple"></span>Checklist profissional</div><div class="card-body"><ul class="ref"><li>Backups e restore testados.</li><li>Alertas para storage, conexões, replication e slow queries.</li><li>Usuários com menor privilégio.</li><li>Plano de upgrade e patching.</li><li>Runbook de incidentes e continuidade.</li></ul></div></div>
+</div></section>
+
+<section id="lab" class="section level-expert"><div class="section-header"><div class="section-num">⚡</div><div class="section-title"><h2>Mini Lab Interativo — MySQL DBA Simulator</h2><div class="pct">Digite comandos MySQL simulados · Use help para listar opções · Clique nos comandos para testar</div></div><div class="level-tag">Lab</div></div>
+<div class="lab-layout">
+<div class="card"><div class="card-header"><span class="dot dot-green"></span>Aulas rápidas do Lab</div><div class="card-body">
+<ul class="ref">
+<li><strong>Aula 1:</strong> Validar versão, status e databases.</li>
+<li><strong>Aula 2:</strong> Ver engines, variáveis e status global.</li>
+<li><strong>Aula 3:</strong> Analisar sessões com processlist.</li>
+<li><strong>Aula 4:</strong> Ver InnoDB, locks e buffer pool.</li>
+<li><strong>Aula 5:</strong> Simular backup, restore e binlogs.</li>
+<li><strong>Aula 6:</strong> Checar replication e lag.</li>
+</ul>
+<div class="visual-map">
+  <div class="visual-title">MAPA VISUAL MYSQL DATABASE</div>
+  <div class="mysql-logo">MySQL</div>
+  <svg class="diagram" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+    <defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <rect x="355" y="60" width="190" height="74" rx="12" fill="#102033" stroke="#64B5F6" stroke-width="2" filter="url(#glow)"/>
+    <text x="450" y="92" fill="#80DEEA" font-size="18" text-anchor="middle" font-weight="700">CLIENTS</text>
+    <text x="450" y="116" fill="#9E9E9E" font-size="12" text-anchor="middle">app · shell · router</text>
+    <path d="M450 134 V185" stroke="#81C784" stroke-width="3"/>
+    <ellipse cx="450" cy="235" rx="145" ry="54" fill="#111827" stroke="#4CAF50" stroke-width="3" filter="url(#glow)"/>
+    <rect x="305" y="205" width="290" height="66" rx="12" fill="#16281b" stroke="#4CAF50" stroke-width="2"/>
+    <text x="450" y="233" fill="#81C784" font-size="22" text-anchor="middle" font-weight="700">MYSQLD SERVER</text>
+    <text x="450" y="255" fill="#BDBDBD" font-size="12" text-anchor="middle">SQL Layer · Optimizer · Connections</text>
+    <path d="M450 290 V335" stroke="#81C784" stroke-width="3"/>
+    <path d="M450 335 H160 V380" stroke="#81C784" stroke-width="3"/>
+    <path d="M450 335 H330 V380" stroke="#81C784" stroke-width="3"/>
+    <path d="M450 335 H570 V380" stroke="#81C784" stroke-width="3"/>
+    <path d="M450 335 H740 V380" stroke="#81C784" stroke-width="3"/>
+    <rect x="70" y="380" width="180" height="78" rx="10" fill="#202020" stroke="#FFB74D" stroke-width="2"/>
+    <text x="160" y="410" fill="#FFB74D" font-size="16" text-anchor="middle" font-weight="700">INNODB</text>
+    <text x="160" y="435" fill="#BDBDBD" font-size="11" text-anchor="middle">MVCC · Locks · ACID</text>
+    <rect x="260" y="380" width="180" height="78" rx="10" fill="#202020" stroke="#80DEEA" stroke-width="2"/>
+    <text x="350" y="410" fill="#80DEEA" font-size="16" text-anchor="middle" font-weight="700">BUFFER POOL</text>
+    <text x="350" y="435" fill="#BDBDBD" font-size="11" text-anchor="middle">Data & Index Cache</text>
+    <rect x="460" y="380" width="180" height="78" rx="10" fill="#202020" stroke="#EF9A9A" stroke-width="2"/>
+    <text x="550" y="410" fill="#EF9A9A" font-size="16" text-anchor="middle" font-weight="700">REDO / UNDO</text>
+    <text x="550" y="435" fill="#BDBDBD" font-size="11" text-anchor="middle">Crash Recovery · MVCC</text>
+    <rect x="650" y="380" width="180" height="78" rx="10" fill="#202020" stroke="#CE93D8" stroke-width="2"/>
+    <text x="740" y="410" fill="#CE93D8" font-size="16" text-anchor="middle" font-weight="700">BINLOG</text>
+    <text x="740" y="435" fill="#BDBDBD" font-size="11" text-anchor="middle">Replication · PITR</text>
+  </svg>
+  <div class="quote">"Performance não é mágica; é observabilidade, método e consistência."</div>
+  <div class="author">— Renato Barros</div>
+  <div class="dba-mini">      🙂 
+  ┌───────────────┐
+  │ mysql&gt; SQL_   │
+  └───────────────┘
+        ⌨️</div>
+</div>
+</div></div>
+
+<div class="card"><div class="card-header"><span class="dot dot-cyan"></span>Terminal MySQL Simulator</div><div class="card-body">
+<div class="callout"><strong>Dica:</strong> digite <code>help</code> para ver os comandos suportados. Cada execução limpa o resultado anterior.</div>
+<input id="mysqlCommand" class="mysql-input" placeholder="Digite um comando. Ex: show databases;" autocomplete="off"/>
+<button class="run-btn" onclick="runMySQLCommand()">Rodar</button>
+<div class="command-grid" id="cmdGrid"></div>
+<div class="term"><div class="term-bar"><span class="dot-close"></span><span class="dot-min"></span><span class="dot-max"></span><span class="term-title">mysql simulator</span></div><div class="term-body" id="mysqlOutput"><span class="out">Digite help ou clique em um comando acima para começar.</span></div></div>
+</div></div>
+</div>
+</section>
+</main>
+
+<footer>
+  <span class="brand">MySQL Database Cheat Sheet & Interactive DBA Lab</span><br/>
+  Desenvolvido por Renato Barros · Database Engineer · Oracle · MySQL · PostgreSQL · SQL Server · Cloud
+</footer>
+
+<script>
+function gotoSection(id){ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+const responses = {
+"help": `Comandos disponíveis:
+  help
+  status;
+  select @@version;
+  select user();
+  show databases;
+  use appdb;
+  show tables;
+  show engines;
+  show processlist;
+  show full processlist;
+  show variables like 'datadir';
+  show variables like 'innodb_buffer_pool_size';
+  show global status like 'Threads_connected';
+  show engine innodb status\\G
+  show binary logs;
+  show master status;
+  show replica status\\G
+  create database appdb;
+  mysqldump example
+  explain example
+  backup help
+  replication help`,
+"status;": `--------------
+mysql  Ver 8.4.9 for Linux on x86_64
+Connection id:          42
+Current database:       appdb
+Current user:           root@localhost
+SSL:                    Cipher in use is TLS_AES_256_GCM_SHA384
+Server version:         8.4.9 MySQL Community Server - LTS
+Protocol version:       10
+Connection:             Localhost via UNIX socket
+Server characterset:    utf8mb4
+Uptime:                 18 days 04:22:10
+--------------`,
+"select @@version;": `+-----------+
+| @@version |
++-----------+
+| 8.4.9     |
++-----------+
+1 row in set (0.00 sec)`,
+"select user();": `+----------------+
+| user()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)`,
+"show databases;": `+--------------------+
+| Database           |
++--------------------+
+| appdb              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)`,
+"use appdb;": `Database changed`,
+"show tables;": `+-----------------+
+| Tables_in_appdb |
++-----------------+
+| clientes        |
+| pedidos         |
+| produtos        |
+| auditoria       |
++-----------------+
+4 rows in set (0.00 sec)`,
+"show engines;": `+--------------------+---------+----------------------------------------------+
+| Engine             | Support | Comment                                      |
++--------------------+---------+----------------------------------------------+
+| InnoDB             | DEFAULT | Supports transactions, row-level locking     |
+| MEMORY             | YES     | Hash based, stored in memory                 |
+| CSV                | YES     | CSV storage engine                           |
+| PERFORMANCE_SCHEMA | YES     | Performance Schema                           |
++--------------------+---------+----------------------------------------------+`,
+"show processlist;": `+----+------+-----------+-------+---------+------+----------+------------------+
+| Id | User | Host      | db    | Command | Time | State    | Info             |
++----+------+-----------+-------+---------+------+----------+------------------+
+| 42 | root | localhost | appdb | Query   |    0 | starting | show processlist |
+| 51 | app  | 10.0.0.25 | appdb | Sleep   |   12 |          | NULL             |
++----+------+-----------+-------+---------+------+----------+------------------+`,
+"show full processlist;": `+----+------+-----------+-------+---------+------+----------------------+---------------------------------------------+
+| Id | User | Host      | db    | Command | Time | State                | Info                                        |
++----+------+-----------+-------+---------+------+----------------------+---------------------------------------------+
+| 42 | root | localhost | appdb | Query   |    0 | executing            | show full processlist                       |
+| 77 | app  | 10.0.0.30 | appdb | Query   |   35 | Sending data         | select * from pedidos where status='OPEN'  |
++----+------+-----------+-------+---------+------+----------------------+---------------------------------------------+`,
+"show variables like 'datadir';": `+---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| datadir       | /var/lib/mysql/ |
++---------------+-----------------+`,
+"show variables like 'innodb_buffer_pool_size';": `+-------------------------+------------+
+| Variable_name           | Value      |
++-------------------------+------------+
+| innodb_buffer_pool_size | 4294967296 |
++-------------------------+------------+`,
+"show global status like 'threads_connected';": `+-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_connected | 38    |
++-------------------+-------+`,
+"show engine innodb status\\g": `=====================================
+2026-06-12 INNODB MONITOR OUTPUT
+=====================================
+Per second averages calculated from the last 60 seconds
+BACKGROUND THREAD
+srv_master_thread loops: active 129, idle 224310
+TRANSACTIONS
+Trx id counter 928374
+History list length 21
+LATEST DETECTED DEADLOCK
+No deadlocks detected in this sample.
+BUFFER POOL AND MEMORY
+Buffer pool size   262144
+Free buffers       18320
+Database pages     242991
+Modified db pages  812
+=====================================`,
+"show binary logs;": `+------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000121 | 104857600 |
+| mysql-bin.000122 | 134217728 |
+| mysql-bin.000123 |  83886080 |
++------------------+-----------+`,
+"show master status;": `+------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000123 | 92837455 |              |                  | uuid:1-928374     |
++------------------+----------+--------------+------------------+-------------------+`,
+"show replica status\\g": `Replica_IO_Running: Yes
+Replica_SQL_Running: Yes
+Source_Host: mysql-source01
+Source_User: repl
+Source_Log_File: mysql-bin.000123
+Read_Source_Log_Pos: 92837455
+Relay_Source_Log_File: mysql-bin.000123
+Exec_Source_Log_Pos: 92837455
+Seconds_Behind_Source: 0`,
+"create database appdb;": `Query OK, 1 row affected (0.02 sec)`,
+"mysqldump example": `Exemplo:
+mysqldump -uroot -p --single-transaction --routines --triggers --events appdb > appdb.sql`,
+"explain example": `Exemplo:
+EXPLAIN ANALYZE
+SELECT *
+FROM pedidos
+WHERE cliente_id = 10
+ORDER BY data_pedido DESC;`,
+"backup help": `Backup MySQL:
+1. mysqldump para backup lógico simples.
+2. MySQL Shell util.dumpInstance para dump paralelo.
+3. XtraBackup para backup físico online.
+4. Binary logs para PITR.`,
+"replication help": `Replication checklist:
+1. log_bin=ON
+2. server_id único
+3. GTID recomendado
+4. usuário de replicação
+5. show replica status\\G para validar IO/SQL thread e lag.`
+};
+
+const commandList = ["help","status;","select @@version;","show databases;","show tables;","show engines;","show processlist;","show variables like 'datadir';","show variables like 'innodb_buffer_pool_size';","show engine innodb status\\G","show binary logs;","show replica status\\G","mysqldump example","explain example","backup help","replication help"];
+
+function normalizeCommand(cmd){
+  return cmd.trim().replace(/\s+/g,' ').replace(/;$/,';').toLowerCase();
+}
+function runMySQLCommand(){
+  const input=document.getElementById('mysqlCommand');
+  const output=document.getElementById('mysqlOutput');
+  let raw=input.value.trim();
+  if(!raw){ raw='help'; }
+  let key=normalizeCommand(raw);
+  if(key.endsWith('\\g')) key = key.replace('\\g','\\g');
+  let result = responses[key];
+  if(!result && key === 'show engine innodb status\\g;') result = responses["show engine innodb status\\g"];
+  if(!result && key === 'show replica status\\g;') result = responses["show replica status\\g"];
+  if(!result){
+    result = `ERROR 1064 (42000): comando não reconhecido pelo simulador.
+
+Digite help para ver a lista de comandos disponíveis.
+
+Comando digitado:
+${raw}`;
+  }
+  output.innerHTML = `<span class="p">mysql&gt;</span> <span class="cmd">${escapeHtml(raw)}</span>\n<span class="out">${escapeHtml(result)}</span>`;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function fillCommand(cmd){document.getElementById('mysqlCommand').value=cmd;runMySQLCommand();}
+document.addEventListener('DOMContentLoaded',()=>{
+  const grid=document.getElementById('cmdGrid');
+  commandList.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='cmd-btn'; b.textContent=c; b.onclick=()=>fillCommand(c); grid.appendChild(b);
+  });
+  document.getElementById('mysqlCommand').addEventListener('keydown',e=>{if(e.key==='Enter')runMySQLCommand();});
+});
+</script>
+</body>
+</html>

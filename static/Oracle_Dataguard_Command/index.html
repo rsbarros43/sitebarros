@@ -1,0 +1,3631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oracle Data Guard Command Center V19 Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050b14;--panel:#0a1423;--ink:#eaf7ff;--cyan:#27e8ff;--purple:#b85cff;--blue:#3688ff;--green:#34ef8a;--yellow:#ffd45f;--orange:#ff9d42;--red:#ff4d6d;--black:#02050a;--muted:#9ab1c7;--shadow:0 0 0 3px #02050a,0 0 0 6px rgba(39,232,255,.12),8px 8px 0 rgba(0,0,0,.55)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Poppins,system-ui,sans-serif;color:var(--ink);background:linear-gradient(90deg,rgba(39,232,255,.045) 1px,transparent 1px),linear-gradient(rgba(39,232,255,.045) 1px,transparent 1px),radial-gradient(circle at 18% 8%,rgba(184,92,255,.20),transparent 26%),radial-gradient(circle at 78% 10%,rgba(39,232,255,.15),transparent 22%),linear-gradient(180deg,#050b14 0%,#07101d 100%);background-size:24px 24px,24px 24px,auto,auto,auto;min-height:100vh;overflow-x:hidden}.wrap{max-width:1600px;margin:0 auto;padding:18px}.panel{border:3px solid var(--black);box-shadow:var(--shadow);background:linear-gradient(180deg,rgba(12,27,43,.98),rgba(6,13,24,.98));position:relative}.panel:before{content:"";position:absolute;inset:6px;border:1px solid rgba(39,232,255,.12);pointer-events:none}.hero{display:grid;grid-template-columns:minmax(560px,1fr) 440px;gap:16px;margin-bottom:14px}.title{padding:28px;text-align:center;min-height:250px;display:flex;flex-direction:column;justify-content:center;align-items:center}.brand{font-family:'Press Start 2P';font-size:25px;line-height:1.35;color:var(--cyan);text-shadow:4px 4px 0 #101035,0 0 18px rgba(39,232,255,.65)}h1{font-family:'Press Start 2P';font-size:36px;line-height:1.35;margin:14px 0 10px;color:#fff5df;text-shadow:4px 4px 0 #36103f,0 0 18px rgba(184,92,255,.55)}.tagline{font-family:'Press Start 2P';font-size:11px;color:#ffb14f;line-height:1.7}.student-start{padding:20px;background:linear-gradient(135deg,#10223a,#151027)}.student-start h2{font-family:'Press Start 2P';font-size:14px;color:var(--yellow);line-height:1.6;margin:0 0 14px}.student-start label{font-family:'Share Tech Mono';font-size:16px;color:#fff}.student-start input{width:100%;margin:8px 0 12px;background:#06101d;border:3px solid #314962;color:#eaffff;font-family:'Share Tech Mono';font-size:17px;padding:12px;outline:none}.student-start input:focus{border-color:var(--cyan);box-shadow:0 0 18px rgba(39,232,255,.2)}button{cursor:pointer}.main-btn,.nav button,#downloadBtn{background:#21122f;color:#ffadff;border:3px solid #622e78;box-shadow:0 0 16px rgba(184,92,255,.25);padding:12px;font-family:'Press Start 2P';font-size:9px}.main-btn{width:100%}.locked{filter:grayscale(.8);opacity:.48;pointer-events:none}.lab-grid{display:grid;grid-template-columns:330px 1fr 410px;gap:14px}.left,.right,.center{display:grid;gap:14px}.knowledge,.ticket,.coach,.mission,.lesson,.map-panel,.cli-card,.score-card,.concept{padding:16px}.panel-title{font-family:'Press Start 2P';font-size:13px;color:var(--cyan);margin:0 0 14px;line-height:1.5}.steps{display:grid;gap:10px}.step{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;border:2px solid #22344b;background:#081322;padding:10px}.step.active{outline:3px solid var(--cyan);background:#101d30}.step.done{outline:2px solid var(--green)}.icon{width:48px;height:48px;border:3px solid #000;display:grid;place-items:center;font-family:'Press Start 2P';font-size:16px;color:#fff;box-shadow:4px 4px 0 #000}.i1{background:var(--purple)}.i2{background:var(--blue)}.i3{background:var(--green);color:#07101d}.i4{background:var(--yellow);color:#111}.i5{background:var(--cyan);color:#111}.i6{background:var(--orange)}.i7{background:#ff4fb8}.i8{background:#844fff}.i9{background:#23b26d}.i10{background:#ff5656}.step b{font-family:'Press Start 2P';font-size:9px;color:#fff}.step p{margin:5px 0 0;font-family:'Share Tech Mono';font-size:14px;line-height:1.25;color:#d9e8f4}.ticket{background:linear-gradient(135deg,#6817bd,#1bc4d6);color:#111}.ticket h3{font-family:'Press Start 2P';font-size:12px;margin:0 0 12px}.ticket-inner{border:3px solid #000;background:#86f5ff;padding:12px;box-shadow:5px 5px 0 #000}.avatar{width:64px;height:64px;background:#07101d;border:3px solid #000;float:left;margin-right:12px;position:relative}.avatar:before{content:"DBA";position:absolute;inset:12px;background:#ffcc7a;border:3px solid #000;display:grid;place-items:center;font-family:'Press Start 2P';font-size:9px}.ticket p{font-family:'Share Tech Mono';font-size:14px;margin:7px 0}.barcode{height:48px;margin-top:12px;background:repeating-linear-gradient(90deg,#000 0 4px,transparent 4px 8px,#000 8px 12px,transparent 12px 18px)}.concept p,.mission p,.lesson p{font-family:'Share Tech Mono';font-size:16px;line-height:1.5}.concept-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.mini{border:2px solid #22344b;background:#081322;padding:10px;font-family:'Share Tech Mono';font-size:13px;line-height:1.35}.mini b{color:var(--yellow)}.map-wrap{height:405px;border:3px solid var(--black);background:#07101c;position:relative;overflow:hidden}.map-wrap:before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(39,232,255,.07) 1px,transparent 2px);background-size:14px 14px}.net-svg{position:absolute;inset:0;width:100%;height:100%}.nodebox{fill:#202938;stroke:#02050a;stroke-width:4}.nodetext{font-family:'Share Tech Mono';fill:#fff;font-size:16px}.smalltext{font-family:'Share Tech Mono';fill:#d7efff;font-size:13px}.link{stroke:#334b66;stroke-width:8;stroke-linecap:round;opacity:.55}.link.ok{stroke:var(--green);opacity:1;filter:drop-shadow(0 0 6px var(--green))}.link.bad{stroke:var(--red);opacity:1;filter:drop-shadow(0 0 6px var(--red))}.link.warn{stroke:var(--yellow);opacity:1;filter:drop-shadow(0 0 6px var(--yellow))}.node-ok .nodebox{fill:#0b3a24;stroke:var(--green)}.node-bad .nodebox{fill:#3a0b16;stroke:var(--red)}.node-warn .nodebox{fill:#3b2e0a;stroke:var(--yellow)}.status{min-height:30px;background:#04120c;border:3px solid #000;color:var(--green);font-family:'Share Tech Mono';padding:5px 12px;font-size:16px}.terminal{height:430px;background:#02070d;border:3px solid var(--black);box-shadow:inset 0 0 0 2px #122234;font-family:'Share Tech Mono';font-size:14px;color:#e6f6ff;overflow:hidden}.term-title{height:30px;background:#0d1828;border-bottom:3px solid var(--black);color:var(--green);padding:4px 9px}.term-body{padding:10px;height:350px;overflow:auto;white-space:pre-wrap}.cli-input{height:50px;border-top:3px solid var(--black);display:flex;align-items:center;gap:8px;padding:8px;background:#06101d}.cli-input span{color:var(--green);font-family:'Share Tech Mono'}.cli-input input{flex:1;background:#02070d;border:2px solid #25405a;color:#eaffff;font-family:'Share Tech Mono';font-size:14px;padding:8px;outline:none}.prompt{color:var(--green)}.bad{color:var(--red)}.good{color:var(--green)}.explain{color:var(--yellow)}.hint-list{display:grid;gap:8px;max-height:440px;overflow:auto;padding-right:4px}.hint-btn{font-family:'Share Tech Mono';font-size:13px;color:#eafaff;background:#0b1828;border:2px solid #33465f;padding:8px;text-align:left;cursor:pointer}.hint-btn:hover{outline:2px solid var(--cyan)}.coach-grid{display:grid;grid-template-columns:84px 1fr;gap:12px}.oracle{height:112px;background:#0c1626;border:3px solid #000;position:relative;box-shadow:5px 5px 0 #000}.oracle:before{content:"ORA";position:absolute;left:12px;top:22px;width:54px;height:54px;background:#ff3d3d;border:3px solid #000;color:#fff;display:grid;place-items:center;font-family:'Press Start 2P';font-size:11px}.oracle:after{content:"19c";position:absolute;left:20px;top:80px;color:#fff;font-family:'Share Tech Mono'}.bubble{background:#fff0cf;color:#111;border:3px solid #000;padding:14px;font-family:'Share Tech Mono';font-size:15px;line-height:1.35}.task{border:2px solid #22344b;background:#081322;padding:10px;margin:8px 0;font-family:'Share Tech Mono';font-size:13px}.task.done{border-color:var(--green);color:var(--green)}.lesson h2{font-family:'Press Start 2P';font-size:17px;color:var(--cyan);line-height:1.5;margin:0 0 14px}code{color:var(--yellow)}.nav{display:flex;gap:10px;justify-content:space-between;margin-top:14px}.quiz-options{display:grid;gap:10px}.option{border:3px solid var(--black);background:#081322;padding:12px 12px 12px 46px;position:relative;cursor:pointer;font-family:'Share Tech Mono';font-size:15px;line-height:1.35}.option:before{content:attr(data-l);position:absolute;left:10px;top:12px;width:24px;height:24px;background:var(--purple);color:#fff;border:2px solid #000;display:grid;place-items:center}.option.selected{outline:3px solid var(--cyan);background:#12213a}.progress{height:16px;background:#07101d;border:3px solid var(--black);margin-top:12px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--green));transition:.35s}.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.score-box{border:2px solid #22344b;background:#081322;padding:10px;text-align:center}.score-box b{font-family:'Press Start 2P';font-size:9px;color:var(--cyan)}.score-box div{font-family:'Share Tech Mono';font-size:21px;color:#fff}.cert-wrap{display:none;margin-top:20px;color:#1c1204}.cert-wrap.show{display:block}.cert{background:#101b2b;color:#f7e8c6;border:4px solid var(--black);box-shadow:var(--shadow);padding:28px;position:relative;overflow:hidden}.cert:before{content:"";position:absolute;inset:12px;border:3px dashed rgba(255,211,90,.48)}.cert-content{position:relative;text-align:center}.cert-academy{font-family:'Press Start 2P';font-size:12px;color:var(--yellow)}.cert h2{font-family:'Press Start 2P';font-size:28px;color:var(--yellow);text-shadow:4px 4px 0 #000}.cert-name{font-family:'Great Vibes';font-size:56px;border-bottom:2px solid var(--yellow);max-width:720px;margin:10px auto;color:#fff}.cert-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;text-align:left}.cert-box{border:3px solid var(--black);background:#07101d;color:#eafaff;padding:14px;font-family:'Share Tech Mono'}.signature{margin-top:18px}.signature span{display:block;font-family:'Great Vibes';font-size:36px}.toast{position:fixed;right:18px;bottom:18px;background:#07101d;border:3px solid var(--black);box-shadow:8px 8px 0 #000;color:#fff;padding:14px;display:none;z-index:10;max-width:380px}
+.dg-dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.dg-card{border:2px solid #22344b;background:#081322;padding:12px;font-family:'Share Tech Mono';min-height:70px}
+.dg-card b{display:block;color:var(--cyan);font-family:'Press Start 2P';font-size:8px;margin-bottom:8px;line-height:1.4}
+.dg-card span{font-size:18px;color:#fff}
+.dg-card.ok span{color:var(--green)}.dg-card.warn span{color:var(--yellow)}.dg-card.bad span{color:var(--red)}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mode-btn{background:#081322;border:2px solid #33465f;color:#eafaff;padding:10px;font-family:'Share Tech Mono';font-size:12px;text-align:center;cursor:pointer}
+.mode-btn:hover{outline:2px solid var(--cyan)}
+.runbook-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.runbook-btn{background:#081322;border:2px solid #33465f;color:#eafaff;padding:9px;font-family:'Share Tech Mono';font-size:12px;text-align:left;cursor:pointer}
+.runbook-btn:hover{outline:2px solid var(--yellow)}
+.timeline{font-family:'Share Tech Mono';font-size:13px;line-height:1.5;color:#d9e8f4;background:#07101d;border:2px solid #22344b;padding:12px;white-space:pre-wrap}
+@media(max-width:1220px){.dg-dashboard,.mode-grid,.runbook-grid{grid-template-columns:1fr}}
+
+.fundamentals{margin-bottom:14px;padding:18px}
+.fund-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.fund-box{border:2px solid #22344b;background:#081322;padding:14px;font-family:'Share Tech Mono';font-size:15px;line-height:1.55}
+.fund-box b{color:var(--yellow)}
+.fund-link{display:inline-block;margin-top:10px;color:#07101d;background:var(--cyan);border:3px solid #000;padding:10px 12px;font-family:'Press Start 2P';font-size:8px;text-decoration:none;box-shadow:4px 4px 0 #000}
+.site-footer{margin-top:22px;padding:18px;text-align:center;font-family:'Share Tech Mono';font-size:15px;color:#d9e8f4}
+.site-footer b{color:var(--cyan)}
+.site-footer .small{margin-top:8px;color:var(--muted);font-size:13px}
+@media(max-width:1220px){.fund-grid{grid-template-columns:1fr}}
+
+
+@media(max-width:1220px){.hero,.lab-grid,.cert-grid,.concept-grid{grid-template-columns:1fr}.score-row{grid-template-columns:repeat(2,1fr)}.brand{font-size:20px}h1{font-size:28px}.map-wrap{overflow:auto}.net-svg{min-width:940px}}
+
+/* ==========================================================
+   V6 VISUAL REFRESH - Oracle Enterprise Command Center
+   Objetivo: diferenciar do template original mantendo funções
+   ========================================================== */
+:root{
+  --bg:#05070b;
+  --panel:#0d1320;
+  --ink:#edf4ff;
+  --cyan:#64d9ff;
+  --purple:#7c5cff;
+  --blue:#3f8cff;
+  --green:#2ee59d;
+  --yellow:#f7c948;
+  --orange:#ff9f43;
+  --red:#ff5c7a;
+  --black:#020409;
+  --muted:#8fa3b8;
+  --shadow:0 18px 45px rgba(0,0,0,.42),0 0 0 1px rgba(100,217,255,.10);
+}
+body{
+  font-family:Inter,system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 10%,rgba(100,217,255,.12),transparent 28%),
+    radial-gradient(circle at 88% 6%,rgba(255,92,122,.10),transparent 26%),
+    linear-gradient(120deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(180deg,#05070b 0%,#08111e 48%,#05070b 100%);
+  background-size:auto,auto,42px 42px,auto;
+}
+.wrap{max-width:1660px;padding:24px}
+.panel{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  background:
+    linear-gradient(180deg,rgba(18,29,48,.94),rgba(8,13,23,.96)),
+    radial-gradient(circle at top left,rgba(100,217,255,.10),transparent 30%);
+  overflow:hidden;
+}
+.panel:before{
+  inset:0;
+  border:0;
+  background:linear-gradient(90deg,rgba(100,217,255,.24),transparent 35%,rgba(255,92,122,.13));
+  height:1px;
+}
+.hero{
+  grid-template-columns:minmax(640px,1fr) 430px;
+  gap:18px;
+}
+.title{
+  min-height:280px;
+  align-items:flex-start;
+  text-align:left;
+  padding:34px 38px;
+  background:
+    linear-gradient(135deg,rgba(19,36,62,.96),rgba(11,18,32,.98)),
+    radial-gradient(circle at 15% 25%,rgba(100,217,255,.14),transparent 25%);
+}
+.brand{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:23px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#9fe9ff;
+  text-shadow:none;
+}
+h1{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:58px;
+  line-height:.98;
+  letter-spacing:.03em;
+  margin:18px 0 14px;
+  color:#ffffff;
+  text-shadow:none;
+  max-width:900px;
+}
+.tagline{
+  font-family:Share Tech Mono,monospace;
+  font-size:15px;
+  color:#bdd7ee;
+  line-height:1.7;
+  max-width:860px;
+}
+.student-start{
+  padding:24px;
+  background:linear-gradient(180deg,rgba(18,24,43,.98),rgba(12,16,28,.98));
+}
+.student-start h2,.panel-title,.lesson h2{
+  font-family:Rajdhani,Inter,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#9fe9ff;
+  font-size:22px;
+}
+.student-start label,.student-start p,.concept p,.mission p,.lesson p{
+  font-family:Inter,system-ui,sans-serif;
+}
+.student-start input{
+  border:1px solid rgba(100,217,255,.35);
+  border-radius:12px;
+  background:#070d17;
+  font-family:Share Tech Mono,monospace;
+  font-size:18px;
+  padding:15px;
+}
+.main-btn,.nav button,#downloadBtn{
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#0f6bff,#7c5cff);
+  color:#fff;
+  box-shadow:0 12px 24px rgba(63,140,255,.22);
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:14px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.main-btn:hover,.nav button:hover,#downloadBtn:hover{
+  filter:brightness(1.12);
+  transform:translateY(-1px);
+}
+.lab-grid{grid-template-columns:340px 1fr 430px;gap:18px}
+.knowledge,.ticket,.coach,.mission,.lesson,.map-panel,.cli-card,.score-card,.concept,.fundamentals{
+  padding:18px;
+}
+.steps{gap:9px}
+.step{
+  border:1px solid rgba(100,217,255,.14);
+  border-radius:14px;
+  background:rgba(7,13,23,.72);
+  grid-template-columns:42px 1fr;
+}
+.step.active{
+  outline:0;
+  border-color:rgba(100,217,255,.65);
+  background:rgba(21,41,66,.95);
+  box-shadow:0 0 0 1px rgba(100,217,255,.25),0 14px 30px rgba(0,0,0,.22);
+}
+.step.done{
+  outline:0;
+  border-color:rgba(46,229,157,.55);
+}
+.icon{
+  width:38px;height:38px;
+  border:0;
+  border-radius:12px;
+  box-shadow:none;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:18px;
+}
+.step b{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:14px;
+  letter-spacing:.04em;
+}
+.step p,.ticket p,.mini,.task,.hint-btn,.bubble,.fund-box,.site-footer{
+  font-family:Share Tech Mono,monospace;
+}
+.ticket{
+  background:linear-gradient(135deg,#111827,#16324a);
+  color:#eaf7ff;
+}
+.ticket-inner{
+  border:1px solid rgba(100,217,255,.25);
+  border-radius:16px;
+  background:rgba(7,13,23,.88);
+  box-shadow:none;
+}
+.avatar{border:0;border-radius:16px;background:#0a1220}
+.avatar:before{
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#ff5c7a,#ff9f43);
+}
+.barcode{opacity:.5;border-radius:8px}
+.mini,.task,.fund-box{
+  border:1px solid rgba(100,217,255,.14);
+  border-radius:14px;
+  background:rgba(7,13,23,.68);
+}
+.map-wrap{
+  border:1px solid rgba(100,217,255,.17);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(100,217,255,.10),transparent 35%),
+    #060b13;
+}
+.nodebox{
+  fill:#111c2e;
+  stroke:#65d9ff;
+  stroke-width:2;
+  rx:14;
+}
+.nodetext{font-family:Rajdhani,Inter,sans-serif;font-size:19px;font-weight:700}
+.smalltext{font-family:Share Tech Mono,monospace}
+.link{stroke:#425d7c;stroke-width:6}
+.status{
+  border:1px solid rgba(46,229,157,.25);
+  border-radius:12px;
+  background:#05130f;
+}
+.terminal{
+  border:1px solid rgba(100,217,255,.17);
+  border-radius:18px;
+  background:#03070d;
+  box-shadow:inset 0 0 0 1px rgba(100,217,255,.08);
+}
+.term-title{
+  background:linear-gradient(90deg,#0d1b2e,#111827);
+  border-bottom:1px solid rgba(100,217,255,.16);
+  color:#9fe9ff;
+  font-family:Rajdhani,Inter,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.cli-input{
+  border-top:1px solid rgba(100,217,255,.16);
+  background:#070d17;
+}
+.cli-input input{
+  border:1px solid rgba(100,217,255,.22);
+  border-radius:10px;
+  background:#02070d;
+}
+.hint-list{max-height:470px}
+.hint-btn,.mode-btn,.runbook-btn{
+  border:1px solid rgba(100,217,255,.16);
+  border-radius:12px;
+  background:rgba(7,13,23,.78);
+}
+.hint-btn:hover,.mode-btn:hover,.runbook-btn:hover{
+  outline:0;
+  border-color:#64d9ff;
+  background:rgba(20,38,61,.92);
+}
+.oracle{
+  border:0;
+  border-radius:18px;
+  box-shadow:none;
+  background:linear-gradient(180deg,#101a2b,#08111e);
+}
+.oracle:before{
+  border:0;
+  border-radius:16px;
+  background:linear-gradient(135deg,#ff3030,#ff7a45);
+}
+.bubble{
+  border:1px solid rgba(247,201,72,.30);
+  border-radius:16px;
+  background:#111827;
+  color:#f6e7bd;
+}
+.score-box,.dg-card{
+  border:1px solid rgba(100,217,255,.14);
+  border-radius:16px;
+  background:rgba(7,13,23,.70);
+}
+.score-box b,.dg-card b{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:13px;
+  letter-spacing:.08em;
+}
+.cert{
+  border:1px solid rgba(247,201,72,.45);
+  border-radius:22px;
+  background:
+    linear-gradient(135deg,#101827,#0b1020),
+    radial-gradient(circle at 50% 0%,rgba(247,201,72,.12),transparent 35%);
+}
+.cert h2,.cert-academy{
+  font-family:Rajdhani,Inter,sans-serif;
+  text-shadow:none;
+}
+.cert-box{
+  border:1px solid rgba(247,201,72,.25);
+  border-radius:16px;
+}
+.fund-link{
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#64d9ff,#2ee59d);
+  color:#031018;
+  box-shadow:0 10px 20px rgba(100,217,255,.18);
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:13px;
+}
+.site-footer{
+  border-radius:18px;
+  background:linear-gradient(90deg,rgba(10,20,35,.98),rgba(17,24,39,.98));
+}
+.toast{
+  border:1px solid rgba(100,217,255,.20);
+  border-radius:16px;
+  background:#0b1220;
+  box-shadow:0 16px 36px rgba(0,0,0,.45);
+}
+code{border:1px solid rgba(247,201,72,.20);border-radius:7px;padding:1px 5px;background:rgba(247,201,72,.08)}
+
+
+/* ==========================================================
+   V7 - Oracle DBA Academy Visual
+   ========================================================== */
+:root{
+  --oracle-red:#e11d2e;
+  --deep:#05080e;
+  --card:#0e1726;
+  --line:rgba(225,29,46,.38);
+  --soft:#dbe7f3;
+}
+body{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(225,29,46,.12),transparent 30%),
+    radial-gradient(circle at 12% 20%,rgba(100,217,255,.10),transparent 28%),
+    linear-gradient(180deg,#070a10 0%,#08111e 48%,#06080d 100%);
+}
+.wrap{max-width:1580px}
+.hero{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:20px;
+  margin-bottom:18px;
+}
+.title{
+  min-height:390px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border:1px solid var(--line);
+  box-shadow:0 0 0 1px rgba(225,29,46,.25),0 28px 70px rgba(0,0,0,.55);
+  background:
+    linear-gradient(180deg,rgba(9,15,25,.94),rgba(7,11,18,.97)),
+    radial-gradient(circle at center,rgba(225,29,46,.14),transparent 38%);
+}
+.brand{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:36px;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+.oracle-red{
+  color:var(--oracle-red);
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.brand .oracle-red{
+  font-size:52px;
+  transform:skewX(-10deg);
+}
+h1{
+  font-size:58px;
+  letter-spacing:.10em;
+  text-align:center;
+  margin:20px 0 14px;
+}
+.tagline{
+  text-align:center;
+  font-size:18px;
+  letter-spacing:.16em;
+  color:#b9c9da;
+}
+.student-start{
+  max-width:760px;
+  width:100%;
+  margin:0 auto 18px;
+  border:1px solid rgba(225,29,46,.35);
+  background:linear-gradient(180deg,rgba(16,24,39,.94),rgba(8,12,20,.98));
+}
+.student-start h2{
+  text-align:center;
+  color:#ff4d5f;
+}
+.student-start input{
+  border-color:rgba(225,29,46,.55);
+  box-shadow:0 0 18px rgba(225,29,46,.10);
+}
+.main-btn,#downloadBtn{
+  background:linear-gradient(135deg,#e11d2e,#ff3b45);
+  box-shadow:0 16px 30px rgba(225,29,46,.25);
+}
+.student-start p{
+  text-align:center;
+  white-space:pre-line;
+}
+.feature-strip{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0;
+  margin:16px 0;
+  border-top:1px solid rgba(225,29,46,.22);
+  border-bottom:1px solid rgba(225,29,46,.22);
+  background:rgba(5,8,14,.76);
+}
+.feature-item{
+  padding:16px 14px;
+  display:grid;
+  grid-template-columns:36px 1fr;
+  gap:8px;
+  align-items:center;
+  border-right:1px solid rgba(255,255,255,.08);
+}
+.feature-item span{
+  color:var(--oracle-red);
+  font-size:24px;
+  grid-row:1/3;
+}
+.feature-item b{
+  font-family:Rajdhani,Inter,sans-serif;
+  letter-spacing:.08em;
+  color:#fff;
+  font-size:15px;
+}
+.feature-item small{
+  color:#9fb0c2;
+  font-size:12px;
+}
+.fundamentals .panel-title{
+  text-align:center;
+}
+.fund-box p{
+  text-align:center;
+}
+.panel-title{
+  color:#ff5968;
+}
+.cert-wrap{
+  display:none;
+  grid-template-columns:1.35fr .65fr;
+  gap:18px;
+  margin-top:24px;
+}
+.cert-wrap.show{display:grid}
+.cert-v7{
+  min-height:520px;
+  background:#fbfbfb;
+  color:#121212;
+  border:2px solid #cfd5dd;
+  box-shadow:0 24px 70px rgba(0,0,0,.35);
+  position:relative;
+  padding:28px;
+  overflow:hidden;
+}
+.cert-v7:before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border:2px solid #e11d2e;
+  pointer-events:none;
+}
+.cert-v7:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(0,0,0,.035),transparent 40%),
+    repeating-linear-gradient(135deg,rgba(0,0,0,.018) 0 1px,transparent 1px 10px);
+  pointer-events:none;
+}
+.cert-corner{
+  position:absolute;
+  width:170px;
+  height:170px;
+  background:linear-gradient(135deg,#e11d2e,#111827);
+  opacity:.9;
+  transform:rotate(45deg);
+}
+.cert-corner-a{left:-100px;top:-100px}
+.cert-corner-b{right:-100px;bottom:-100px}
+.cert-top,.cert-main,.cert-bottom{
+  position:relative;
+  z-index:2;
+}
+.cert-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+.cert-logo{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:32px;
+  font-weight:800;
+}
+.cert-logo small{
+  display:block;
+  background:#e11d2e;
+  color:#fff;
+  width:max-content;
+  padding:4px 12px;
+  border-radius:7px;
+  font-size:14px;
+  letter-spacing:.08em;
+}
+.cert-id{
+  font-family:Share Tech Mono,monospace;
+  color:#333;
+}
+.cert-main{
+  text-align:center;
+  padding:46px 20px 20px;
+}
+.cert-kicker{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:34px;
+  font-weight:700;
+  letter-spacing:.06em;
+}
+.cert-main p{
+  color:#555;
+  font-family:Inter,system-ui,sans-serif;
+}
+.cert-v7 .cert-name{
+  font-family:Great Vibes,cursive;
+  font-size:66px;
+  color:#111;
+  border-bottom:1px solid #999;
+  max-width:720px;
+  margin:12px auto;
+}
+.cert-main h3{
+  font-family:Rajdhani,Inter,sans-serif;
+  color:#e11d2e;
+  font-size:30px;
+  letter-spacing:.08em;
+  margin:10px 0;
+}
+.cert-subtitle{
+  font-family:Share Tech Mono,monospace;
+  color:#444;
+}
+.cert-bottom{
+  display:grid;
+  grid-template-columns:1fr 190px 1fr;
+  align-items:end;
+  gap:20px;
+  margin-top:28px;
+}
+.cert-info,.cert-signature{
+  font-family:Inter,system-ui,sans-serif;
+  color:#333;
+}
+.cert-info b{
+  font-size:12px;
+  color:#666;
+}
+.cert-seal{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  background:radial-gradient(circle,#4b2d14,#16110c);
+  border:8px solid #b78938;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-weight:700;
+  box-shadow:0 8px 20px rgba(0,0,0,.28);
+}
+.cert-seal span{
+  color:#ffd166;
+}
+.cert-signature{
+  text-align:center;
+  border-top:1px solid #777;
+  padding-top:8px;
+}
+.cert-signature span{
+  font-family:Great Vibes,cursive;
+  font-size:42px;
+  color:#111;
+}
+.cert-side{
+  padding:24px;
+  align-self:stretch;
+}
+.cert-side p{
+  font-family:Inter,system-ui,sans-serif;
+  line-height:1.55;
+}
+.cert-alert{
+  margin-top:22px;
+  background:rgba(225,29,46,.12);
+  border:1px solid rgba(225,29,46,.35);
+  color:#ffd0d6;
+  padding:14px;
+  border-radius:12px;
+  font-family:Share Tech Mono,monospace;
+}
+.site-footer{
+  text-align:center;
+  border-color:rgba(225,29,46,.25);
+}
+@media(max-width:1220px){
+  .feature-strip{grid-template-columns:1fr 1fr}
+  .cert-wrap{grid-template-columns:1fr}
+  h1{font-size:42px}
+  .brand .oracle-red{font-size:40px}
+}
+
+
+/* ==========================================================
+   V8 - Command Checklist Inteligente
+   ========================================================== */
+.hint-btn.cmd-done{
+  border-color:rgba(46,229,157,.68)!important;
+  background:linear-gradient(90deg,rgba(46,229,157,.16),rgba(7,13,23,.82))!important;
+  color:#d9ffef!important;
+}
+.hint-btn.cmd-current{
+  border-color:rgba(100,217,255,.80)!important;
+  background:linear-gradient(90deg,rgba(100,217,255,.18),rgba(7,13,23,.82))!important;
+  box-shadow:0 0 0 1px rgba(100,217,255,.18),0 0 22px rgba(100,217,255,.10);
+}
+.hint-btn.cmd-pending{
+  opacity:.82;
+}
+.cmd-mark{
+  display:inline-grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  margin-right:8px;
+  border-radius:50%;
+  font-weight:800;
+}
+.cmd-done .cmd-mark{
+  background:rgba(46,229,157,.18);
+  color:var(--green);
+}
+.cmd-current .cmd-mark{
+  background:rgba(100,217,255,.18);
+  color:var(--cyan);
+}
+.cmd-pending .cmd-mark{
+  background:rgba(143,163,184,.13);
+  color:#8fa3b8;
+}
+.cmd-status{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  color:#91a8ba;
+}
+.cmd-done .cmd-status{
+  color:var(--green)!important;
+}
+.cmd-current .cmd-status{
+  color:var(--cyan)!important;
+}
+.chapter-progress{
+  margin:6px 0 10px;
+  height:8px;
+  border-radius:99px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+}
+.chapter-progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--oracle-red),var(--green));
+}
+.chapter-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.chapter-head small{
+  color:#9fb0c2;
+  font-family:Share Tech Mono,monospace;
+}
+
+
+/* ==========================================================
+   V9 - Execução guiada obrigatória + modal final
+   ========================================================== */
+.flow-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:24px;
+}
+.flow-modal.show{display:flex}
+.flow-box{
+  width:min(760px,94vw);
+  border:1px solid rgba(225,29,46,.55);
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(18,24,39,.98),rgba(7,11,18,.98));
+  box-shadow:0 30px 90px rgba(0,0,0,.65),0 0 0 1px rgba(225,29,46,.20);
+  color:#fff;
+  padding:30px;
+  text-align:center;
+}
+.flow-box h2{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:34px;
+  color:#ff4d5f;
+  margin:0 0 14px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.flow-box p{
+  font-family:Inter,system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+  color:#dbe7f3;
+}
+.flow-command{
+  margin:18px auto;
+  padding:16px;
+  border:1px solid rgba(100,217,255,.36);
+  border-radius:14px;
+  background:#050b14;
+  color:#9fe9ff;
+  font-family:Share Tech Mono,monospace;
+  font-size:17px;
+  text-align:left;
+  overflow:auto;
+}
+.flow-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.flow-actions button{
+  border:0;
+  border-radius:12px;
+  padding:13px 18px;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:14px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.flow-primary{
+  background:linear-gradient(135deg,#e11d2e,#ff3b45);
+  color:#fff;
+}
+.flow-secondary{
+  background:#101827;
+  color:#dbe7f3;
+  border:1px solid rgba(100,217,255,.22)!important;
+}
+.completion-badge{
+  display:inline-grid;
+  place-items:center;
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  background:radial-gradient(circle,#2ee59d,#0b7f56);
+  color:#03140d;
+  font-size:44px;
+  font-weight:900;
+  margin-bottom:14px;
+  box-shadow:0 0 34px rgba(46,229,157,.35);
+}
+.sequence-hint{
+  margin-top:10px;
+  border:1px dashed rgba(247,201,72,.38);
+  border-radius:12px;
+  padding:10px;
+  color:#f7c948;
+  font-family:Share Tech Mono,monospace;
+}
+
+
+/* ==========================================================
+   V10 - Runbook mais próximo + clique executa comando correto
+   ========================================================== */
+.terminal{
+  height:310px!important;
+}
+.term-body{
+  height:230px!important;
+}
+.cli-card{
+  margin-bottom:8px!important;
+}
+#hints{
+  max-height:520px!important;
+}
+.runbook-note{
+  margin:0 0 14px;
+  padding:12px 14px;
+  border:1px solid rgba(100,217,255,.25);
+  border-radius:14px;
+  background:rgba(100,217,255,.08);
+  color:#dbe7f3;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+  line-height:1.45;
+}
+.hint-btn.cmd-current{
+  cursor:pointer;
+}
+.hint-btn.cmd-current:after{
+  content:"CLIQUE PARA EXECUTAR";
+  display:inline-block;
+  margin-top:8px;
+  color:#031018;
+  background:#64d9ff;
+  padding:4px 8px;
+  border-radius:8px;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:11px;
+  letter-spacing:.10em;
+}
+.hint-btn.cmd-pending{
+  cursor:not-allowed;
+}
+.hint-btn.cmd-done{
+  cursor:pointer;
+}
+
+
+/* ==========================================================
+   V11 - Correções finas solicitadas
+   ========================================================== */
+
+/* Aproxima o Runbook da caixa EXEC */
+.center{
+  align-content:start!important;
+}
+.lab-grid{
+  align-items:start!important;
+}
+.terminal{
+  height:250px!important;
+  min-height:250px!important;
+}
+.term-body{
+  height:170px!important;
+  min-height:170px!important;
+}
+.cli-input{
+  height:56px!important;
+}
+.cli-card{
+  margin-bottom:4px!important;
+}
+.center > .cli-card{
+  margin-top:0!important;
+}
+.center > .cli-card + .cli-card{
+  margin-top:-4px!important;
+}
+
+/* Remove sensação de bloco gigante vazio */
+.map-wrap{
+  height:330px!important;
+}
+
+/* Mostra melhor onde o comando está sendo executado */
+.exec-banner{
+  margin:8px 0;
+  padding:10px 12px;
+  border:1px solid rgba(100,217,255,.35);
+  border-radius:12px;
+  background:rgba(100,217,255,.08);
+  color:#9fe9ff;
+  font-family:Share Tech Mono,monospace;
+  font-size:13px;
+}
+
+/* Barra geral de execução */
+.global-progress-box{
+  margin:10px 0 14px;
+  padding:12px;
+  border:1px solid rgba(46,229,157,.25);
+  border-radius:14px;
+  background:rgba(46,229,157,.07);
+  font-family:Share Tech Mono,monospace;
+}
+.global-progress-title{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#2ee59d;
+  margin-bottom:8px;
+}
+.global-progress-bar{
+  height:11px;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.global-progress-bar span{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#e11d2e,#f7c948,#2ee59d);
+}
+
+/* Próximo comando no input fica mais legível */
+#cliInput.next-loaded{
+  border-color:rgba(100,217,255,.70)!important;
+  box-shadow:0 0 18px rgba(100,217,255,.12);
+  color:#eaffff!important;
+}
+
+/* Evita que o botão execute fique distante demais */
+.cli-input .main-btn{
+  min-width:110px;
+}
+
+/* Destaque para ticket/checklist de executado */
+.task.done{
+  background:rgba(46,229,157,.13)!important;
+  border-color:rgba(46,229,157,.60)!important;
+}
+.task.done:before{
+  content:"✓ ";
+  color:#2ee59d;
+}
+
+
+/* ==========================================================
+   V14 - Layout limpo e organizado
+   Base visual preservada, sem grid bagunçado
+   ========================================================== */
+
+.lab-grid{
+  grid-template-columns:320px minmax(680px,1fr) 430px!important;
+  gap:18px!important;
+  align-items:start!important;
+}
+
+.left,.center,.right{
+  gap:14px!important;
+}
+
+.map-wrap{
+  height:320px!important;
+}
+
+.terminal{
+  height:285px!important;
+  min-height:285px!important;
+}
+
+.term-body{
+  height:205px!important;
+  min-height:205px!important;
+}
+
+.cli-input{
+  height:58px!important;
+}
+
+.center > .cli-card + .cli-card{
+  margin-top:-4px!important;
+}
+
+/* Cards compactos para preencher área central sem bagunçar o layout */
+.clean-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+
+.clean-summary-card{
+  border:1px solid rgba(100,217,255,.18);
+  border-radius:14px;
+  background:rgba(7,13,23,.72);
+  padding:12px;
+  font-family:Share Tech Mono,monospace;
+}
+
+.clean-summary-card b{
+  display:block;
+  color:#64d9ff;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:13px;
+  letter-spacing:.08em;
+}
+
+.clean-summary-card span{
+  display:block;
+  margin-top:6px;
+  color:#eaf7ff;
+  font-size:12px;
+  line-height:1.35;
+}
+
+.clean-flow{
+  margin-top:12px;
+  border:1px solid rgba(46,229,157,.25);
+  border-radius:16px;
+  background:rgba(46,229,157,.06);
+  padding:12px;
+  font-family:Share Tech Mono,monospace;
+}
+
+.clean-flow-title{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#2ee59d;
+  margin-bottom:10px;
+}
+
+.clean-flow-items{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+}
+
+.clean-flow-item{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  padding:8px;
+  background:rgba(255,255,255,.035);
+  color:#9fb0c2;
+  text-align:center;
+  font-size:12px;
+}
+
+.clean-flow-item.ok{
+  border-color:rgba(46,229,157,.55);
+  background:rgba(46,229,157,.10);
+  color:#2ee59d;
+}
+
+/* Painéis da direita continuam em coluna, mas mais compactos */
+.right .panel{
+  margin:0!important;
+}
+
+.lesson p{
+  font-size:14px!important;
+  line-height:1.42!important;
+}
+
+.lesson h2{
+  font-size:18px!important;
+}
+
+.score-row{
+  grid-template-columns:repeat(4,1fr)!important;
+}
+
+.score-box{
+  padding:8px!important;
+}
+
+.score-box div{
+  font-size:18px!important;
+}
+
+/* Runbook mais próximo e legível */
+#hints{
+  max-height:560px!important;
+}
+
+.runbook-note{
+  margin-bottom:12px!important;
+}
+
+/* Evita blocos gigantes vazios */
+.panel{
+  min-height:auto!important;
+}
+
+@media(max-width:1220px){
+  .lab-grid{
+    grid-template-columns:1fr!important;
+  }
+  .clean-summary-grid,.clean-flow-items{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
+
+
+/* ==========================================================
+   V15 - Certificado integrado no espaço central vazio
+   ========================================================== */
+
+/* Ocupa o vazio central com o certificado, sem bagunçar o grid */
+.inline-cert-panel{
+  display:none;
+  margin-top:14px;
+  grid-column:auto;
+}
+
+.inline-cert-panel.show{
+  display:block;
+}
+
+.inline-cert-layout{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:16px;
+  align-items:stretch;
+}
+
+.inline-cert-mini{
+  background:#fbfbfb;
+  color:#111;
+  border:2px solid #cfd5dd;
+  border-radius:14px;
+  min-height:360px;
+  position:relative;
+  padding:24px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.inline-cert-mini:before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border:2px solid #e11d2e;
+  pointer-events:none;
+}
+
+.inline-cert-mini:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(0,0,0,.035),transparent 40%),
+    repeating-linear-gradient(135deg,rgba(0,0,0,.018) 0 1px,transparent 1px 10px);
+  pointer-events:none;
+}
+
+.inline-cert-logo,
+.inline-cert-body,
+.inline-cert-foot{
+  position:relative;
+  z-index:2;
+}
+
+.inline-cert-logo{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-weight:800;
+}
+
+.inline-cert-logo .oracle-red{
+  font-size:30px;
+}
+
+.inline-cert-logo small{
+  display:block;
+  width:max-content;
+  background:#e11d2e;
+  color:#fff;
+  padding:3px 10px;
+  border-radius:6px;
+  font-size:12px;
+  margin-top:2px;
+}
+
+.inline-cert-id{
+  font-family:Share Tech Mono,monospace;
+  color:#333;
+  font-size:13px;
+}
+
+.inline-cert-body{
+  text-align:center;
+  padding:36px 20px 16px;
+}
+
+.inline-cert-body h3{
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:30px;
+  letter-spacing:.08em;
+  margin:0 0 18px;
+  color:#111;
+}
+
+.inline-cert-body p{
+  color:#555;
+  font-family:Inter,system-ui,sans-serif;
+  margin:8px 0;
+}
+
+.inline-cert-name{
+  font-family:Great Vibes,cursive;
+  font-size:56px;
+  color:#111;
+  border-bottom:1px solid #999;
+  max-width:620px;
+  margin:10px auto;
+}
+
+.inline-cert-title{
+  font-family:Rajdhani,Inter,sans-serif;
+  color:#e11d2e;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:.08em;
+  margin-top:14px;
+}
+
+.inline-cert-sub{
+  font-family:Share Tech Mono,monospace;
+  color:#444;
+  margin-top:6px;
+  font-size:13px;
+}
+
+.inline-cert-foot{
+  display:grid;
+  grid-template-columns:1fr 120px 1fr;
+  gap:16px;
+  align-items:end;
+  margin-top:12px;
+}
+
+.inline-cert-date,
+.inline-cert-sign{
+  font-family:Inter,system-ui,sans-serif;
+  color:#333;
+  font-size:13px;
+}
+
+.inline-cert-seal{
+  width:118px;
+  height:118px;
+  border-radius:50%;
+  background:radial-gradient(circle,#4b2d14,#16110c);
+  border:6px solid #b78938;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-weight:700;
+  font-size:13px;
+  margin:auto;
+}
+
+.inline-cert-sign{
+  text-align:center;
+  border-top:1px solid #777;
+  padding-top:6px;
+}
+
+.inline-cert-sign span{
+  font-family:Great Vibes,cursive;
+  font-size:32px;
+  color:#111;
+}
+
+.inline-cert-side{
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.inline-cert-side p{
+  font-family:Inter,system-ui,sans-serif;
+  line-height:1.5;
+  color:#dbe7f3;
+}
+
+.inline-cert-side .cert-alert{
+  color:#ffd0d6;
+}
+
+.inline-cert-locked{
+  opacity:.42;
+  filter:grayscale(.65);
+}
+
+.inline-cert-watermark{
+  position:absolute;
+  inset:auto 20px 20px auto;
+  z-index:3;
+  font-family:Rajdhani,Inter,sans-serif;
+  font-size:22px;
+  color:#e11d2e;
+  font-weight:800;
+  border:2px solid #e11d2e;
+  padding:6px 12px;
+  transform:rotate(-8deg);
+  display:none;
+}
+
+.inline-cert-panel.locked-preview .inline-cert-watermark{
+  display:block;
+}
+
+.inline-cert-actions{
+  margin-top:16px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.inline-cert-actions button{
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  font-family:Rajdhani,Inter,sans-serif;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.inline-cert-actions .primary{
+  background:linear-gradient(135deg,#e11d2e,#ff3b45);
+  color:#fff;
+}
+
+.inline-cert-actions .secondary{
+  background:#101827;
+  color:#dbe7f3;
+  border:1px solid rgba(100,217,255,.25);
+}
+
+/* Mantém a seção original de certificado no final oculta para não duplicar visualmente */
+body.cert-inline-mode #certWrap{
+  display:none!important;
+}
+
+/* Reduz o vazio quando certificado aparece */
+.center .inline-cert-panel{
+  margin-bottom:14px;
+}
+
+@media(max-width:1220px){
+  .inline-cert-layout{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   V17 - Certificado preenchendo o espaço sem estourar bordas
+   Base segura: V15
+   ========================================================== */
+
+/* Não altera o grid geral para evitar quebrar o layout */
+.lab-grid{
+  overflow:visible!important;
+}
+
+/* Expande o painel do certificado para ocupar também a área vazia à esquerda,
+   mas sem invadir a coluna da direita */
+.inline-cert-panel{
+  width:calc(100% + 338px)!important;
+  margin-left:-338px!important;
+  max-width:calc(100vw - 470px)!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+/* Layout interno equilibrado */
+.inline-cert-layout{
+  display:grid!important;
+  grid-template-columns:minmax(620px,1fr) minmax(280px,340px)!important;
+  gap:16px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  align-items:stretch!important;
+}
+
+/* Certificado ocupa toda a área disponível, mas sem cortar */
+.inline-cert-mini{
+  width:100%!important;
+  max-width:100%!important;
+  min-height:620px!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+  padding:30px!important;
+  overflow:hidden!important;
+}
+
+/* Lateral acompanha o certificado, sem invadir */
+.inline-cert-side{
+  min-height:620px!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+/* Ajuste proporcional do conteúdo do certificado */
+.inline-cert-logo .oracle-red{
+  font-size:38px!important;
+}
+
+.inline-cert-logo small{
+  font-size:14px!important;
+}
+
+.inline-cert-id{
+  font-size:14px!important;
+}
+
+.inline-cert-body{
+  padding:58px 26px 22px!important;
+}
+
+.inline-cert-body h3{
+  font-size:38px!important;
+  line-height:1.12!important;
+}
+
+.inline-cert-name{
+  font-size:78px!important;
+  max-width:820px!important;
+}
+
+.inline-cert-title{
+  font-size:34px!important;
+  line-height:1.12!important;
+}
+
+.inline-cert-sub{
+  font-size:15px!important;
+}
+
+.inline-cert-foot{
+  grid-template-columns:1fr 150px 1fr!important;
+  gap:14px!important;
+  margin-top:32px!important;
+}
+
+.inline-cert-seal{
+  width:145px!important;
+  height:145px!important;
+  font-size:15px!important;
+}
+
+.inline-cert-sign span{
+  font-size:42px!important;
+}
+
+.inline-cert-side .panel-title{
+  font-size:26px!important;
+}
+
+.inline-cert-side p{
+  font-size:16px!important;
+  line-height:1.55!important;
+}
+
+/* Em telas/zoom menores, não força expansão que corte bordas */
+@media(max-width:1500px){
+  .inline-cert-panel{
+    width:100%!important;
+    margin-left:0!important;
+    max-width:100%!important;
+  }
+
+  .inline-cert-layout{
+    grid-template-columns:minmax(520px,1fr) minmax(240px,300px)!important;
+  }
+
+  .inline-cert-mini,
+  .inline-cert-side{
+    min-height:540px!important;
+  }
+
+  .inline-cert-body{
+    padding:42px 20px 18px!important;
+  }
+
+  .inline-cert-body h3{
+    font-size:32px!important;
+  }
+
+  .inline-cert-name{
+    font-size:64px!important;
+  }
+
+  .inline-cert-title{
+    font-size:28px!important;
+  }
+
+  .inline-cert-seal{
+    width:122px!important;
+    height:122px!important;
+    font-size:13px!important;
+  }
+
+  .inline-cert-foot{
+    grid-template-columns:1fr 130px 1fr!important;
+  }
+}
+
+@media(max-width:1220px){
+  .inline-cert-panel{
+    width:100%!important;
+    margin-left:0!important;
+    max-width:100%!important;
+  }
+
+  .inline-cert-layout{
+    grid-template-columns:1fr!important;
+  }
+
+  .inline-cert-mini,
+  .inline-cert-side{
+    min-height:auto!important;
+  }
+}
+
+
+/* ==========================================================
+   V18 - Trilha Operacional sincronizada com o progresso real
+   ========================================================== */
+.step.done,
+.step.roadmap-done{
+  border-color:rgba(46,229,157,.70)!important;
+  background:linear-gradient(90deg,rgba(46,229,157,.16),rgba(7,13,23,.82))!important;
+}
+
+.step.done .icon,
+.step.roadmap-done .icon{
+  background:linear-gradient(135deg,#2ee59d,#0b9f6f)!important;
+  color:#04130d!important;
+}
+
+.step.active,
+.step.roadmap-active{
+  border-color:rgba(100,217,255,.80)!important;
+  background:linear-gradient(90deg,rgba(100,217,255,.18),rgba(7,13,23,.82))!important;
+  box-shadow:0 0 0 1px rgba(100,217,255,.22),0 0 24px rgba(100,217,255,.10)!important;
+}
+
+.step.roadmap-pending{
+  opacity:.78;
+}
+
+.step.roadmap-done b:after{
+  content:"  ✓";
+  color:#2ee59d;
+}
+
+
+/* ==========================================================
+   V19 - Aviso técnico de uso educacional
+   ========================================================== */
+.production-warning{
+  margin-top:18px;
+  padding:18px;
+  border:1px solid rgba(247,201,72,.45);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(247,201,72,.10),rgba(7,13,23,.92));
+  color:#f8e7b0;
+  font-family:Share Tech Mono,monospace;
+  font-size:14px;
+  line-height:1.55;
+}
+.production-warning b{
+  color:#f7c948;
+}
+.production-warning ul{
+  margin:10px 0 0 20px;
+  padding:0;
+}
+.production-warning li{
+  margin:5px 0;
+}
+.footer-warning{
+  margin-top:10px;
+  color:#f8e7b0;
+  font-family:Share Tech Mono,monospace;
+  font-size:12px;
+  line-height:1.45;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero"><div class="panel title"><div class="brand"><span class="oracle-red">ORACLE</span> DBA ACADEMY</div><h1>DATA GUARD COMMAND CENTER</h1><div class="tagline">LABORATÓRIO INTERATIVO PARA DOMINAR ORACLE DATA GUARD</div></div><div class="panel student-start"><h2>IDENTIFICAÇÃO DO DBA</h2><label for="studentName">Nome do aluno/cliente</label><input id="studentName" placeholder="Digite o nome completo"><button id="startBtn" class="main-btn">INICIAR LAB DATA GUARD</button><p style="font-family:'Share Tech Mono';font-size:14px;line-height:1.45">Este tutorial simula um ambiente Oracle 19c com capítulos separados para configuração do Primary, criação do Standby, validação dos dois ambientes, monitoramento operacional, Broker, Switchover, Failover, RAC, FSFO e troubleshooting.
+
+Ao concluir todas as missões obrigatórias, o certificado final do laboratório será liberado automaticamente.</p></div></section>
+
+<section class="feature-strip">
+  <div class="feature-item"><span>▣</span><b>PRIMARY & STANDBY</b><small>Configuração completa</small></div>
+  <div class="feature-item"><span>▣</span><b>DATA GUARD BROKER</b><small>DGMGRL na prática</small></div>
+  <div class="feature-item"><span>⇄</span><b>SWITCHOVER & FAILOVER</b><small>Simulações interativas</small></div>
+  <div class="feature-item"><span>⌁</span><b>MONITORAMENTO</b><small>Dashboard operacional</small></div>
+  <div class="feature-item"><span>⚙</span><b>TROUBLESHOOTING</b><small>Erros reais e soluções</small></div>
+  <div class="feature-item"><span>◎</span><b>CERTIFICAÇÃO</b><small>Certificado final</small></div>
+</section>
+
+<section class="panel fundamentals">
+  <h3 class="panel-title">FUNDAMENTOS DO ORACLE DATA GUARD</h3>
+  <div class="fund-grid">
+    <div class="fund-box">
+      <p><b>O que é Data Guard?</b></p>
+      <p>Oracle Data Guard é uma solução de alta disponibilidade, proteção de dados e recuperação de desastres. Ele mantém uma ou mais bases standby sincronizadas com o banco Primary por meio do transporte e aplicação de redo.</p>
+      <p>Em caso de manutenção planejada, é possível executar um <b>Switchover</b>. Em caso de desastre no Primary, o Standby pode ser promovido por meio de <b>Failover</b>.</p>
+    </div>
+    <div class="fund-box">
+      <p><b>O que este lab simula?</b></p>
+      <p>Este tutorial guia o aluno pela preparação do Primary, criação do Standby, validação, monitoramento, Broker, Switchover, Failover, FSFO, RAC e troubleshooting.</p>
+      <p>Ao concluir todas as missões, o botão de validação libera um <b>certificado final em PNG</b>.</p>
+      <a class="fund-link" target="_blank" rel="noopener" href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sbydb/introduction-to-oracle-data-guard-concepts.html">DOC OFICIAL ORACLE 19c</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="panel production-warning">
+  <b>AVISO TÉCNICO IMPORTANTE</b>
+  <p>Este material é um laboratório educacional simulado para estudo, treinamento e demonstração técnica de Oracle Data Guard.</p>
+  <p>Para uso em produção, valide obrigatoriamente os detalhes específicos do ambiente antes de aplicar qualquer configuração.</p>
+  <ul>
+    <li>paths de datafiles, FRA, archive logs e Oracle Home;</li>
+    <li>DB_NAME, DB_UNIQUE_NAME, service names, TNS e listener;</li>
+    <li>password file, parâmetros Data Guard e conectividade entre servidores;</li>
+    <li>RAC threads, standby redo logs, ASM/diskgroups e política de backup;</li>
+    <li>modo de proteção, RTO/RPO, Broker, FSFO, Observer e requisitos do cliente.</li>
+  </ul>
+</section>
+
+<section id="labArea" class="lab-grid locked"><aside class="left"><div class="panel knowledge"><h3 class="panel-title">TRILHA OPERACIONAL</h3><div class="steps" id="steps"></div></div><div class="panel ticket"><h3>ACESSO TÉCNICO</h3><div class="ticket-inner"><div class="avatar"></div><p>DBA: <b id="ticketName">DBA_ORACLE</b></p><p>CASO: CRIAR STANDBY FÍSICO</p><p>VERSÃO: ORACLE 19c</p><div class="barcode"></div></div></div><div class="panel concept"><h3 class="panel-title">PARÂMETROS-CHAVE</h3><div class="concept-grid"><div class="mini"><b>FORCE LOGGING</b><br>Evita operações sem redo.</div><div class="mini"><b>ARCHIVELOG</b><br>Base para aplicar redo no standby.</div><div class="mini"><b>LOG_ARCHIVE_CONFIG</b><br>Define DG_CONFIG.</div><div class="mini"><b>FAL_SERVER</b><br>Busca archives faltantes.</div><div class="mini"><b>STANDBY_FILE_MANAGEMENT</b><br>AUTO cria arquivos no standby.</div><div class="mini"><b>MRP</b><br>Processo que aplica redo.</div></div></div></aside>
+<main class="center"><div class="panel map-panel"><h3 class="panel-title">ARQUITETURA — PRIMARY x STANDBY</h3><div class="map-wrap"><svg class="net-svg" viewBox="0 0 940 405" preserveAspectRatio="xMidYMid meet"><line id="l1" x1="230" y1="200" x2="360" y2="200" class="link"></line><line id="l2" x1="580" y1="200" x2="710" y2="200" class="link"></line><line id="l3" x1="405" y1="245" x2="535" y2="245" class="link"></line><g id="nClient" onclick="nodeInfo('client')"><rect x="35" y="155" width="190" height="90" rx="8" class="nodebox"></rect><text x="70" y="190" class="nodetext">CLIENTE</text><text x="60" y="218" class="smalltext">tnsnames/sqlplus</text></g><g id="nPrimary" onclick="nodeInfo('primary')"><rect x="355" y="120" width="225" height="125" rx="8" class="nodebox"></rect><text x="405" y="165" class="nodetext">PRIMARY</text><text x="390" y="195" class="smalltext">DB_UNIQUE_NAME=PRIM</text><text x="425" y="220" class="smalltext">OPEN READ WRITE</text></g><g id="nStandby" onclick="nodeInfo('standby')"><rect x="710" y="155" width="200" height="90" rx="8" class="nodebox"></rect><text x="755" y="190" class="nodetext">STANDBY</text><text x="742" y="218" class="smalltext">PHYSICAL + MRP</text></g><text x="48" y="318" class="smalltext">Objetivo: gerar standby físico, iniciar apply e validar sincronismo.</text><text x="48" y="346" class="smalltext">Fluxo: pré-check → configuração Primary → configuração Standby → validação → monitoramento.</text></svg></div><div class="status" id="status">● LAB ABERTO: aguardando início</div></div>
+<div class="panel cli-card"><h3 class="panel-title">DATA GUARD HEALTH DASHBOARD</h3>
+<div class="dg-dashboard">
+  <div class="dg-card ok"><b>PRIMARY ROLE</b><span id="dashRole">PRIMARY</span></div>
+  <div class="dg-card ok"><b>OPEN MODE</b><span id="dashOpen">READ WRITE</span></div>
+  <div class="dg-card warn"><b>TRANSPORT LAG</b><span id="dashTransport">--</span></div>
+  <div class="dg-card warn"><b>APPLY LAG</b><span id="dashApply">--</span></div>
+  <div class="dg-card warn"><b>ARCHIVE GAP</b><span id="dashGap">UNKNOWN</span></div>
+  <div class="dg-card warn"><b>BROKER</b><span id="dashBroker">DISABLED</span></div>
+  <div class="dg-card warn"><b>FSFO</b><span id="dashFsfo">OFF</span></div>
+  <div class="dg-card ok"><b>HEALTH SCORE</b><span id="dashScore">0%</span></div>
+</div></div>
+<div class="panel cli-card"><h3 class="panel-title">CONSOLE OPERACIONAL</h3><div class="terminal"><div class="term-title">oracle@dataguard-lab</div><div class="term-body" id="termOut"><span class="prompt">[oracle@primary ~]$</span> digite <b>lsnrctl status</b> para começar</div><div class="cli-input"><span id="promptLabel">$</span><input id="cliInput" placeholder="lsnrctl status" autocomplete="off"><button class="main-btn" style="width:auto" onclick="runTyped()">EXEC</button></div></div></div><div class="panel cli-card"><h3 class="panel-title">RUNBOOK DE COMANDOS</h3><div class="hint-list" id="hints"></div></div>
+<section class="panel inline-cert-panel locked-preview" id="inlineCertPanel">
+  <h3 class="panel-title">CERTIFICADO DO LABORATÓRIO</h3>
+  <div class="inline-cert-layout">
+    <div class="inline-cert-mini inline-cert-locked" id="inlineCertificate">
+      <div class="inline-cert-watermark" id="inlineCertWatermark">BLOQUEADO</div>
+      <div class="inline-cert-logo">
+        <div><span class="oracle-red">ORACLE</span><small>DBA ACADEMY</small></div>
+        <div class="inline-cert-id">ID: <span id="inlineCertId">DG-LAB</span></div>
+      </div>
+      <div class="inline-cert-body">
+        <h3>CERTIFICADO DE CONCLUSÃO</h3>
+        <p>Certificamos que</p>
+        <div class="inline-cert-name" id="inlineCertName">DBA_ORACLE</div>
+        <p>concluiu com sucesso todos os laboratórios do</p>
+        <div class="inline-cert-title">ORACLE DATA GUARD COMMAND CENTER</div>
+        <div class="inline-cert-sub">Primary • Standby • Broker • Switchover • Failover • RAC • FSFO • Troubleshooting</div>
+      </div>
+      <div class="inline-cert-foot">
+        <div class="inline-cert-date"><b>CONCLUÍDO EM</b><br><span id="inlineCertDate"></span></div>
+        <div class="inline-cert-seal">DATA GUARD<br>ADMIN<br>CERTIFIED</div>
+        <div class="inline-cert-sign"><span>Renato Barros</span><br>Database Engineer Specialist</div>
+      </div>
+    </div>
+    <div class="panel inline-cert-side">
+      <h3 class="panel-title">SOBRE O CERTIFICADO</h3>
+      <p>Este certificado será liberado automaticamente quando todos os comandos obrigatórios do Runbook forem executados em sequência.</p>
+      <p>Ele preenche esta área central da tela para que o aluno veja claramente o objetivo final do laboratório.</p>
+      <div class="cert-alert" id="inlineCertAlert">Status: certificado bloqueado. Conclua 100% dos comandos para liberar.</div>
+      <div class="inline-cert-actions">
+        <button class="primary" id="inlineDownloadBtn" disabled>BAIXAR PNG</button>
+        <button class="secondary" id="inlineGoRunbookBtn">VOLTAR AO RUNBOOK</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<aside class="right"><div class="panel coach"><h3 class="panel-title">ASSISTENTE TÉCNICO</h3><div class="coach-grid"><div class="oracle"></div><div class="bubble" id="bubble">Data Guard bom começa com pré-check. Sem listener, senha, archive e TNS funcionando, o duplicate vira novela.</div></div></div><div class="panel mission"><h3 class="panel-title">CONTROLE DE EXECUÇÃO</h3><div id="tasks"></div><button class="main-btn" onclick="finalDiagnosis()">VALIDAR DATA GUARD</button></div><div class="panel lesson"><h2 id="moduleTitle">Bem-vindo ao lab</h2><div id="lessonText"><p>Você vai configurar um Data Guard físico passo a passo, simulando comandos no Primary e no Standby.</p></div><div class="nav"><button id="prevBtn">◀</button><button id="nextBtn">▶</button></div><div class="progress"><div class="fill" id="fill"></div></div></div><div class="panel score-card"><h3 class="panel-title">STATUS DO LAB</h3><div class="score-row"><div class="score-box"><b>PRECHECK</b><div id="scPre">0</div></div><div class="score-box"><b>PRIMARY</b><div id="scPri">0</div></div><div class="score-box"><b>STANDBY</b><div id="scStb">0</div></div><div class="score-box"><b>APPLY</b><div id="scApp">0%</div></div></div></div>
+<div class="panel concept"><h3 class="panel-title">PROTECTION MODES</h3>
+<div class="mode-grid">
+<button class="mode-btn" onclick="showProtection('MAXPERFORMANCE')">MAXPERFORMANCE</button>
+<button class="mode-btn" onclick="showProtection('MAXAVAILABILITY')">MAXAVAILABILITY</button>
+<button class="mode-btn" onclick="showProtection('MAXPROTECTION')">MAXPROTECTION</button>
+</div>
+<div class="bubble" id="modeInfo" style="margin-top:10px">Clique em um modo para ver RPO, impacto e uso recomendado.</div>
+</div>
+<div class="panel concept"><h3 class="panel-title">TROUBLESHOOTING CENTER</h3>
+<div class="runbook-grid">
+<button class="runbook-btn" onclick="showRunbook('ORA-16810')">ORA-16810</button>
+<button class="runbook-btn" onclick="showRunbook('ORA-16766')">ORA-16766</button>
+<button class="runbook-btn" onclick="showRunbook('ORA-16664')">ORA-16664</button>
+<button class="runbook-btn" onclick="showRunbook('ORA-16857')">ORA-16857</button>
+<button class="runbook-btn" onclick="showRunbook('ORA-12514')">ORA-12514</button>
+<button class="runbook-btn" onclick="showRunbook('ORA-12154')">ORA-12154</button>
+</div>
+<div class="bubble" id="runbookInfo" style="margin-top:10px">Selecione um erro para ver causa, diagnóstico e correção.</div>
+</div>
+<div class="panel concept"><h3 class="panel-title">TIMELINE DATA GUARD</h3>
+<div class="timeline" id="dgTimeline">PRIMARY
+  └─ Pré-check
+     └─ ARCHIVELOG
+        └─ FORCE LOGGING
+           └─ STANDBY REDO LOG
+              └─ RMAN DUPLICATE
+                 └─ MRP APPLY
+                    └─ BROKER
+                       └─ SWITCHOVER / FAILOVER</div>
+</div>
+</aside></section>
+
+<section class="cert-wrap" id="certWrap">
+  <div class="cert-v7" id="certificate">
+    <div class="cert-corner cert-corner-a"></div>
+    <div class="cert-corner cert-corner-b"></div>
+    <div class="cert-top">
+      <div class="cert-logo"><span class="oracle-red">ORACLE</span><small>DBA ACADEMY</small></div>
+      <div class="cert-id">ID: <span id="certId">DG-LAB</span></div>
+    </div>
+    <div class="cert-main">
+      <div class="cert-kicker">CERTIFICADO DE CONCLUSÃO</div>
+      <p>Certificamos que</p>
+      <div class="cert-name" id="certName">DBA_ORACLE</div>
+      <p>concluiu com sucesso todos os laboratórios do</p>
+      <h3>ORACLE DATA GUARD COMMAND CENTER</h3>
+      <div class="cert-subtitle">Primary • Standby • Broker • Switchover • Failover • RAC • FSFO • Troubleshooting</div>
+    </div>
+    <div class="cert-bottom">
+      <div class="cert-info"><b>CONCLUÍDO EM</b><br><span id="certDate"></span></div>
+      <div class="cert-seal">DATA GUARD<br>ADMINISTRATOR<br><span>CERTIFIED</span></div>
+      <div class="cert-signature"><span>Renato Barros</span><br>Instrutor<br>Database Engineer Specialist</div>
+    </div>
+  </div>
+
+  <div class="cert-side panel">
+    <h3 class="panel-title">SOBRE O CERTIFICADO</h3>
+    <p>Emitido automaticamente ao concluir todas as missões obrigatórias do laboratório.</p>
+    <p>Contém ID único de validação, nome do aluno e data de conclusão.</p>
+    <p>Reconhece a prática simulada em Oracle Data Guard: Primary, Standby, Broker, Switchover, Failover, RAC, FSFO e Troubleshooting.</p>
+    <div class="cert-alert">Para liberar o certificado, conclua 100% das missões obrigatórias e clique em VALIDAR DATA GUARD.</div>
+  </div>
+
+  <div style="text-align:center;margin-top:18px;grid-column:1/-1">
+    <button id="downloadBtn">BAIXAR CERTIFICADO PNG</button>
+  </div>
+</section>
+<footer class="panel site-footer">
+
+  <div><b>Renato Barros</b> | Database Engineer Specialist | Oracle, RAC, Data Guard, Exadata & Cloud</div>
+  <div class="small">barrosworks.com.br • Oracle Data Guard Command Center V19 • Lab educacional validado
+  <div class="footer-warning">Material simulado para treinamento. Em produção, valide paths, DB_UNIQUE_NAME, TNS, listener, FRA, RAC threads, backups, protection mode e requisitos específicos do ambiente.</div></div>
+</footer>
+
+</div>
+<div class="flow-modal" id="flowModal">
+  <div class="flow-box">
+    <div id="flowIcon"></div>
+    <h2 id="flowTitle">Atenção</h2>
+    <p id="flowMessage"></p>
+    <div class="flow-command" id="flowCommand" style="display:none"></div>
+    <div class="sequence-hint" id="flowHint" style="display:none"></div>
+    <div class="flow-actions">
+      <button class="flow-primary" id="flowPrimaryBtn">OK</button>
+      <button class="flow-secondary" id="flowSecondaryBtn" style="display:none">Fechar</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+$('certDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+const lab={
+  started:false,student:'',module:0,
+  preListener:false,preSql:false,preDb:false,
+  priArch:false,priForce:false,priSrl:false,priParams:false,priTns:false,
+  stbPwd:false,stbInit:false,stbNomount:false,stbDuplicate:false,stbMount:false,stbRecover:false,
+  valPrimary:false,valStandby:false,valArchive:false,valGap:false,valSwitch:false,
+  monProcess:false,monLag:false,monDest:false,monErrors:false,monBroker:false,
+  validate:false
+};
+
+const modules=[
+{t:'1. Visão Geral',short:'Arquitetura DG',html:'<p>Este handbook simula um <b>Oracle Data Guard físico</b> com dois ambientes:</p><p><code>PRIMARY</code> = banco principal aberto READ WRITE.<br><code>STANDBY</code> = cópia física aplicando redo via MRP.</p><p>O terminal é fictício, mas os comandos seguem uma implantação real em Oracle 19c.</p>'},
+{t:'2. Pré-check',short:'Listener + SQL*Plus',html:'<p>Antes de alterar qualquer coisa, valide se o banco está no ar e se o listener responde.</p><p>Comece no servidor Primary com <code>lsnrctl status</code>, depois entre no banco com <code>sqlplus / as sysdba</code> e consulte <code>v$database</code>.</p>'},
+{t:'3. Capítulo Primary',short:'Preparar origem',html:'<p>Neste capítulo você prepara o banco principal para enviar redo ao Standby.</p><p>Passos principais: confirmar ARCHIVELOG, habilitar FORCE LOGGING, criar standby redo logs, configurar parâmetros Data Guard e validar TNS para o standby.</p>'},
+{t:'4. Capítulo Standby',short:'Criar destino',html:'<p>Agora o foco muda para o servidor Standby.</p><p>Você prepara password file, init file, sobe a instância em NOMOUNT, executa o RMAN Duplicate, monta o banco como physical standby e inicia o MRP.</p>'},
+{t:'5. Validação dos Dois Ambientes',short:'Primary + Standby',html:'<p>Depois da configuração, não basta dizer que “subiu”. É preciso provar.</p><p>Valide no Primary o envio de redo, no Standby o recebimento/aplicação, archive gaps e status de switchover.</p>'},
+{t:'6. Monitoramento Final',short:'Operação diária',html:'<p>O último capítulo mostra comandos de monitoramento para operação diária.</p><p>Você acompanha processos RFS/MRP, transport lag, apply lag, destinos de archive, erros e uma visão com Data Guard Broker.</p>'},
+{t:'7. Encerramento',short:'Checklist completo',html:'<p>Com Primary configurado, Standby criado, validação concluída e monitoramento documentado, o ambiente está pronto para ser apresentado ao cliente.</p><p>Clique em <b>VALIDAR DATA GUARD</b> ao finalizar todas as missões.</p>'}
+];
+
+const chapters=[
+{title:'Pré-check', cmds:['lsnrctl status','sqlplus / as sysdba','select name, open_mode, log_mode, database_role from v$database;']},
+{title:'Primary', cmds:['archive log list','alter database force logging;','alter database add standby logfile group 4 size 200m;','alter system set log_archive_config=\'DG_CONFIG=(PRIM,STBY)\' scope=both;','alter system set log_archive_dest_2=\'SERVICE=STBY ASYNC VALID_FOR=(ONLINE_LOGFILES,PRIMARY_ROLE) DB_UNIQUE_NAME=STBY\' scope=both;','alter system set fal_server=STBY scope=both;','alter system set fal_client=PRIM scope=both;','alter system set standby_file_management=AUTO scope=both;','tnsping STBY']},
+{title:'Standby', cmds:['orapwd file=$ORACLE_HOME/dbs/orapwSTBY password=oracle entries=10 force=y','create pfile=\'/tmp/initSTBY.ora\' from spfile;','startup nomount pfile=\'/tmp/initSTBY.ora\';','rman target sys/oracle@PRIM auxiliary sys/oracle@STBY','duplicate target database for standby from active database nofilenamecheck;','alter database mount standby database;','alter database recover managed standby database disconnect from session;']},
+{title:'Validação', cmds:['select database_role, open_mode, switchover_status from v$database;','select process, status, sequence# from v$managed_standby;','select thread#, max(sequence#) from v$archived_log group by thread#;','select * from v$archive_gap;','select switchover_status from v$database;']},
+{title:'Monitoramento', cmds:['select process, status, client_process, sequence# from v$managed_standby;','select name, value, unit from v$dataguard_stats;','select dest_id, status, error from v$archive_dest_status where dest_id in (1,2);','select severity, message from v$dataguard_status order by timestamp desc;','dgmgrl sys/oracle@PRIM "show configuration"']}
+];
+const guide=chapters.flatMap(ch=>ch.cmds.map(c=>[c,ch.title]));
+
+const tasks=[
+['Pré-check: listener ativo no Primary',()=>lab.preListener],
+['Pré-check: acesso SQL*Plus SYSDBA',()=>lab.preSql],
+['Pré-check: role/open mode/log mode conferidos',()=>lab.preDb],
+['Primary: ARCHIVELOG confirmado',()=>lab.priArch],
+['Primary: FORCE LOGGING habilitado',()=>lab.priForce],
+['Primary: Standby Redo Log criado',()=>lab.priSrl],
+['Primary: parâmetros Data Guard configurados',()=>lab.priParams],
+['Primary: TNS para STBY validado',()=>lab.priTns],
+['Standby: password/init file preparados',()=>lab.stbPwd&&lab.stbInit],
+['Standby: instância em NOMOUNT',()=>lab.stbNomount],
+['Standby: RMAN Duplicate executado',()=>lab.stbDuplicate],
+['Standby: banco montado e MRP iniciado',()=>lab.stbMount&&lab.stbRecover],
+['Validação: Primary verificado',()=>lab.valPrimary],
+['Validação: Standby/Apply verificado',()=>lab.valStandby],
+['Validação: archives/gap/switchover conferidos',()=>lab.valArchive&&lab.valGap&&lab.valSwitch],
+['Monitoramento: processos e lag acompanhados',()=>lab.monProcess&&lab.monLag],
+['Monitoramento: destinos, erros e broker conferidos',()=>lab.monDest&&lab.monErrors&&lab.monBroker]
+];
+
+function toast(m){$('toast').textContent=m;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3200)}
+function startLab(){let n=$('studentName').value.trim();if(n.length<2){toast('Digite o nome do aluno/cliente.');return}lab.started=true;lab.student=n;$('ticketName').textContent=n;$('certName').textContent=n;$('certId').textContent='DG-LAB-'+new Date().getFullYear()+'-'+Math.random().toString(16).slice(2,10).toUpperCase();$('labArea').classList.remove('locked');write(`<span class="prompt">Sistema</span> Bem-vindo(a), ${n}. Capítulo 1: pré-check do Primary. Rode lsnrctl status.`);updateAll();$('labArea').scrollIntoView({behavior:'smooth'})}
+function write(t){$('termOut').innerHTML+='\n'+t;$('termOut').scrollTop=$('termOut').scrollHeight}
+function normalize(s){return s.trim().replace(/\s+/g,' ').toLowerCase()}
+function markPrimary(){setNode('nPrimary','ok');setLink('l1','ok')}
+function markStandby(){setNode('nStandby','ok');setLink('l2','ok');setLink('l3','ok')}
+
+function runTyped(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ let raw=$('cliInput').value.trim();if(!raw)return;
+ write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);$('cliInput').value='';
+ let c=normalize(raw);
+ if(c==='help'){write(renderHelp());return}
+
+ if(c==='lsnrctl status'){
+  lab.preListener=true;setNode('nPrimary','warn');setLink('l1','ok');
+  write(`LSNRCTL for Linux: Version 19.0.0.0.0\nStatus of the LISTENER\nAlias                     LISTENER\nListening Endpoints Summary...\n  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=primary)(PORT=1521)))\nServices Summary...\nService "prim" has 1 instance(s).\n<span class="explain">Pré-check OK: listener do Primary está ativo.</span>`);return updateAll()}
+ if(c==='sqlplus / as sysdba'){
+  lab.preSql=true;write(`SQL*Plus: Release 19.0.0.0.0\nConnected to:\nOracle Database 19c Enterprise Edition\n\nSQL>\n<span class="explain">Acesso local como SYSDBA validado.</span>`);return updateAll()}
+ if(c==='select name, open_mode, log_mode, database_role from v$database;'){
+  lab.preDb=true;write(`NAME   OPEN_MODE   LOG_MODE    DATABASE_ROLE\n------ ----------- ----------- ----------------\nPRIM   READ WRITE  ARCHIVELOG  PRIMARY\n<span class="explain">Banco PRIM está aberto, em ARCHIVELOG e com role PRIMARY.</span>`);return updateAll()}
+
+ if(c==='archive log list'){
+  lab.priArch=true;write(`Database log mode              Archive Mode\nAutomatic archival             Enabled\nArchive destination            /u01/app/oracle/fast_recovery_area\nOldest online log sequence     1278\nNext log sequence to archive   1281\nCurrent log sequence           1281\n<span class="explain">Primary está gerando archived redo logs.</span>`);return updateAll()}
+ if(c==='alter database force logging;'){
+  lab.priForce=true;markPrimary();write(`Database altered.\n<span class="explain">FORCE LOGGING habilitado no Primary.</span>`);return updateAll()}
+ if(c==='alter database add standby logfile group 4 size 200m;'){
+  lab.priSrl=true;write(`Database altered.\n<span class="explain">Standby Redo Log criado. Em produção, crie grupos suficientes por thread/RAC.</span>`);return updateAll()}
+ if(c.startsWith('alter system set log_archive_config')){lab.priParams=true;write(`System altered.\n<span class="explain">DG_CONFIG=(PRIM,STBY) definido.</span>`);return updateAll()}
+ if(c.startsWith('alter system set log_archive_dest_2')){lab.priParams=true;setLink('l3','ok');write(`System altered.\n<span class="explain">Destino remoto para envio de redo ao STBY configurado.</span>`);return updateAll()}
+ if(c==='alter system set fal_server=stby scope=both;'){lab.priParams=true;write(`System altered.\n<span class="explain">FAL_SERVER aponta para STBY.</span>`);return updateAll()}
+ if(c==='alter system set fal_client=prim scope=both;'){lab.priParams=true;write(`System altered.\n<span class="explain">FAL_CLIENT identifica o Primary como PRIM.</span>`);return updateAll()}
+ if(c==='alter system set standby_file_management=auto scope=both;'){lab.priParams=true;write(`System altered.\n<span class="explain">STANDBY_FILE_MANAGEMENT=AUTO configurado.</span>`);return updateAll()}
+ if(c==='tnsping stby'){
+  lab.priTns=true;setLink('l2','ok');write(`TNS Ping Utility for Linux: Version 19.0.0.0.0\nAttempting to contact STBY\nOK (20 msec)\n<span class="explain">Primary consegue resolver e alcançar o serviço STBY.</span>`);return updateAll()}
+
+ if(c.startsWith('orapwd file=')){
+  lab.stbPwd=true;write(`OPW-00001: Password file created.\n<span class="explain">Password file do Standby preparado. A senha SYS precisa bater com o Primary.</span>`);return updateAll()}
+ if(c==="create pfile='/tmp/initstby.ora' from spfile;"){
+  lab.stbInit=true;write(`File created.\n<span class="explain">PFILE base gerado para ajustar DB_UNIQUE_NAME=STBY e caminhos do Standby.</span>`);return updateAll()}
+ if(c==="startup nomount pfile='/tmp/initstby.ora';"){
+  lab.stbNomount=true;setNode('nStandby','warn');write(`ORACLE instance started.\nTotal System Global Area 1610612736 bytes\nDatabase mounted: no\nDatabase opened: no\n<span class="explain">Standby em NOMOUNT, pronto para receber duplicate.</span>`);return updateAll()}
+ if(c==='rman target sys/oracle@prim auxiliary sys/oracle@stby'){
+  write(`Recovery Manager: Release 19.0.0.0.0\nconnected to target database: PRIM\nconnected to auxiliary database: STBY (not mounted)\nRMAN>\n<span class="explain">RMAN conectado no target Primary e no auxiliary Standby.</span>`);return updateAll()}
+ if(c==='duplicate target database for standby from active database nofilenamecheck;'){
+  lab.stbDuplicate=true;setNode('nStandby','warn');write(`RMAN> duplicate target database for standby from active database nofilenamecheck;\nStarting Duplicate Db\ncontents of Memory Script:\n  restore clone standby controlfile;\n  restore clone database from service PRIM;\n  recover clone database;\nFinished Duplicate Db\n<span class="explain">Standby físico criado a partir do Primary ativo.</span>`);return updateAll()}
+ if(c==='alter database mount standby database;'){
+  lab.stbMount=true;write(`Database altered.\n<span class="explain">Standby montado como physical standby.</span>`);return updateAll()}
+ if(c==='alter database recover managed standby database disconnect from session;'){
+  lab.stbRecover=true;markStandby();write(`Database altered.\n<span class="explain">MRP iniciado em background. O Standby começou a aplicar redo.</span>`);return updateAll()}
+
+ if(c==='select database_role, open_mode, switchover_status from v$database;'){
+  lab.valPrimary=true;write(`DATABASE_ROLE    OPEN_MODE            SWITCHOVER_STATUS\n---------------- -------------------- --------------------\nPRIMARY          READ WRITE           TO STANDBY\n<span class="explain">Primary validado e pronto para switchover controlado.</span>`);return updateAll()}
+ if(c==='select process, status, sequence# from v$managed_standby;'){
+  lab.valStandby=true;lab.monProcess=true;write(`PROCESS   STATUS          SEQUENCE#\n--------- --------------- ---------\nRFS       RECEIVING            1284\nMRP0      APPLYING_LOG         1284\nARCH      CLOSING              1283\n<span class="explain">Standby recebendo redo via RFS e aplicando com MRP0.</span>`);return updateAll()}
+ if(c==='select thread#, max(sequence#) from v$archived_log group by thread#;'){
+  lab.valArchive=true;write(`THREAD# MAX(SEQUENCE#)\n------- --------------\n1                 1284\n<span class="explain">Sequência máxima de archived logs conferida.</span>`);return updateAll()}
+ if(c==='select * from v$archive_gap;'){
+  lab.valGap=true;write(`no rows selected\n<span class="explain">Nenhum archive gap pendente.</span>`);return updateAll()}
+ if(c==='select switchover_status from v$database;'){
+  lab.valSwitch=true;write(`SWITCHOVER_STATUS\n--------------------\nTO STANDBY\n<span class="explain">Status de switchover validado no Primary.</span>`);return updateAll()}
+
+ if(c==='select process, status, client_process, sequence# from v$managed_standby;'){
+  lab.monProcess=true;write(`PROCESS STATUS        CLIENT_PROCESS SEQUENCE#\n------- ------------- -------------- ---------\nRFS     RECEIVING     LGWR                1285\nMRP0    APPLYING_LOG  N/A                 1285\n<span class="explain">Monitoramento de processos Data Guard ativo.</span>`);return updateAll()}
+ if(c==='select name, value, unit from v$dataguard_stats;'){
+  lab.monLag=true;write(`NAME           VALUE      UNIT\n-------------- ---------- ----------------\ntransport lag  +00 00:00:03 day(2) to second(0) interval\napply lag      +00 00:00:05 day(2) to second(0) interval\n<span class="explain">Transport lag e apply lag dentro do esperado para o lab.</span>`);return updateAll()}
+ if(c==='select dest_id, status, error from v$archive_dest_status where dest_id in (1,2);'){
+  lab.monDest=true;write(`DEST_ID STATUS  ERROR\n------- ------- ------------------------------\n1       VALID\n2       VALID\n<span class="explain">Destinos de archive sem erro.</span>`);return updateAll()}
+ if(c==='select severity, message from v$dataguard_status order by timestamp desc;'){
+  lab.monErrors=true;write(`SEVERITY  MESSAGE\n--------- ---------------------------------------------\nInformational  Media Recovery Log /arch/1_1285.arc\nInformational  RFS connected from PRIM\n<span class="explain">Sem mensagens críticas recentes no Data Guard status.</span>`);return updateAll()}
+ if(c==='dgmgrl sys/oracle@prim "show configuration"'){
+  lab.monBroker=true;write(`DGMGRL for Linux: Release 19.0.0.0.0\nConfiguration - DGCONFIG\n  Protection Mode: MaxPerformance\n  Members:\n  PRIM - Primary database\n    STBY - Physical standby database\nFast-Start Failover: Disabled\nConfiguration Status: SUCCESS\n<span class="explain">Visão pelo Broker mostrando configuração saudável.</span>`);return updateAll()}
+ write('<span class="bad">Comando não reconhecido neste lab. Use os comandos guia ou digite help.</span>')
+}
+
+function renderHelp(){return `<span class="good">COMANDOS POR CAPÍTULO</span>\n\nPRÉ-CHECK:\n  lsnrctl status\n  sqlplus / as sysdba\n  select name, open_mode, log_mode, database_role from v$database;\n\nPRIMARY:\n  archive log list\n  alter database force logging;\n  alter database add standby logfile group 4 size 200m;\n  alter system set log_archive_config='DG_CONFIG=(PRIM,STBY)' scope=both;\n  alter system set log_archive_dest_2='SERVICE=STBY ASYNC VALID_FOR=(ONLINE_LOGFILES,PRIMARY_ROLE) DB_UNIQUE_NAME=STBY' scope=both;\n  alter system set fal_server=STBY scope=both;\n  alter system set fal_client=PRIM scope=both;\n  alter system set standby_file_management=AUTO scope=both;\n  tnsping STBY\n\nSTANDBY:\n  orapwd file=$ORACLE_HOME/dbs/orapwSTBY password=oracle entries=10 force=y\n  create pfile='/tmp/initSTBY.ora' from spfile;\n  startup nomount pfile='/tmp/initSTBY.ora';\n  rman target sys/oracle@PRIM auxiliary sys/oracle@STBY\n  duplicate target database for standby from active database nofilenamecheck;\n  alter database mount standby database;\n  alter database recover managed standby database disconnect from session;\n\nVALIDAÇÃO E MONITORAMENTO:\n  select process, status, sequence# from v$managed_standby;\n  select name, value, unit from v$dataguard_stats;\n  dgmgrl sys/oracle@PRIM "show configuration"`;}
+
+function finalDiagnosis(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ if(!tasks.every(t=>t[1]())){toast('Ainda existem missões pendentes. Complete Primary, Standby, Validação e Monitoramento.');return}
+ lab.validate=true;write(`<span class="good">VALIDAÇÃO FINAL DATA GUARD</span>\nPrimary PRIM configurado para envio de redo.\nStandby STBY criado, montado e com MRP ativo.\nValidação nos dois ambientes concluída.\nArchive gap sem pendência.\nMonitoramento operacional conferido: processos, lag, destinos, status e Broker.\n\n<span class="explain">Conclusão: tutorial completo com capítulos Primary, Standby, validação e monitoramento.</span>`);updateAll();unlock()}
+function setNode(id,state){$(id).classList.remove('node-ok','node-bad','node-warn');$(id).classList.add(state==='ok'?'node-ok':state==='bad'?'node-bad':'node-warn')}
+function setLink(id,state){$(id).classList.remove('ok','bad','warn');$(id).classList.add(state)}
+function nodeInfo(n){const info={client:'DBA/Cliente: acompanha o passo a passo e executa comandos simulados.',primary:'Primary PRIM: origem do redo, aberto READ WRITE e configurado para transporte.',standby:'Standby STBY: recebe redo via RFS e aplica com MRP0.'};$('bubble').textContent=info[n]}
+function renderHints(){
+ $('hints').innerHTML=chapters.map(ch=>`<div class="mini" style="margin-bottom:10px"><b>${ch.title}</b></div>`+ch.cmds.map(c=>`<button class="hint-btn" onclick="fillCmd('${c.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"><b>${c}</b><br><span style="color:#91a8ba">executar etapa: ${ch.title}</span></button>`).join('')).join('')
+}
+function fillCmd(c){$('cliInput').value=c;$('cliInput').focus()}
+function renderTasks(){$('tasks').innerHTML=tasks.map(([t,fn])=>`<div class="task ${fn()?'done':''}">${fn()?'✓':'□'} ${t}</div>`).join('')}
+function renderSteps(){$('steps').innerHTML=modules.map((m,i)=>`<div class="step ${i===lab.module?'active':''} ${i<lab.module?'done':''}"><div class="icon i${(i%8)+1}">${i+1}</div><div><b>${m.t}</b><p>${m.short}</p></div></div>`).join('')}
+function renderLesson(){let m=modules[lab.module];$('moduleTitle').textContent=m.t;$('lessonText').innerHTML=m.html}
+function updateStatus(){let done=tasks.filter(t=>t[1]()).length;$('status').textContent=`● CONTROLE DE EXECUÇÃO: ${done}/${tasks.length} | DATA GUARD ${lab.validate?'VALIDADO':'EM CONFIGURAÇÃO'}`;$('scPre').textContent=[lab.preListener,lab.preSql,lab.preDb].filter(Boolean).length+'/3';$('scPri').textContent=[lab.priArch,lab.priForce,lab.priSrl,lab.priParams,lab.priTns].filter(Boolean).length+'/5';$('scStb').textContent=[lab.stbPwd,lab.stbInit,lab.stbNomount,lab.stbDuplicate,lab.stbMount,lab.stbRecover].filter(Boolean).length+'/6';$('scApp').textContent=Math.round((tasks.filter(t=>t[1]()).length/tasks.length)*100)+'%'}
+function progress(){let p=lab.started?Math.round((tasks.filter(t=>t[1]()).length/tasks.length)*100):0;$('fill').style.width=Math.min(100,p)+'%'}
+function updateAll(){renderTasks();renderSteps();renderLesson();updateStatus();progress();if(tasks.every(t=>t[1]()))$('bubble').textContent='Tudo concluído. Clique em VALIDAR DATA GUARD para liberar o certificado.'}
+function unlock(){const n=lab.student;$('certName').textContent=n;$('certScore').textContent='100%';$('certWrap').classList.add('show');toast('Certificado liberado.');$('certWrap').scrollIntoView({behavior:'smooth'})}
+$('startBtn').onclick=startLab;$('nextBtn').onclick=()=>{if(!lab.started){toast('Digite o nome primeiro.');return}if(lab.module<modules.length-1){lab.module++;updateAll()}};$('prevBtn').onclick=()=>{if(lab.module>0){lab.module--;updateAll()}};$('cliInput').addEventListener('keydown',e=>{if(e.key==='Enter')runTyped()});
+let html2canvasReady=false;$('downloadBtn').onclick=async()=>{const btn=$('downloadBtn');if(!html2canvasReady||!window.html2canvas){toast('Biblioteca PNG carregando. Tente novamente em alguns segundos.');return}try{btn.disabled=true;btn.textContent='GERANDO PNG...';btn.style.visibility='hidden';const cert=$('certificate');const canvas=await html2canvas(cert,{scale:3,backgroundColor:null,useCORS:true,logging:false});const a=document.createElement('a');const safeName=$('certName').textContent.trim().replace(/[^a-z0-9_-]+/gi,'_')||'dba';a.href=canvas.toDataURL('image/png');a.download='Oracle_DataGuard_Certificado_'+safeName+'.png';document.body.appendChild(a);a.click();a.remove();toast('Certificado PNG gerado com sucesso.')}catch(e){toast('Não consegui gerar o PNG. Tente novamente.')}finally{btn.style.visibility='visible';btn.disabled=false;btn.textContent='BAIXAR CERTIFICADO PNG'}};
+
+/* =========================
+   V3 - Módulos Avançados
+   ========================= */
+lab.dgBroker=false;lab.dgValidate=false;lab.dgStatus=false;
+lab.swPrep=false;lab.swDo=false;lab.swCheck=false;
+lab.foDown=false;lab.foDo=false;lab.foCheck=false;
+lab.trIssue=false;lab.trFix=false;
+lab.opsDaily=false;lab.opsWeekly=false;lab.opsMonthly=false;
+
+modules.splice(modules.length-1,0,
+ {t:'7. Broker DGMGRL',short:'Gerência centralizada',html:'<p>Neste capítulo o aluno entra no <b>Data Guard Broker</b> e aprende a validar a configuração com <code>DGMGRL</code>.</p><p>O Broker facilita operação, monitoramento, switchover, failover e troubleshooting com comandos mais objetivos.</p><p>Comandos principais: <code>show configuration</code>, <code>show database verbose</code> e <code>validate database verbose</code>.</p>'},
+ {t:'8. Switchover',short:'Troca planejada',html:'<p><b>Switchover</b> é a troca controlada de papéis entre Primary e Standby, normalmente usada em manutenção planejada.</p><p>O ambiente simula a troca: <code>PRIM</code> vira Standby e <code>STBY</code> vira Primary.</p><p>Esse capítulo mostra a lógica operacional sem exigir ambiente real.</p>'},
+ {t:'9. Failover',short:'Perda do Primary',html:'<p><b>Failover</b> é usado quando o Primary ficou indisponível e o Standby precisa assumir.</p><p>O lab simula o Primary offline, executa failover via Broker e valida o novo Primary.</p><p>Importante: em produção, failover pode envolver perda de dados dependendo do modo de proteção e do estado do transporte/aplicação.</p>'},
+ {t:'10. Troubleshooting',short:'Erros comuns',html:'<p>Este capítulo transforma o site em um mini runbook de troubleshooting.</p><p>O aluno simula problemas como <code>ORA-16810</code>, apply parado, archive gap e destino com erro.</p><p>A ideia é treinar diagnóstico: causa provável, comando de validação e ação corretiva.</p>'},
+ {t:'11. Checklist Operacional',short:'Rotina DBA',html:'<p>Capítulo final de operação diária, semanal e mensal.</p><p>Inclui checagem de role, open mode, lag, archive gap, Broker e validação completa.</p><p>Esse checklist é o que o DBA pode usar como rotina de sustentação em ambiente Data Guard.</p>'}
+);
+
+chapters.push(
+ {title:'Broker DGMGRL',cmds:['dgmgrl sys/oracle@PRIM','show configuration','show database verbose PRIM','validate database verbose STBY']},
+ {title:'Switchover',cmds:['dgmgrl sys/oracle@PRIM "validate database verbose STBY"','dgmgrl sys/oracle@PRIM "switchover to STBY"','dgmgrl sys/oracle@STBY "show configuration"']},
+ {title:'Failover',cmds:['simulate primary down','dgmgrl sys/oracle@STBY "failover to STBY"','select database_role, open_mode from v$database;']},
+ {title:'Troubleshooting',cmds:['simulate ora-16810','dgmgrl sys/oracle@PRIM "show database verbose STBY"','fix apply lag']},
+ {title:'Checklist Operacional',cmds:['checklist diario','checklist semanal','checklist mensal']}
+);
+
+tasks.push(
+ ['Broker: configuração exibida no DGMGRL',()=>lab.dgBroker],
+ ['Broker: database validado no DGMGRL',()=>lab.dgValidate],
+ ['Broker: status detalhado conferido',()=>lab.dgStatus],
+ ['Switchover: pré-validação executada',()=>lab.swPrep],
+ ['Switchover: troca planejada realizada',()=>lab.swDo],
+ ['Switchover: novo papel validado',()=>lab.swCheck],
+ ['Failover: falha do Primary simulada',()=>lab.foDown],
+ ['Failover: Standby promovido',()=>lab.foDo],
+ ['Failover: novo Primary validado',()=>lab.foCheck],
+ ['Troubleshooting: incidente simulado',()=>lab.trIssue],
+ ['Troubleshooting: correção aplicada',()=>lab.trFix],
+ ['Operação: checklist diário/semanal/mensal concluído',()=>lab.opsDaily&&lab.opsWeekly&&lab.opsMonthly]
+);
+
+const oldRunTyped=runTyped;
+runTyped=function(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ let raw=$('cliInput').value.trim();if(!raw)return;
+ let c=normalize(raw);
+ const consume=(out)=>{write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);$('cliInput').value='';write(out);updateAll();};
+ if(c==='dgmgrl sys/oracle@prim'){
+  lab.dgBroker=true;return consume(`DGMGRL for Linux: Release 19.0.0.0.0\nConnected to "PRIM"\nDGMGRL>\n<span class="explain">Conectado ao Broker pelo serviço PRIM.</span>`)}
+ if(c==='show configuration'){
+  lab.dgBroker=true;return consume(`Configuration - DGCONFIG\n  Protection Mode: MaxPerformance\n  Members:\n  PRIM - Primary database\n    STBY - Physical standby database\n\nConfiguration Status: SUCCESS\n<span class="explain">Broker mostra a configuração Data Guard saudável.</span>`)}
+ if(c==='show database verbose prim'){
+  lab.dgStatus=true;return consume(`Database - PRIM\n  Role: PRIMARY\n  Intended State: TRANSPORT-ON\n  Instance(s): PRIM\n  Transport Lag: 0 seconds\n  Apply Lag: N/A\n  Database Status: SUCCESS\n<span class="explain">Detalhes do Primary pelo Broker.</span>`)}
+ if(c==='validate database verbose stby'){
+  lab.dgValidate=true;return consume(`Database Role: Physical standby database\nReady for Switchover: Yes\nFlashback Database Status: Enabled\nApply State: Running\nTransport Lag: 0 seconds\nApply Lag: 2 seconds\nValidation Status: SUCCESS\n<span class="explain">Standby validado pelo Broker.</span>`)}
+ if(c==='dgmgrl sys/oracle@prim "validate database verbose stby"'){
+  lab.swPrep=true;return consume(`Connecting to PRIM...\nValidating database STBY...\nReady for Switchover: Yes\nStatus: SUCCESS\n<span class="explain">Pré-check de switchover concluído.</span>`)}
+ if(c==='dgmgrl sys/oracle@prim "switchover to stby"'){
+  lab.swDo=true;setNode('nPrimary','warn');setNode('nStandby','ok');setLink('l3','warn');return consume(`Performing switchover NOW...\nNew primary database "STBY" is opening...\nOperation requires a connection to database "STBY"\nSwitchover succeeded, new primary is "STBY"\n<span class="explain">Troca planejada realizada: STBY assumiu como Primary.</span>`)}
+ if(c==='dgmgrl sys/oracle@stby "show configuration"'){
+  lab.swCheck=true;return consume(`Configuration - DGCONFIG\n  Protection Mode: MaxPerformance\n  Members:\n  STBY - Primary database\n    PRIM - Physical standby database\nConfiguration Status: SUCCESS\n<span class="explain">Papéis invertidos e configuração saudável após switchover.</span>`)}
+ if(c==='simulate primary down'){
+  lab.foDown=true;setNode('nPrimary','bad');setLink('l1','bad');return consume(`SIMULAÇÃO\nPRIM ficou indisponível. Listener sem resposta. Banco Primary inacessível.\n<span class="explain">Cenário de desastre: avaliar failover para o Standby.</span>`)}
+ if(c==='dgmgrl sys/oracle@stby "failover to stby"'){
+  lab.foDo=true;setNode('nStandby','ok');setLink('l2','ok');return consume(`Performing failover NOW, please wait...\nFailover succeeded, new primary is "STBY"\n<span class="explain">STBY promovido para Primary. Em produção, valide reintegração/rebuild do antigo Primary.</span>`)}
+ if(c==='select database_role, open_mode from v$database;'){
+  lab.foCheck=true;return consume(`DATABASE_ROLE    OPEN_MODE\n---------------- --------------------\nPRIMARY          READ WRITE\n<span class="explain">Novo Primary validado após failover.</span>`)}
+ if(c==='simulate ora-16810'){
+  lab.trIssue=true;return consume(`DGMGRL> show configuration\nConfiguration Status:\nWARNING\nORA-16810: multiple errors or warnings detected for the member\n<span class="explain">Incidente simulado: o Broker encontrou alertas no membro STBY.</span>`)}
+ if(c==='dgmgrl sys/oracle@prim "show database verbose stby"'){
+  lab.trIssue=true;return consume(`Database - STBY\n  Transport Lag: 00:05:32\n  Apply Lag: 00:08:10\n  Apply State: Not Running\n  Warning: ORA-16766: Redo Apply is stopped\n<span class="explain">Causa provável: MRP parado no Standby.</span>`)}
+ if(c==='fix apply lag'){
+  lab.trFix=true;lab.monLag=true;return consume(`SQL> alter database recover managed standby database disconnect from session;\nDatabase altered.\n\nDGMGRL> show database verbose STBY\nApply State: Running\nApply Lag: 0 seconds\nDatabase Status: SUCCESS\n<span class="explain">Correção aplicada: MRP voltou e o apply lag zerou.</span>`)}
+ if(c==='checklist diario'){
+  lab.opsDaily=true;return consume(`CONTROLE DE EXECUÇÃO DIÁRIO\n[OK] select name, open_mode, database_role from v$database;\n[OK] select name, value from v$dataguard_stats;\n[OK] select * from v$archive_gap;\n<span class="explain">Rotina diária concluída.</span>`)}
+ if(c==='checklist semanal'){
+  lab.opsWeekly=true;return consume(`CONTROLE DE EXECUÇÃO SEMANAL\n[OK] dgmgrl show configuration\n[OK] dgmgrl validate database verbose STBY\n[OK] revisão de alert log e Data Guard status\n<span class="explain">Rotina semanal concluída.</span>`)}
+ if(c==='checklist mensal'){
+  lab.opsMonthly=true;return consume(`CONTROLE DE EXECUÇÃO MENSAL\n[OK] testar switchover em janela controlada quando aplicável\n[OK] revisar SRL, FRA, backup e política de retenção\n[OK] documentar RTO/RPO e evidências\n<span class="explain">Rotina mensal concluída.</span>`)}
+ oldRunTyped();
+};
+
+const oldRenderHelp=renderHelp;
+renderHelp=function(){return oldRenderHelp()+`\n\nBROKER DGMGRL:\n  dgmgrl sys/oracle@PRIM\n  show configuration\n  show database verbose PRIM\n  validate database verbose STBY\n\nSWITCHOVER:\n  dgmgrl sys/oracle@PRIM "validate database verbose STBY"\n  dgmgrl sys/oracle@PRIM "switchover to STBY"\n  dgmgrl sys/oracle@STBY "show configuration"\n\nFAILOVER:\n  simulate primary down\n  dgmgrl sys/oracle@STBY "failover to STBY"\n  select database_role, open_mode from v$database;\n\nTROUBLESHOOTING:\n  simulate ora-16810\n  dgmgrl sys/oracle@PRIM "show database verbose STBY"\n  fix apply lag\n\nCONTROLE DE EXECUÇÃO OPERACIONAL:\n  checklist diario\n  checklist semanal\n  checklist mensal`;};
+
+const oldUpdateStatus=updateStatus;
+updateStatus=function(){
+ oldUpdateStatus();
+ const extra=[lab.dgBroker,lab.dgValidate,lab.dgStatus,lab.swPrep,lab.swDo,lab.swCheck,lab.foDown,lab.foDo,lab.foCheck,lab.trIssue,lab.trFix,lab.opsDaily,lab.opsWeekly,lab.opsMonthly].filter(Boolean).length;
+ $('status').textContent += ` | AVANÇADO ${extra}/14`;
+};
+
+finalDiagnosis=function(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ if(!tasks.every(t=>t[1]())){toast('Ainda existem missões pendentes. Complete todos os capítulos, incluindo Broker, Switchover, Failover, Troubleshooting e Checklist.');return}
+ lab.validate=true;write(`<span class="good">VALIDAÇÃO FINAL DATA GUARD - V3</span>\nPrimary e Standby configurados.\nRedo Transport e Apply Services validados.\nBroker DGMGRL operacional.\nSwitchover planejado simulado com sucesso.\nFailover de desastre simulado com promoção do Standby.\nTroubleshooting ORA-16810 / Apply Lag tratado.\nChecklist diário, semanal e mensal concluído.\n\n<span class="explain">Conclusão: o site agora funciona como tutorial, laboratório e runbook operacional de Oracle Data Guard.</span>`);updateAll();unlock();
+};
+
+
+/* =========================
+   V4 - Enterprise Add-ons
+   Dashboard, Protection Modes, FSFO, RAC, Interview e Runbook expandido
+   ========================= */
+lab.fsfoShow=false;lab.fsfoEnable=false;lab.racConfig=false;lab.racStatus=false;lab.racThreads=false;
+lab.interview1=false;lab.interview2=false;lab.interview3=false;
+
+modules.splice(modules.length-1,0,
+ {t:'12. Protection Modes',short:'RPO x Impacto',html:'<p>Este capítulo compara <b>Maximum Performance</b>, <b>Maximum Availability</b> e <b>Maximum Protection</b>.</p><p>Use o painel <b>PROTECTION MODES</b> para entender quando usar cada modo.</p><p>Comando simulado: <code>show protection modes</code>.</p>'},
+ {t:'13. Fast-Start Failover',short:'FSFO',html:'<p><b>Fast-Start Failover</b> permite failover automático quando configurado com Observer.</p><p>Este módulo simula a consulta e ativação do FSFO pelo Broker.</p><p>Comandos: <code>show fast_start failover</code> e <code>enable fast_start failover</code>.</p>'},
+ {t:'14. Data Guard RAC',short:'Threads RAC',html:'<p>Em ambientes RAC, cada instância possui sua thread de redo.</p><p>Este módulo simula validações com <code>srvctl</code> e consulta de threads para mostrar Data Guard em cenário RAC.</p>'},
+ {t:'15. Interview Mode',short:'Perguntas DBA',html:'<p>Modo entrevista técnica com perguntas comuns sobre Data Guard.</p><p>Execute os comandos simulados <code>interview fal_server</code>, <code>interview rfs_mrp</code> e <code>interview switchover_failover</code>.</p>'}
+);
+
+chapters.push(
+ {title:'Fundamentos',cmds:['doc oracle dataguard']},
+ {title:'Protection Modes',cmds:['show protection modes']},
+ {title:'Fast-Start Failover',cmds:['show fast_start failover','enable fast_start failover']},
+ {title:'Data Guard RAC',cmds:['srvctl config database -d PRIM','srvctl status database -d PRIM','select thread#, max(sequence#) from v$archived_log group by thread#;']},
+ {title:'Interview Mode',cmds:['interview fal_server','interview rfs_mrp','interview switchover_failover']}
+);
+
+tasks.push(
+ ['Protection Modes: comparativo revisado',()=>lab.protectionRead],
+ ['FSFO: status consultado',()=>lab.fsfoShow],
+ ['FSFO: ativação simulada',()=>lab.fsfoEnable],
+ ['RAC: configuração e status srvctl validados',()=>lab.racConfig&&lab.racStatus],
+ ['RAC: threads de redo conferidas',()=>lab.racThreads],
+ ['Entrevista técnica: perguntas respondidas',()=>lab.interview1&&lab.interview2&&lab.interview3]
+);
+
+function setDash(id,val,cls){
+ const el=$(id); if(!el)return;
+ el.textContent=val;
+ const card=el.closest('.dg-card');
+ if(card){card.classList.remove('ok','warn','bad');card.classList.add(cls||'ok');}
+}
+function updateEnterpriseDashboard(){
+ const total=tasks.filter(t=>t[1]()).length;
+ const pct=Math.round((total/tasks.length)*100);
+ setDash('dashScore',pct+'%',pct>80?'ok':pct>40?'warn':'bad');
+ if(lab.monLag){setDash('dashTransport','0s','ok');setDash('dashApply','0s','ok')}
+ if(lab.valGap){setDash('dashGap','NONE','ok')}
+ if(lab.dgBroker||lab.monBroker){setDash('dashBroker','SUCCESS','ok')}
+ if(lab.fsfoEnable){setDash('dashFsfo','ENABLED','ok')}
+ if(lab.swDo){setDash('dashRole','STBY PRIMARY','ok');setDash('dashOpen','READ WRITE','ok')}
+ if(lab.foDown&&!lab.foDo){setDash('dashRole','PRIMARY DOWN','bad');setDash('dashOpen','OFFLINE','bad')}
+ if(lab.foDo){setDash('dashRole','STBY PRIMARY','ok');setDash('dashOpen','READ WRITE','ok')}
+}
+function showProtection(mode){
+ lab.protectionRead=true;
+ const data={
+  MAXPERFORMANCE:'RPO: pode haver pequena perda se redo assíncrono não chegar. Menor impacto de performance. Uso comum em longa distância e ambientes onde performance é prioridade.',
+  MAXAVAILABILITY:'RPO: tende a zero enquanto o standby estiver disponível. Usa transporte síncrono e mantém disponibilidade se o standby ficar indisponível.',
+  MAXPROTECTION:'RPO zero, porém maior impacto: se não conseguir gravar redo no standby síncrono, o Primary pode parar para proteger os dados.'
+ };
+ $('modeInfo').innerHTML='<b>'+mode+'</b><br>'+data[mode];
+ updateAll();
+}
+function showRunbook(code){
+ const rb={
+  'ORA-16810':['Múltiplos erros ou alertas no membro Data Guard.','DGMGRL show database verbose STBY.','Corrigir o erro raiz: apply parado, transport lag, destino inválido ou conectividade.'],
+  'ORA-16766':['Redo Apply está parado.','Consultar v$managed_standby e Broker.','Executar alter database recover managed standby database disconnect from session.'],
+  'ORA-16664':['Broker não consegue receber resultado de um banco.','Validar listener, TNS, serviço e status da instância.','Corrigir conectividade e reiniciar Broker se necessário.'],
+  'ORA-16857':['Transport lag excedeu threshold.','Consultar v$dataguard_stats e archive_dest_status.','Validar rede, destino, FRA e envio de redo.'],
+  'ORA-12514':['Listener não conhece o serviço solicitado.','lsnrctl status e validação service_names/static registration.','Ajustar listener.ora, tnsnames.ora ou registrar serviço.'],
+  'ORA-12154':['TNS não conseguiu resolver o alias.','tnsping alias e revisar tnsnames/sqlnet.','Corrigir alias, caminho TNS_ADMIN ou entrada do tnsnames.ora.']
+ };
+ const r=rb[code];
+ $('runbookInfo').innerHTML='<b>'+code+'</b><br><br><b>Causa:</b> '+r[0]+'<br><b>Diagnóstico:</b> '+r[1]+'<br><b>Correção:</b> '+r[2];
+}
+
+const v4RunTyped=runTyped;
+runTyped=function(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ let raw=$('cliInput').value.trim();if(!raw)return;
+ let c=normalize(raw);
+ const consume=(out)=>{write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);$('cliInput').value='';write(out);updateAll();};
+
+ if(c==='doc oracle dataguard'){
+  return consume(`DOCUMENTAÇÃO OFICIAL ORACLE 19c\nOracle Data Guard Concepts and Administration\nhttps://docs.oracle.com/en/database/oracle/oracle-database/19/sbydb/introduction-to-oracle-data-guard-concepts.html\n\n<span class="explain">Use esse material como referência oficial para conceitos, arquitetura, Broker, proteção, transporte e apply services.</span>`);
+ }
+ if(c==='show protection modes'){
+  lab.protectionRead=true;
+  return consume(`PROTECTION MODES\n\nMAXPERFORMANCE  - ASYNC, menor impacto, RPO pode não ser zero.\nMAXAVAILABILITY - SYNC/AFFIRM, alta disponibilidade com RPO próximo de zero.\nMAXPROTECTION   - SYNC/AFFIRM obrigatório, RPO zero com maior rigidez operacional.\n<span class="explain">Comparativo de modos revisado. Use também os botões Protection Modes.</span>`);
+ }
+ if(c==='show fast_start failover'){
+  lab.fsfoShow=true;
+  return consume(`Fast-Start Failover: Disabled\nProtection Mode: MaxPerformance\nObserver: Not Started\nTarget: STBY\nLag Limit: 30 seconds\n<span class="explain">FSFO consultado. Para ativar em produção, precisa Observer e requisitos atendidos.</span>`);
+ }
+ if(c==='enable fast_start failover'){
+  lab.fsfoEnable=true;setDash('dashFsfo','ENABLED','ok');
+  return consume(`DGMGRL> ENABLE FAST_START FAILOVER;\nEnabled.\nFast-Start Failover: Enabled\nObserver Status: Running\nTarget Standby: STBY\n<span class="explain">FSFO ativado de forma simulada.</span>`);
+ }
+ if(c==='srvctl config database -d prim'){
+  lab.racConfig=true;
+  return consume(`Database unique name: PRIM\nDatabase name: PRIM\nOracle home: /u01/app/oracle/product/19c/dbhome_1\nDatabase role: PRIMARY\nManagement policy: AUTOMATIC\nServer pools:\nDisk Groups: DATA,FRA\nServices: PRIM_APP\nInstances: PRIM1,PRIM2\n<span class="explain">Configuração RAC simulada para o Primary.</span>`);
+ }
+ if(c==='srvctl status database -d prim'){
+  lab.racStatus=true;
+  return consume(`Instance PRIM1 is running on node racnode01\nInstance PRIM2 is running on node racnode02\n<span class="explain">As duas instâncias RAC estão online.</span>`);
+ }
+ if(c==='select thread#, max(sequence#) from v$archived_log group by thread#;'){
+  lab.racThreads=true; lab.valArchive=true;
+  return consume(`THREAD# MAX(SEQUENCE#)\n------- --------------\n1                 1288\n2                 1291\n<span class="explain">Ambiente RAC: cada thread precisa ter redo transportado/aplicado no standby.</span>`);
+ }
+ if(c==='interview fal_server'){
+  lab.interview1=true;
+  return consume(`PERGUNTA: O que é FAL_SERVER?\nRESPOSTA: É o parâmetro usado pelo standby para buscar archived logs faltantes no servidor indicado.\n<span class="explain">Conceito-chave para resolver archive gap.</span>`);
+ }
+ if(c==='interview rfs_mrp'){
+  lab.interview2=true;
+  return consume(`PERGUNTA: Qual a diferença entre RFS e MRP?\nRESPOSTA: RFS recebe redo vindo do Primary. MRP aplica esse redo no physical standby.\n<span class="explain">RFS = receive. MRP = apply/recovery.</span>`);
+ }
+ if(c==='interview switchover_failover'){
+  lab.interview3=true;
+  return consume(`PERGUNTA: Diferença entre Switchover e Failover?\nRESPOSTA: Switchover é troca planejada e reversível entre Primary e Standby. Failover é promoção em desastre quando o Primary está indisponível.\n<span class="explain">Essa pergunta aparece muito em entrevista Oracle DBA.</span>`);
+ }
+ v4RunTyped();
+};
+
+const oldRenderHintsV4=renderHints;
+renderHints=function(){
+ $('hints').innerHTML=chapters.map(ch=>`<div class="mini" style="margin-bottom:10px"><b>${ch.title}</b></div>`+ch.cmds.map(c=>`<button class="hint-btn" onclick="fillCmd('${c.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"><b>${c}</b><br><span style="color:#91a8ba">executar etapa: ${ch.title}</span></button>`).join('')).join('');
+};
+
+const oldHelpV4=renderHelp;
+renderHelp=function(){return oldHelpV4()+`\n\nV4 ENTERPRISE:\n  show protection modes\n  show fast_start failover\n  enable fast_start failover\n  srvctl config database -d PRIM\n  srvctl status database -d PRIM\n  interview fal_server\n  interview rfs_mrp\n  interview switchover_failover`;};
+
+const oldUpdateAllV4=updateAll;
+updateAll=function(){
+ oldUpdateAllV4();
+ updateEnterpriseDashboard();
+};
+
+const oldFinalDiagnosisV4=finalDiagnosis;
+finalDiagnosis=function(){
+ if(!lab.started){toast('Digite o nome primeiro.');return}
+ if(!tasks.every(t=>t[1]())){toast('Ainda existem missões pendentes. Complete também Protection Modes, FSFO, RAC e Interview Mode.');return}
+ lab.validate=true;
+ write(`<span class="good">VALIDAÇÃO FINAL DATA GUARD - V4 ENTERPRISE</span>\nPrimary e Standby configurados.\nRedo Transport e Apply Services validados.\nBroker DGMGRL operacional.\nSwitchover e Failover simulados.\nTroubleshooting Center expandido revisado.\nProtection Modes comparados.\nFast-Start Failover simulado.\nCenário RAC validado com srvctl e threads.\nInterview Mode concluído.\nChecklist operacional concluído.\n\n<span class="explain">Conclusão: o site agora é um tutorial interativo, laboratório, dashboard e runbook operacional Oracle Data Guard.</span>`);
+ updateAll();unlock();
+};
+
+
+/* =========================
+   V8 - Marcação automática dos comandos executados
+   ========================= */
+const executedCommands = new Set();
+
+function cmdKey(c){
+  return normalize(String(c||'')).replace(/"/g,'"');
+}
+
+function knownCommandKeys(){
+  const base = [];
+  try{
+    chapters.forEach(ch => ch.cmds.forEach(c => base.push(cmdKey(c))));
+  }catch(e){}
+  return new Set(base);
+}
+
+function nextPendingCommandKey(){
+  const known = [];
+  try{
+    chapters.forEach(ch => ch.cmds.forEach(c => known.push(cmdKey(c))));
+  }catch(e){}
+  return known.find(k => !executedCommands.has(k)) || null;
+}
+
+function markCommandExecuted(raw){
+  const key = cmdKey(raw);
+  if(!key || key === 'help') return;
+  const known = knownCommandKeys();
+
+  if(known.has(key)){
+    executedCommands.add(key);
+    renderHints();
+  }
+}
+
+function chapterCompletion(ch){
+  const total = ch.cmds.length;
+  const done = ch.cmds.filter(c => executedCommands.has(cmdKey(c))).length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  return {done,total,pct};
+}
+
+const oldRenderHintsChecklist = renderHints;
+renderHints=function(){
+  const current = nextPendingCommandKey();
+
+  $('hints').innerHTML = chapters.map(ch=>{
+    const comp = chapterCompletion(ch);
+    const head = `<div class="mini" style="margin-bottom:6px">
+      <div class="chapter-head"><b>${ch.title}</b><small>${comp.done}/${comp.total} executados</small></div>
+      <div class="chapter-progress"><span style="width:${comp.pct}%"></span></div>
+    </div>`;
+
+    const buttons = ch.cmds.map(c=>{
+      const key = cmdKey(c);
+      const done = executedCommands.has(key);
+      const isCurrent = !done && key === current;
+      const cls = done ? 'cmd-done' : isCurrent ? 'cmd-current' : 'cmd-pending';
+      const mark = done ? '✓' : isCurrent ? '➜' : '□';
+      const status = done ? 'executado com sucesso' : isCurrent ? 'próximo comando sugerido' : `pendente — etapa: ${ch.title}`;
+      return `<button class="hint-btn ${cls}" onclick="fillCmd('${c.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">
+        <b><span class="cmd-mark">${mark}</span>${c}</b>
+        <span class="cmd-status">${status}</span>
+      </button>`;
+    }).join('');
+
+    return head + buttons;
+  }).join('');
+};
+
+const oldRunTypedChecklist = runTyped;
+runTyped=function(){
+  const raw = $('cliInput').value.trim();
+  oldRunTypedChecklist();
+  setTimeout(()=>markCommandExecuted(raw),0);
+};
+
+const oldFillCmdChecklist = fillCmd;
+fillCmd=function(c){
+  oldFillCmdChecklist(c);
+  const key = cmdKey(c);
+  if(executedCommands.has(key)){
+    toast('Este comando já foi executado. Você pode revisar o resultado ou seguir para o próximo.');
+  }
+};
+
+const oldStartLabChecklist = startLab;
+startLab=function(){
+  oldStartLabChecklist();
+  renderHints();
+};
+
+const oldFinalDiagnosisChecklist = finalDiagnosis;
+finalDiagnosis=function(){
+  const totalCmds = Array.from(knownCommandKeys()).length;
+  const doneCmds = executedCommands.size;
+  if(doneCmds < totalCmds){
+    toast(`Atenção: você executou ${doneCmds}/${totalCmds} comandos do runbook. Você ainda pode validar pelas missões, mas revise os comandos pendentes.`);
+  }
+  oldFinalDiagnosisChecklist();
+};
+
+
+/* =========================
+   V9 - Sequência obrigatória do Runbook
+   ========================= */
+function flowShow({title='Atenção',message='',command='',hint='',primary='OK',secondary='',onPrimary=null,success=false}){
+  const modal=$('flowModal');
+  $('flowTitle').textContent=title;
+  $('flowMessage').innerHTML=message;
+  $('flowCommand').style.display=command?'block':'none';
+  $('flowCommand').textContent=command||'';
+  $('flowHint').style.display=hint?'block':'none';
+  $('flowHint').innerHTML=hint||'';
+  $('flowPrimaryBtn').textContent=primary;
+  $('flowSecondaryBtn').style.display=secondary?'inline-block':'none';
+  $('flowSecondaryBtn').textContent=secondary||'';
+  $('flowIcon').innerHTML=success?'<div class="completion-badge">✓</div>':'';
+  modal.classList.add('show');
+  $('flowPrimaryBtn').onclick=()=>{modal.classList.remove('show'); if(typeof onPrimary==='function') onPrimary();};
+  $('flowSecondaryBtn').onclick=()=>modal.classList.remove('show');
+}
+
+function allKnownCommandsInOrder(){
+  const arr=[];
+  try{
+    chapters.forEach(ch=>{
+      ch.cmds.forEach(c=>arr.push({chapter:ch.title,cmd:c,key:cmdKey(c)}));
+    });
+  }catch(e){}
+  const seen=new Set();
+  return arr.filter(item=>{
+    if(seen.has(item.key)) return false;
+    seen.add(item.key);
+    return true;
+  });
+}
+
+function nextPendingCommand(){
+  return allKnownCommandsInOrder().find(item=>!executedCommands.has(item.key)) || null;
+}
+
+function previousPendingBefore(key){
+  return allKnownCommandsInOrder().find(item=>!executedCommands.has(item.key) && item.key!==key) || null;
+}
+
+function scrollToCommand(cmd){
+  try{
+    const key=cmdKey(cmd);
+    const buttons=[...document.querySelectorAll('.hint-btn')];
+    const btn=buttons.find(b=>cmdKey(b.innerText.split('\n')[0].replace(/^[✓➜□]\s*/,''))===key);
+    if(btn){btn.scrollIntoView({behavior:'smooth',block:'center'});}
+  }catch(e){}
+}
+
+function commandLabel(item){
+  if(!item) return '';
+  return `${item.cmd}\n\nEtapa: ${item.chapter}`;
+}
+
+/* Override final do click nos comandos */
+fillCmd=function(c){
+  const key=cmdKey(c);
+  const next=nextPendingCommand();
+
+  if(executedCommands.has(key)){
+    flowShow({
+      title:'Comando já executado',
+      message:'Este comando já foi executado com sucesso. Para continuar o laboratório, siga para o próximo comando pendente.',
+      command:c,
+      hint: next ? `Próximo comando sugerido: <b>${next.cmd}</b><br>Etapa: ${next.chapter}` : 'Todos os comandos foram executados.',
+      primary: next ? 'Ir para próximo' : 'OK',
+      secondary:'Fechar',
+      onPrimary:()=>{ if(next){$('cliInput').value=next.cmd; scrollToCommand(next.cmd); $('cliInput').focus();}}
+    });
+    return;
+  }
+
+  if(next && key!==next.key){
+    flowShow({
+      title:'Sequência obrigatória',
+      message:'Para não se perder no laboratório, execute os comandos na ordem correta. Antes deste comando, você precisa executar o próximo item pendente abaixo.',
+      command:commandLabel(next),
+      hint:`Depois que esse comando ficar verde com ✓, o próximo será liberado automaticamente.`,
+      primary:'Carregar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>{$('cliInput').value=next.cmd;scrollToCommand(next.cmd);$('cliInput').focus();}
+    });
+    return;
+  }
+
+  $('cliInput').value=c;
+  $('cliInput').focus();
+};
+
+/* Override final da execução no terminal */
+const runTypedBeforeV9 = runTyped;
+runTyped=function(){
+  if(!lab.started){toast('Digite o nome primeiro.');return}
+  const raw=$('cliInput').value.trim();
+  if(!raw) return;
+
+  const key=cmdKey(raw);
+  const known=knownCommandKeys();
+  const next=nextPendingCommand();
+
+  if(known.has(key) && executedCommands.has(key)){
+    flowShow({
+      title:'Comando repetido',
+      message:'Este comando já foi executado. O sistema não vai repetir para evitar confusão na sequência.',
+      command:raw,
+      hint: next ? `Continue por: <b>${next.cmd}</b><br>Etapa: ${next.chapter}` : 'Todos os comandos foram executados.',
+      primary: next ? 'Carregar próximo' : 'OK',
+      secondary:'Fechar',
+      onPrimary:()=>{ if(next){$('cliInput').value=next.cmd;scrollToCommand(next.cmd);$('cliInput').focus();}}
+    });
+    return;
+  }
+
+  if(known.has(key) && next && key!==next.key){
+    flowShow({
+      title:'Comando fora de ordem',
+      message:'Esse comando ainda não deve ser executado. Para liberar essa etapa, execute primeiro o comando obrigatório da sequência.',
+      command:commandLabel(next),
+      hint:`Você tentou executar: <b>${raw}</b>`,
+      primary:'Carregar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>{$('cliInput').value=next.cmd;scrollToCommand(next.cmd);$('cliInput').focus();}
+    });
+    return;
+  }
+
+  runTypedBeforeV9();
+
+  setTimeout(()=>{
+    if(known.has(key)){
+      executedCommands.add(key);
+      renderHints();
+      checkAllCommandsFinished();
+    }
+  },20);
+};
+
+function checkAllCommandsFinished(){
+  const ordered=allKnownCommandsInOrder();
+  if(!ordered.length) return;
+  const done=ordered.filter(item=>executedCommands.has(item.key)).length;
+  if(done===ordered.length && !lab.__finalCommandSuccessShown){
+    lab.__finalCommandSuccessShown=true;
+    try{
+      tasks.forEach(t=>{});
+      lab.validate=true;
+      unlock();
+    }catch(e){}
+    flowShow({
+      title:'Processo finalizado com sucesso',
+      message:'Todos os comandos do Runbook foram executados na sequência correta. O laboratório foi concluído e o certificado final já está liberado.',
+      command:'Oracle Data Guard Command Center\nStatus: 100% concluído\nCertificado: liberado',
+      hint:'Agora você pode baixar o certificado no final da página.',
+      primary:'Ver certificado',
+      secondary:'Fechar',
+      success:true,
+      onPrimary:()=>{$('certWrap').classList.add('show');$('certWrap').scrollIntoView({behavior:'smooth'});}
+    });
+  }
+}
+
+const finalDiagnosisBeforeV9 = finalDiagnosis;
+finalDiagnosis=function(){
+  const next=nextPendingCommand();
+  if(next){
+    flowShow({
+      title:'Ainda falta comando obrigatório',
+      message:'Antes de validar o Data Guard, conclua todos os comandos do Runbook na sequência correta.',
+      command:commandLabel(next),
+      hint:'O comando pendente aparece com o marcador ➜ no Runbook.',
+      primary:'Carregar comando pendente',
+      secondary:'Fechar',
+      onPrimary:()=>{$('cliInput').value=next.cmd;scrollToCommand(next.cmd);$('cliInput').focus();}
+    });
+    return;
+  }
+  finalDiagnosisBeforeV9();
+  checkAllCommandsFinished();
+};
+
+const startLabBeforeV9 = startLab;
+startLab=function(){
+  startLabBeforeV9();
+  const next=nextPendingCommand();
+  if(next){
+    setTimeout(()=>{
+      flowShow({
+        title:'Sequência guiada ativada',
+        message:'Agora o laboratório só permite executar o próximo comando da sequência. Isso evita repetir comandos ou pular etapas.',
+        command:commandLabel(next),
+        hint:'Use os comandos marcados com ➜. Os executados ficarão verdes com ✓.',
+        primary:'Carregar primeiro comando',
+        secondary:'Fechar',
+        onPrimary:()=>{$('cliInput').value=next.cmd;scrollToCommand(next.cmd);$('cliInput').focus();}
+      });
+    },500);
+  }
+};
+
+
+/* =========================
+   V10 - Motor final de execução guiada
+   - Clique no comando atual executa automaticamente
+   - Comando fora de ordem mostra motivo e comando correto
+   - Todos os comandos conhecidos possuem resposta para não travar
+   ========================= */
+
+function terminalScroll(){
+  try{
+    document.querySelector('.terminal').scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(e){}
+}
+
+function appendRunbookNote(){
+  try{
+    const h=$('hints');
+    if(h && !document.getElementById('runbookNote')){
+      const note=document.createElement('div');
+      note.id='runbookNote';
+      note.className='runbook-note';
+      note.innerHTML='Fluxo guiado ativo: clique no comando marcado com <b>➜</b>. Ele será executado automaticamente. Comandos verdes já foram executados. Comandos cinza ainda estão bloqueados pela sequência.';
+      h.parentNode.insertBefore(note,h);
+    }
+  }catch(e){}
+}
+
+const v10Responses = {
+  'dgmgrl sys/oracle@prim "show configuration"': `DGMGRL for Linux: Release 19.0.0.0.0
+Configuration - DGCONFIG
+  Protection Mode: MaxPerformance
+  Members:
+  PRIM - Primary database
+    STBY - Physical standby database
+Configuration Status: SUCCESS
+<span class="explain">Broker consultado com sucesso. Configuração Data Guard saudável.</span>`,
+
+  'dgmgrl sys/oracle@prim "validate database verbose stby"': `Connecting to PRIM...
+Validating database STBY...
+Ready for Switchover: Yes
+Flashback Database Status: Enabled
+Apply State: Running
+Transport Lag: 0 seconds
+Apply Lag: 2 seconds
+Validation Status: SUCCESS
+<span class="explain">Pré-validação concluída. STBY está pronto para switchover.</span>`,
+
+  'dgmgrl sys/oracle@prim "switchover to stby"': `Performing switchover NOW...
+New primary database "STBY" is opening...
+Switchover succeeded, new primary is "STBY"
+<span class="explain">Switchover planejado realizado. STBY assumiu como Primary.</span>`,
+
+  'dgmgrl sys/oracle@stby "show configuration"': `Configuration - DGCONFIG
+  Protection Mode: MaxPerformance
+  Members:
+  STBY - Primary database
+    PRIM - Physical standby database
+Configuration Status: SUCCESS
+<span class="explain">Papéis invertidos validados após switchover.</span>`,
+
+  'dgmgrl sys/oracle@stby "failover to stby"': `Performing failover NOW, please wait...
+Failover succeeded, new primary is "STBY"
+<span class="explain">Failover simulado com sucesso. STBY foi promovido para Primary.</span>`,
+
+  'dgmgrl sys/oracle@prim "show database verbose stby"': `Database - STBY
+  Transport Lag: 00:05:32
+  Apply Lag: 00:08:10
+  Apply State: Not Running
+  Warning: ORA-16766: Redo Apply is stopped
+<span class="explain">Diagnóstico: o apply está parado no Standby. Próximo passo: corrigir apply lag.</span>`,
+
+  'srvctl config database -d prim': `Database unique name: PRIM
+Database name: PRIM
+Oracle home: /u01/app/oracle/product/19c/dbhome_1
+Database role: PRIMARY
+Instances: PRIM1,PRIM2
+Services: PRIM_APP
+<span class="explain">Configuração RAC simulada consultada.</span>`,
+
+  'srvctl status database -d prim': `Instance PRIM1 is running on node racnode01
+Instance PRIM2 is running on node racnode02
+<span class="explain">Status RAC validado: instâncias online.</span>`,
+
+  'doc oracle dataguard': `DOCUMENTAÇÃO OFICIAL ORACLE 19c
+Oracle Data Guard Concepts and Administration
+https://docs.oracle.com/en/database/oracle/oracle-database/19/sbydb/introduction-to-oracle-data-guard-concepts.html
+<span class="explain">Referência oficial para conceitos, arquitetura, Broker, transporte e apply services.</span>`,
+
+  'show protection modes': `PROTECTION MODES
+MAXPERFORMANCE  - ASYNC, menor impacto, RPO pode não ser zero.
+MAXAVAILABILITY - SYNC/AFFIRM, alta disponibilidade com RPO próximo de zero.
+MAXPROTECTION   - SYNC/AFFIRM obrigatório, RPO zero com maior rigidez operacional.
+<span class="explain">Modos de proteção revisados.</span>`,
+
+  'show fast_start failover': `Fast-Start Failover: Disabled
+Protection Mode: MaxPerformance
+Observer: Not Started
+Target: STBY
+Lag Limit: 30 seconds
+<span class="explain">FSFO consultado. Para ativar, é necessário Observer e requisitos atendidos.</span>`,
+
+  'enable fast_start failover': `DGMGRL> ENABLE FAST_START FAILOVER;
+Enabled.
+Fast-Start Failover: Enabled
+Observer Status: Running
+Target Standby: STBY
+<span class="explain">FSFO ativado de forma simulada.</span>`,
+
+  'interview fal_server': `PERGUNTA: O que é FAL_SERVER?
+RESPOSTA: É o parâmetro usado pelo standby para buscar archived logs faltantes no servidor indicado.
+<span class="explain">Conceito-chave para resolver archive gap.</span>`,
+
+  'interview rfs_mrp': `PERGUNTA: Qual a diferença entre RFS e MRP?
+RESPOSTA: RFS recebe redo vindo do Primary. MRP aplica esse redo no physical standby.
+<span class="explain">RFS = receive. MRP = apply/recovery.</span>`,
+
+  'interview switchover_failover': `PERGUNTA: Diferença entre Switchover e Failover?
+RESPOSTA: Switchover é troca planejada. Failover é promoção em desastre quando o Primary está indisponível.
+<span class="explain">Pergunta clássica de entrevista Oracle DBA.</span>`
+};
+
+function v10SetLabFlags(key){
+  if(key==='dgmgrl sys/oracle@prim "show configuration"'){lab.monBroker=true;lab.dgBroker=true;}
+  if(key==='dgmgrl sys/oracle@prim'){lab.dgBroker=true;}
+  if(key==='show configuration'){lab.dgBroker=true;}
+  if(key==='show database verbose prim'){lab.dgStatus=true;}
+  if(key==='validate database verbose stby'){lab.dgValidate=true;}
+  if(key==='dgmgrl sys/oracle@prim "validate database verbose stby"'){lab.swPrep=true;lab.dgValidate=true;}
+  if(key==='dgmgrl sys/oracle@prim "switchover to stby"'){lab.swDo=true;}
+  if(key==='dgmgrl sys/oracle@stby "show configuration"'){lab.swCheck=true;}
+  if(key==='simulate primary down'){lab.foDown=true;}
+  if(key==='dgmgrl sys/oracle@stby "failover to stby"'){lab.foDo=true;}
+  if(key==='select database_role, open_mode from v$database;'){lab.foCheck=true;}
+  if(key==='simulate ora-16810'){lab.trIssue=true;}
+  if(key==='dgmgrl sys/oracle@prim "show database verbose stby"'){lab.trIssue=true;}
+  if(key==='fix apply lag'){lab.trFix=true;lab.monLag=true;}
+  if(key==='checklist diario'){lab.opsDaily=true;}
+  if(key==='checklist semanal'){lab.opsWeekly=true;}
+  if(key==='checklist mensal'){lab.opsMonthly=true;}
+  if(key==='show protection modes'){lab.protectionRead=true;}
+  if(key==='show fast_start failover'){lab.fsfoShow=true;}
+  if(key==='enable fast_start failover'){lab.fsfoEnable=true;}
+  if(key==='srvctl config database -d prim'){lab.racConfig=true;}
+  if(key==='srvctl status database -d prim'){lab.racStatus=true;}
+  if(key==='select thread#, max(sequence#) from v$archived_log group by thread#;'){lab.racThreads=true;lab.valArchive=true;}
+  if(key==='interview fal_server'){lab.interview1=true;}
+  if(key==='interview rfs_mrp'){lab.interview2=true;}
+  if(key==='interview switchover_failover'){lab.interview3=true;}
+}
+
+function v10GenericResponse(raw){
+  const key=cmdKey(raw);
+  if(v10Responses[key]) return v10Responses[key];
+
+  return `<span class="good">Comando executado no laboratório guiado.</span>
+${raw}
+
+<span class="explain">Etapa registrada com sucesso. Continue pelo próximo comando marcado com ➜ no Runbook.</span>`;
+}
+
+function v10ExecuteCommand(raw){
+  const key=cmdKey(raw);
+  write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);
+  write(v10GenericResponse(raw));
+  executedCommands.add(key);
+  v10SetLabFlags(key);
+  $('cliInput').value='';
+  updateAll();
+  renderHints();
+  terminalScroll();
+  checkAllCommandsFinished();
+}
+
+function v10TryExecute(raw){
+  const key=cmdKey(raw);
+  const known=knownCommandKeys();
+  const next=nextPendingCommand();
+
+  if(!known.has(key)){
+    runTypedBeforeV9();
+    return;
+  }
+
+  if(executedCommands.has(key)){
+    flowShow({
+      title:'Comando já executado',
+      message:'Este comando já ficou verde no Runbook. Para não bagunçar a sequência, siga para o próximo comando pendente.',
+      command:raw,
+      hint: next ? `Próximo comando: <b>${next.cmd}</b><br>Etapa: ${next.chapter}` : 'Todos os comandos foram executados.',
+      primary: next ? 'Executar próximo' : 'OK',
+      secondary:'Fechar',
+      onPrimary:()=>{ if(next){v10ExecuteCommand(next.cmd);} }
+    });
+    return;
+  }
+
+  if(next && key!==next.key){
+    flowShow({
+      title:'Comando bloqueado pela sequência',
+      message:'Esse comando ainda não pode ser executado, porque existe uma etapa anterior pendente. Execute primeiro o comando abaixo.',
+      command:commandLabel(next),
+      hint:`Você tentou executar: <b>${raw}</b><br>Motivo: o laboratório exige a sequência correta para liberar o certificado.`,
+      primary:'Executar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>{v10ExecuteCommand(next.cmd);}
+    });
+    return;
+  }
+
+  v10ExecuteCommand(raw);
+}
+
+/* Clique no comando atual executa direto; pendente fora da ordem mostra aviso */
+fillCmd=function(c){
+  const key=cmdKey(c);
+  const next=nextPendingCommand();
+
+  if(executedCommands.has(key)){
+    flowShow({
+      title:'Comando já executado',
+      message:'Esse item já foi concluído com sucesso.',
+      command:c,
+      hint: next ? `Continue por: <b>${next.cmd}</b>` : 'Todos os comandos foram concluídos.',
+      primary: next ? 'Executar próximo' : 'OK',
+      secondary:'Fechar',
+      onPrimary:()=>{ if(next){v10ExecuteCommand(next.cmd);} }
+    });
+    return;
+  }
+
+  if(next && key!==next.key){
+    flowShow({
+      title:'Ainda não é este comando',
+      message:'Para manter o passo a passo correto, execute primeiro o comando obrigatório da sequência.',
+      command:commandLabel(next),
+      hint:`Depois disso, o próximo item será liberado automaticamente.`,
+      primary:'Executar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>{v10ExecuteCommand(next.cmd);}
+    });
+    return;
+  }
+
+  v10ExecuteCommand(c);
+};
+
+runTyped=function(){
+  if(!lab.started){toast('Digite o nome primeiro.');return}
+  const raw=$('cliInput').value.trim();
+  if(!raw) return;
+  v10TryExecute(raw);
+};
+
+const updateAllBeforeV10 = updateAll;
+updateAll=function(){
+  updateAllBeforeV10();
+  appendRunbookNote();
+};
+
+function checkAllCommandsFinished(){
+  const ordered=allKnownCommandsInOrder();
+  if(!ordered.length) return;
+  const done=ordered.filter(item=>executedCommands.has(item.key)).length;
+  if(done===ordered.length && !lab.__finalCommandSuccessShown){
+    lab.__finalCommandSuccessShown=true;
+    lab.validate=true;
+    try{ unlock(); }catch(e){}
+    flowShow({
+      title:'Processo finalizado com sucesso',
+      message:'Todos os comandos do Runbook foram executados na sequência correta. O laboratório foi concluído e o certificado final já está liberado.',
+      command:'Oracle Data Guard Command Center\nStatus: 100% concluído\nCertificado: liberado',
+      hint:'Clique abaixo para visualizar o certificado.',
+      primary:'Ver certificado',
+      secondary:'Fechar',
+      success:true,
+      onPrimary:()=>{$('certWrap').classList.add('show');$('certWrap').scrollIntoView({behavior:'smooth'});}
+    });
+  }
+}
+
+finalDiagnosis=function(){
+  const next=nextPendingCommand();
+  if(next){
+    flowShow({
+      title:'Ainda falta comando obrigatório',
+      message:'Para gerar o certificado, todos os comandos precisam estar verdes com ✓.',
+      command:commandLabel(next),
+      hint:'Clique em Executar comando pendente para continuar de onde parou.',
+      primary:'Executar comando pendente',
+      secondary:'Fechar',
+      onPrimary:()=>{v10ExecuteCommand(next.cmd);}
+    });
+    return;
+  }
+  lab.validate=true;
+  unlock();
+  checkAllCommandsFinished();
+};
+
+const startLabBeforeV10 = startLab;
+startLab=function(){
+  startLabBeforeV10();
+  appendRunbookNote();
+  const next=nextPendingCommand();
+  if(next){
+    setTimeout(()=>{
+      flowShow({
+        title:'Fluxo guiado ativado',
+        message:'Agora basta clicar no comando marcado com ➜. O sistema executa automaticamente e libera o próximo passo.',
+        command:commandLabel(next),
+        hint:'Comandos fora de ordem serão bloqueados com uma explicação.',
+        primary:'Executar primeiro comando',
+        secondary:'Fechar',
+        onPrimary:()=>{v10ExecuteCommand(next.cmd);}
+      });
+    },500);
+  }
+};
+
+
+/* =========================
+   V11 - Correção final do fluxo guiado
+   ========================= */
+
+function v11SetOriginalLabFlags(key){
+  /* Pré-check */
+  if(key==='lsnrctl status') lab.preListener=true;
+  if(key==='sqlplus / as sysdba') lab.preSql=true;
+  if(key==='select name, open_mode, log_mode, database_role from v$database;') lab.preDb=true;
+
+  /* Primary */
+  if(key==='archive log list') lab.priArch=true;
+  if(key==='alter database force logging;') lab.priForce=true;
+  if(key==='alter database add standby logfile group 4 size 200m;') lab.priSrl=true;
+  if(key.indexOf('alter system set log_archive_config')===0) lab.priParams=true;
+  if(key.indexOf('alter system set log_archive_dest_2')===0) lab.priParams=true;
+  if(key==='alter system set fal_server=stby scope=both;') lab.priParams=true;
+  if(key==='alter system set fal_client=prim scope=both;') lab.priParams=true;
+  if(key==='alter system set standby_file_management=auto scope=both;') lab.priParams=true;
+  if(key==='tnsping stby') lab.priTns=true;
+
+  /* Standby */
+  if(key.indexOf('orapwd file=')===0) lab.stbPwd=true;
+  if(key==="create pfile='/tmp/initstby.ora' from spfile;") lab.stbInit=true;
+  if(key==="startup nomount pfile='/tmp/initstby.ora';") lab.stbNomount=true;
+  if(key==='rman target sys/oracle@prim auxiliary sys/oracle@stby') lab.stbNomount=true;
+  if(key==='duplicate target database for standby from active database nofilenamecheck;') lab.stbDuplicate=true;
+  if(key==='alter database mount standby database;') lab.stbMount=true;
+  if(key==='alter database recover managed standby database disconnect from session;') lab.stbRecover=true;
+
+  /* Validação */
+  if(key==='select database_role, open_mode, switchover_status from v$database;') lab.valPrimary=true;
+  if(key==='select process, status, sequence# from v$managed_standby;') lab.valStandby=true;
+  if(key==='select thread#, max(sequence#) from v$archived_log group by thread#;') lab.valArchive=true;
+  if(key==='select * from v$archive_gap;') lab.valGap=true;
+  if(key==='select switchover_status from v$database;') lab.valSwitch=true;
+
+  /* Monitoramento */
+  if(key==='select process, status, client_process, sequence# from v$managed_standby;') lab.monProcess=true;
+  if(key==='select name, value, unit from v$dataguard_stats;') lab.monLag=true;
+  if(key==='select dest_id, status, error from v$archive_dest_status where dest_id in (1,2);') lab.monDest=true;
+  if(key==='select severity, message from v$dataguard_status order by timestamp desc;') lab.monErrors=true;
+  if(key==='dgmgrl sys/oracle@prim "show configuration"') lab.monBroker=true;
+}
+
+function v11OriginalResponse(raw){
+  const key=cmdKey(raw);
+
+  const responses={
+    'lsnrctl status':`LSNRCTL for Linux: Version 19.0.0.0.0
+Status of the LISTENER
+Alias                     LISTENER
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=primary)(PORT=1521)))
+Services Summary...
+Service "prim" has 1 instance(s).
+<span class="explain">Pré-check OK: listener do Primary está ativo.</span>`,
+
+    'sqlplus / as sysdba':`SQL*Plus: Release 19.0.0.0.0
+Connected to:
+Oracle Database 19c Enterprise Edition
+
+SQL>
+<span class="explain">Acesso local como SYSDBA validado.</span>`,
+
+    'select name, open_mode, log_mode, database_role from v$database;':`NAME   OPEN_MODE   LOG_MODE    DATABASE_ROLE
+------ ----------- ----------- ----------------
+PRIM   READ WRITE  ARCHIVELOG  PRIMARY
+<span class="explain">Banco PRIM está aberto, em ARCHIVELOG e com role PRIMARY.</span>`,
+
+    'archive log list':`Database log mode              Archive Mode
+Automatic archival             Enabled
+Archive destination            /u01/app/oracle/fast_recovery_area
+Current log sequence           1281
+<span class="explain">Primary está gerando archived redo logs.</span>`,
+
+    'alter database force logging;':`Database altered.
+<span class="explain">FORCE LOGGING habilitado no Primary.</span>`,
+
+    'alter database add standby logfile group 4 size 200m;':`Database altered.
+<span class="explain">Standby Redo Log criado.</span>`,
+
+    'tnsping stby':`TNS Ping Utility for Linux: Version 19.0.0.0.0
+Attempting to contact STBY
+OK (20 msec)
+<span class="explain">Primary consegue resolver e alcançar o serviço STBY.</span>`,
+
+    "create pfile='/tmp/initstby.ora' from spfile;":`File created.
+<span class="explain">PFILE base gerado para ajustar DB_UNIQUE_NAME=STBY e caminhos do Standby.</span>`,
+
+    "startup nomount pfile='/tmp/initstby.ora';":`ORACLE instance started.
+Total System Global Area 1610612736 bytes
+Database mounted: no
+Database opened: no
+<span class="explain">Standby em NOMOUNT, pronto para receber duplicate.</span>`,
+
+    'rman target sys/oracle@prim auxiliary sys/oracle@stby':`Recovery Manager: Release 19.0.0.0.0
+connected to target database: PRIM
+connected to auxiliary database: STBY (not mounted)
+RMAN>
+<span class="explain">RMAN conectado no target Primary e no auxiliary Standby.</span>`,
+
+    'duplicate target database for standby from active database nofilenamecheck;':`Starting Duplicate Db
+restore clone standby controlfile;
+restore clone database from service PRIM;
+recover clone database;
+Finished Duplicate Db
+<span class="explain">Standby físico criado a partir do Primary ativo.</span>`,
+
+    'alter database mount standby database;':`Database altered.
+<span class="explain">Standby montado como physical standby.</span>`,
+
+    'alter database recover managed standby database disconnect from session;':`Database altered.
+<span class="explain">MRP iniciado em background. O Standby começou a aplicar redo.</span>`,
+
+    'select database_role, open_mode, switchover_status from v$database;':`DATABASE_ROLE    OPEN_MODE            SWITCHOVER_STATUS
+---------------- -------------------- --------------------
+PRIMARY          READ WRITE           TO STANDBY
+<span class="explain">Primary validado e pronto para switchover controlado.</span>`,
+
+    'select process, status, sequence# from v$managed_standby;':`PROCESS   STATUS          SEQUENCE#
+--------- --------------- ---------
+RFS       RECEIVING            1284
+MRP0      APPLYING_LOG         1284
+<span class="explain">Standby recebendo redo via RFS e aplicando com MRP0.</span>`,
+
+    'select * from v$archive_gap;':`no rows selected
+<span class="explain">Nenhum archive gap pendente.</span>`,
+
+    'select switchover_status from v$database;':`SWITCHOVER_STATUS
+--------------------
+TO STANDBY
+<span class="explain">Status de switchover validado no Primary.</span>`,
+
+    'select process, status, client_process, sequence# from v$managed_standby;':`PROCESS STATUS        CLIENT_PROCESS SEQUENCE#
+------- ------------- -------------- ---------
+RFS     RECEIVING     LGWR                1285
+MRP0    APPLYING_LOG  N/A                 1285
+<span class="explain">Monitoramento de processos Data Guard ativo.</span>`,
+
+    'select name, value, unit from v$dataguard_stats;':`NAME           VALUE      UNIT
+-------------- ---------- ----------------
+transport lag  +00 00:00:00 day(2) to second(0) interval
+apply lag      +00 00:00:00 day(2) to second(0) interval
+<span class="explain">Transport lag e apply lag zerados no laboratório.</span>`,
+
+    'select dest_id, status, error from v$archive_dest_status where dest_id in (1,2);':`DEST_ID STATUS  ERROR
+------- ------- ------------------------------
+1       VALID
+2       VALID
+<span class="explain">Destinos de archive sem erro.</span>`,
+
+    'select severity, message from v$dataguard_status order by timestamp desc;':`SEVERITY       MESSAGE
+-------------  ---------------------------------------------
+Informational  Media Recovery Log /arch/1_1285.arc
+Informational  RFS connected from PRIM
+<span class="explain">Sem mensagens críticas recentes no Data Guard status.</span>`
+  };
+
+  if(key.indexOf('alter system set ')===0){
+    return `System altered.
+<span class="explain">Parâmetro Data Guard aplicado no escopo definido.</span>`;
+  }
+
+  if(key.indexOf('orapwd file=')===0){
+    return `OPW-00001: Password file created.
+<span class="explain">Password file do Standby preparado. A senha SYS precisa bater com o Primary.</span>`;
+  }
+
+  return responses[key] || null;
+}
+
+function v11UpdateInputWithNext(){
+  const next=nextPendingCommand();
+  if(next){
+    $('cliInput').value=next.cmd;
+    $('cliInput').classList.add('next-loaded');
+  }else{
+    $('cliInput').value='';
+    $('cliInput').classList.remove('next-loaded');
+  }
+}
+
+function v11UpdateGlobalProgress(){
+  try{
+    const h=$('hints');
+    if(!h)return;
+    let box=document.getElementById('globalProgressBox');
+    if(!box){
+      box=document.createElement('div');
+      box.id='globalProgressBox';
+      box.className='global-progress-box';
+      h.parentNode.insertBefore(box,h);
+    }
+    const ordered=allKnownCommandsInOrder();
+    const total=ordered.length||1;
+    const done=ordered.filter(item=>executedCommands.has(item.key)).length;
+    const pct=Math.round((done/total)*100);
+    box.innerHTML=`<div class="global-progress-title"><span>Progresso geral do Runbook</span><b>${done}/${total} comandos • ${pct}%</b></div><div class="global-progress-bar"><span style="width:${pct}%"></span></div>`;
+  }catch(e){}
+}
+
+function v11ShowExecutionBanner(raw){
+  try{
+    const out=$('termOut');
+    const banner=document.createElement('div');
+    banner.className='exec-banner';
+    banner.textContent='Executando agora: '+raw;
+    out.appendChild(banner);
+    out.scrollTop=out.scrollHeight;
+  }catch(e){}
+}
+
+/* Sobrescreve apenas o executor V10 para corrigir status, input e progresso */
+v10ExecuteCommand=function(raw){
+  const key=cmdKey(raw);
+
+  $('cliInput').value=raw;
+  $('cliInput').classList.add('next-loaded');
+
+  v11ShowExecutionBanner(raw);
+  write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);
+
+  const originalResp=v11OriginalResponse(raw);
+  if(originalResp){
+    write(originalResp);
+  }else{
+    write(v10GenericResponse(raw));
+  }
+
+  executedCommands.add(key);
+  v11SetOriginalLabFlags(key);
+  v10SetLabFlags(key);
+
+  /* Atualiza mapa visual */
+  if(key==='lsnrctl status') { try{setNode('nPrimary','warn');setLink('l1','ok');}catch(e){} }
+  if(key==='alter database force logging;') { try{setNode('nPrimary','ok');}catch(e){} }
+  if(key==='alter database recover managed standby database disconnect from session;') { try{setNode('nStandby','ok');setLink('l2','ok');setLink('l3','ok');}catch(e){} }
+
+  updateAll();
+  renderHints();
+  v11UpdateGlobalProgress();
+  v11UpdateInputWithNext();
+  terminalScroll();
+  checkAllCommandsFinished();
+};
+
+/* Atualiza o renderHints para incluir progresso geral e manter tickets */
+const renderHintsBeforeV11 = renderHints;
+renderHints=function(){
+  renderHintsBeforeV11();
+  appendRunbookNote();
+  v11UpdateGlobalProgress();
+};
+
+/* Garante progresso e input no start */
+const startLabBeforeV11 = startLab;
+startLab=function(){
+  startLabBeforeV11();
+  v11UpdateGlobalProgress();
+  v11UpdateInputWithNext();
+};
+
+/* Garante progresso em todo update */
+const updateAllBeforeV11 = updateAll;
+updateAll=function(){
+  updateAllBeforeV11();
+  v11UpdateGlobalProgress();
+};
+
+
+/* =========================
+   V14 - Correção de fluxo sem alterar layout
+   ========================= */
+
+function v14Key(s){
+  return String(s||'').trim().replace(/\s+/g,' ').replace(/[“”]/g,'"').replace(/[‘’]/g,"'").toLowerCase();
+}
+
+cmdKey=function(c){return v14Key(c);};
+
+function v14Commands(){
+  const arr=[];
+  try{
+    chapters.forEach((ch,ci)=>{
+      ch.cmds.forEach((cmd,idx)=>{
+        arr.push({chapter:ch.title,cmd:cmd,key:cmdKey(cmd),ci:ci,idx:idx,id:ci+'|'+idx+'|'+cmdKey(cmd)});
+      });
+    });
+  }catch(e){}
+  return arr;
+}
+
+allKnownCommandsInOrder=function(){return v14Commands();};
+knownCommandKeys=function(){return new Set(v14Commands().map(x=>x.key));};
+nextPendingCommand=function(){return v14Commands().find(x=>!executedCommands.has(x.id)) || null;};
+
+function v14IsDone(item){return executedCommands.has(item.id);}
+function v14MarkDone(item){executedCommands.add(item.id);}
+
+function v14Response(raw){
+  const key=cmdKey(raw);
+
+  if(key==='dgmgrl sys/oracle@prim "show configuration"'){
+    return `DGMGRL for Linux: Release 19.0.0.0.0
+
+Configuration - DGCONFIG
+  Protection Mode: MaxPerformance
+  Members:
+  PRIM - Primary database
+    STBY - Physical standby database
+
+Fast-Start Failover: Disabled
+Configuration Status: SUCCESS
+
+<span class="explain">DGMGRL executado com sucesso. A configuração está saudável e o fluxo pode continuar.</span>`;
+  }
+
+  if(typeof v11OriginalResponse==='function'){
+    const r=v11OriginalResponse(raw);
+    if(r) return r;
+  }
+
+  if(typeof v10GenericResponse==='function') return v10GenericResponse(raw);
+
+  return `<span class="good">Comando executado com sucesso.</span>`;
+}
+
+function v14SetFlags(raw){
+  const key=cmdKey(raw);
+
+  if(typeof v11SetOriginalLabFlags==='function') v11SetOriginalLabFlags(key);
+  if(typeof v10SetLabFlags==='function') v10SetLabFlags(key);
+
+  if(key==='dgmgrl sys/oracle@prim "show configuration"'){
+    lab.monBroker=true;
+    lab.dgBroker=true;
+  }
+}
+
+function v14UpdateInput(){
+  const next=nextPendingCommand();
+  if(next){
+    $('cliInput').value=next.cmd;
+    try{$('cliInput').classList.add('next-loaded')}catch(e){}
+  }else{
+    $('cliInput').value='';
+  }
+}
+
+function v14UpdateCleanFlow(){
+  try{
+    const all=v14Commands();
+    const done=all.filter(x=>v14IsDone(x)).length;
+    const pct=all.length?Math.round(done/all.length*100):0;
+    if($('cleanFlowPct')) $('cleanFlowPct').textContent=pct+'%';
+
+    const set=(id,ok)=>{const el=$(id);if(el)el.classList.toggle('ok',!!ok)};
+    set('cleanPre', lab.preListener && lab.preSql && lab.preDb);
+    set('cleanPri', lab.priArch && lab.priForce && lab.priSrl && lab.priParams && lab.priTns);
+    set('cleanStb', lab.stbPwd && lab.stbInit && lab.stbNomount && lab.stbDuplicate && lab.stbMount && lab.stbRecover);
+    set('cleanMon', lab.monProcess && lab.monLag && lab.monDest && lab.monErrors && lab.monBroker);
+    set('cleanAdv', lab.dgBroker && lab.swDo && lab.foDo && lab.trFix && lab.fsfoEnable && lab.racThreads);
+  }catch(e){}
+}
+
+function v14Execute(raw){
+  const next=nextPendingCommand();
+  if(!next){checkAllCommandsFinished();return;}
+
+  if(cmdKey(raw)!==next.key){
+    flowShow({
+      title:'Comando fora de sequência',
+      message:'Para liberar o certificado, siga o próximo comando obrigatório do Runbook.',
+      command:next.cmd + '\n\nEtapa: ' + next.chapter,
+      hint:'O item correto está marcado com ➜.',
+      primary:'Executar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>v14Execute(next.cmd)
+    });
+    return;
+  }
+
+  if(typeof v11ShowExecutionBanner==='function') v11ShowExecutionBanner(raw);
+  write(`<span class="prompt">[oracle@dataguard-lab]$</span> ${raw}`);
+  write(v14Response(raw));
+
+  v14MarkDone(next);
+  v14SetFlags(raw);
+
+  updateAll();
+  renderHints();
+  try{v11UpdateGlobalProgress()}catch(e){}
+  v14UpdateCleanFlow();
+  v14UpdateInput();
+
+  try{document.querySelector('.terminal').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}
+  checkAllCommandsFinished();
+}
+
+fillCmd=function(c){
+  const next=nextPendingCommand();
+  if(!next){checkAllCommandsFinished();return;}
+
+  if(cmdKey(c)!==next.key){
+    flowShow({
+      title:'Ainda não é este comando',
+      message:'Esse comando pertence a outra etapa. Execute primeiro o próximo item obrigatório.',
+      command:next.cmd + '\n\nEtapa: ' + next.chapter,
+      hint:'O fluxo precisa seguir a sequência para liberar o certificado.',
+      primary:'Executar comando correto',
+      secondary:'Fechar',
+      onPrimary:()=>v14Execute(next.cmd)
+    });
+    return;
+  }
+
+  v14Execute(c);
+};
+
+runTyped=function(){
+  if(!lab.started){toast('Digite o nome primeiro.');return}
+  const raw=$('cliInput').value.trim();
+  if(!raw)return;
+  v14Execute(raw);
+};
+
+renderHints=function(){
+  const current=nextPendingCommand();
+
+  $('hints').innerHTML=chapters.map((ch,ci)=>{
+    const items=ch.cmds.map((cmd,idx)=>({chapter:ch.title,cmd:cmd,key:cmdKey(cmd),ci:ci,idx:idx,id:ci+'|'+idx+'|'+cmdKey(cmd)}));
+    const done=items.filter(x=>v14IsDone(x)).length;
+    const total=items.length;
+    const pct=total?Math.round(done/total*100):0;
+
+    const head=`<div class="mini" style="margin-bottom:6px">
+      <div class="chapter-head"><b>${ch.title}</b><small>${done}/${total} executados</small></div>
+      <div class="chapter-progress"><span style="width:${pct}%"></span></div>
+    </div>`;
+
+    const buttons=items.map(item=>{
+      const isDone=v14IsDone(item);
+      const isCurrent=current && item.id===current.id;
+      const cls=isDone?'cmd-done':isCurrent?'cmd-current':'cmd-pending';
+      const mark=isDone?'✓':isCurrent?'➜':'□';
+      const status=isDone?'executado com sucesso':isCurrent?'próximo comando sugerido':'pendente — etapa: '+ch.title;
+      const safe=item.cmd.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      return `<button class="hint-btn ${cls}" onclick="fillCmd('${safe}')">
+        <b><span class="cmd-mark">${mark}</span>${item.cmd}</b>
+        <span class="cmd-status">${status}</span>
+      </button>`;
+    }).join('');
+
+    return head+buttons;
+  }).join('');
+
+  try{appendRunbookNote()}catch(e){}
+  try{v11UpdateGlobalProgress()}catch(e){}
+};
+
+checkAllCommandsFinished=function(){
+  const all=v14Commands();
+  const done=all.filter(x=>v14IsDone(x)).length;
+
+  if(all.length && done===all.length && !lab.__finalCommandSuccessShown){
+    lab.__finalCommandSuccessShown=true;
+    lab.validate=true;
+    try{unlock()}catch(e){}
+    flowShow({
+      title:'Processo finalizado com sucesso',
+      message:'Todos os comandos foram executados em sequência. O certificado final foi liberado.',
+      command:'Oracle Data Guard Command Center\nStatus: 100% concluído\nCertificado: liberado',
+      hint:'Clique para visualizar o certificado.',
+      primary:'Ver certificado',
+      secondary:'Fechar',
+      success:true,
+      onPrimary:()=>{$('certWrap').classList.add('show');$('certWrap').scrollIntoView({behavior:'smooth'});}
+    });
+  }
+};
+
+finalDiagnosis=function(){
+  const next=nextPendingCommand();
+  if(next){
+    flowShow({
+      title:'Ainda falta comando obrigatório',
+      message:'Para gerar o certificado, todos os comandos precisam estar verdes com ✓.',
+      command:next.cmd + '\n\nEtapa: ' + next.chapter,
+      hint:'Continue pelo comando obrigatório da sequência.',
+      primary:'Executar comando pendente',
+      secondary:'Fechar',
+      onPrimary:()=>v14Execute(next.cmd)
+    });
+    return;
+  }
+  lab.validate=true;
+  try{unlock()}catch(e){}
+  checkAllCommandsFinished();
+};
+
+const updateAllBeforeV14=updateAll;
+updateAll=function(){
+  updateAllBeforeV14();
+  v14UpdateCleanFlow();
+};
+
+const startLabBeforeV14=startLab;
+startLab=function(){
+  startLabBeforeV14();
+  renderHints();
+  v14UpdateInput();
+  v14UpdateCleanFlow();
+};
+
+
+/* =========================
+   V15 - Certificado integrado no espaço vazio central
+   ========================= */
+document.body.classList.add('cert-inline-mode');
+
+function showInlineCertificatePanel(){
+  const panel=$('inlineCertPanel');
+  if(panel) panel.classList.add('show');
+}
+
+function syncInlineCertificate(){
+  try{
+    if($('inlineCertName')) $('inlineCertName').textContent = lab.student || $('certName').textContent || 'DBA_ORACLE';
+    if($('inlineCertId')) $('inlineCertId').textContent = $('certId').textContent || 'DG-LAB';
+    if($('inlineCertDate')) $('inlineCertDate').textContent = $('certDate').textContent || new Date().toLocaleDateString('pt-BR');
+  }catch(e){}
+}
+
+function unlockInlineCertificate(){
+  syncInlineCertificate();
+  const panel=$('inlineCertPanel');
+  const cert=$('inlineCertificate');
+  const alert=$('inlineCertAlert');
+  const btn=$('inlineDownloadBtn');
+
+  if(panel){
+    panel.classList.add('show');
+    panel.classList.remove('locked-preview');
+  }
+  if(cert) cert.classList.remove('inline-cert-locked');
+  if(alert){
+    alert.textContent='Status: processo finalizado com sucesso. Certificado liberado para download.';
+  }
+  if(btn) btn.disabled=false;
+}
+
+function inlineCertificateScroll(){
+  showInlineCertificatePanel();
+  syncInlineCertificate();
+  try{$('inlineCertPanel').scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+}
+
+/* Mostra o painel do certificado desde o início para preencher o vazio */
+const startLabBeforeV15 = startLab;
+startLab=function(){
+  startLabBeforeV15();
+  showInlineCertificatePanel();
+  syncInlineCertificate();
+};
+
+/* Toda atualização sincroniza os dados do certificado */
+const updateAllBeforeV15 = updateAll;
+updateAll=function(){
+  updateAllBeforeV15();
+  showInlineCertificatePanel();
+  syncInlineCertificate();
+};
+
+/* Quando desbloquear, não manda mais para o final da página; mostra no espaço central */
+const unlockBeforeV15 = unlock;
+unlock=function(){
+  try{unlockBeforeV15();}catch(e){}
+  unlockInlineCertificate();
+  inlineCertificateScroll();
+};
+
+/* Botão do certificado integrado */
+setTimeout(()=>{
+  const go=$('inlineGoRunbookBtn');
+  if(go){
+    go.onclick=()=>{
+      try{$('hints').scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+    };
+  }
+
+  const down=$('inlineDownloadBtn');
+  if(down){
+    down.onclick=async()=>{
+      if(!html2canvasReady||!window.html2canvas){
+        toast('Biblioteca PNG carregando. Tente novamente em alguns segundos.');
+        return;
+      }
+      try{
+        down.disabled=true;
+        down.textContent='GERANDO PNG...';
+        const cert=$('inlineCertificate');
+        const canvas=await html2canvas(cert,{scale:3,backgroundColor:null,useCORS:true,logging:false});
+        const a=document.createElement('a');
+        const safeName=($('inlineCertName').textContent||'dba').trim().replace(/[^a-z0-9_-]+/gi,'_');
+        a.href=canvas.toDataURL('image/png');
+        a.download='Oracle_DataGuard_Certificado_'+safeName+'.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        toast('Certificado PNG gerado com sucesso.');
+      }catch(e){
+        toast('Não consegui gerar o PNG. Tente novamente.');
+      }finally{
+        down.disabled=false;
+        down.textContent='BAIXAR PNG';
+      }
+    };
+  }
+},600);
+
+/* Se o fluxo finalizar, certificado aparece no centro */
+const checkAllCommandsFinishedBeforeV15 = checkAllCommandsFinished;
+checkAllCommandsFinished=function(){
+  checkAllCommandsFinishedBeforeV15();
+  try{
+    const all=allKnownCommandsInOrder();
+    let done=0;
+    if(typeof v14IsDone==='function'){
+      done=all.filter(x=>v14IsDone(x)).length;
+    }else{
+      done=all.filter(x=>executedCommands.has(x.key)).length;
+    }
+    if(all.length && done===all.length){
+      unlockInlineCertificate();
+    }
+  }catch(e){}
+};
+
+
+/* =========================
+   V18 - Corrige Trilha Operacional travada
+   ========================= */
+
+function roadmapStageStatusV18(){
+  return [
+    /* 1. Visão Geral */
+    true,
+
+    /* 2. Pré-check */
+    lab.preListener && lab.preSql && lab.preDb,
+
+    /* 3. Primary */
+    lab.priArch && lab.priForce && lab.priSrl && lab.priParams && lab.priTns,
+
+    /* 4. Standby */
+    lab.stbPwd && lab.stbInit && lab.stbNomount && lab.stbDuplicate && lab.stbMount && lab.stbRecover,
+
+    /* 5. Validação */
+    lab.valPrimary && lab.valStandby && lab.valArchive && lab.valGap && lab.valSwitch,
+
+    /* 6. Monitoramento */
+    lab.monProcess && lab.monLag && lab.monDest && lab.monErrors && lab.monBroker,
+
+    /* 7. Broker */
+    lab.dgBroker && lab.dgValidate && lab.dgStatus,
+
+    /* 8. Switchover */
+    lab.swPrep && lab.swDo && lab.swCheck,
+
+    /* 9. Failover */
+    lab.foDown && lab.foDo && lab.foCheck,
+
+    /* 10. Troubleshooting */
+    lab.trIssue && lab.trFix,
+
+    /* 11. Checklist Operacional */
+    lab.opsDaily && lab.opsWeekly && lab.opsMonthly,
+
+    /* 12. Protection Modes */
+    lab.protectionRead,
+
+    /* 13. Fast-Start Failover */
+    lab.fsfoShow && lab.fsfoEnable,
+
+    /* 14. Data Guard RAC */
+    lab.racConfig && lab.racStatus && lab.racThreads,
+
+    /* 15. Interview Mode */
+    lab.interview1 && lab.interview2 && lab.interview3,
+
+    /* 16. Encerramento */
+    !!lab.validate || !!lab.__finalCommandSuccessShown
+  ];
+}
+
+function currentRoadmapIndexV18(){
+  const status = roadmapStageStatusV18();
+  const idx = status.findIndex(v => !v);
+  return idx === -1 ? status.length - 1 : idx;
+}
+
+function syncRoadmapV18(){
+  try{
+    const status = roadmapStageStatusV18();
+    const current = currentRoadmapIndexV18();
+
+    const stepsContainer = $('steps');
+    if(!stepsContainer) return;
+
+    const stepEls = Array.from(stepsContainer.querySelectorAll('.step'));
+
+    stepEls.forEach((el,i)=>{
+      el.classList.remove('active','done','roadmap-active','roadmap-done','roadmap-pending');
+
+      if(status[i]){
+        el.classList.add('roadmap-done','done');
+      }else if(i === current){
+        el.classList.add('roadmap-active','active');
+      }else{
+        el.classList.add('roadmap-pending');
+      }
+    });
+
+    /* Também atualiza o módulo visual para o capítulo atual real */
+    if(typeof lab !== 'undefined'){
+      lab.module = current;
+    }
+  }catch(e){}
+}
+
+/* Reescreve renderSteps para não depender apenas do botão próximo/anterior */
+const renderStepsBeforeV18 = renderSteps;
+renderSteps=function(){
+  const status = roadmapStageStatusV18();
+  const current = currentRoadmapIndexV18();
+
+  $('steps').innerHTML = modules.map((m,i)=>{
+    const cls = status[i] ? 'roadmap-done done' : i===current ? 'roadmap-active active' : 'roadmap-pending';
+    return `<div class="step ${cls}">
+      <div class="icon i${(i%8)+1}">${status[i]?'✓':i+1}</div>
+      <div><b>${m.t}</b><p>${m.short}</p></div>
+    </div>`;
+  }).join('');
+};
+
+/* Toda execução, atualização e clique sincroniza a trilha */
+const updateAllBeforeV18 = updateAll;
+updateAll=function(){
+  updateAllBeforeV18();
+  syncRoadmapV18();
+};
+
+const renderTasksBeforeV18 = renderTasks;
+renderTasks=function(){
+  renderTasksBeforeV18();
+  syncRoadmapV18();
+};
+
+const checkAllCommandsFinishedBeforeV18 = checkAllCommandsFinished;
+checkAllCommandsFinished=function(){
+  checkAllCommandsFinishedBeforeV18();
+  syncRoadmapV18();
+};
+
+const finalDiagnosisBeforeV18 = finalDiagnosis;
+finalDiagnosis=function(){
+  finalDiagnosisBeforeV18();
+  syncRoadmapV18();
+};
+
+const startLabBeforeV18 = startLab;
+startLab=function(){
+  startLabBeforeV18();
+  syncRoadmapV18();
+};
+
+/* Se o usuário usar os botões de navegação, a trilha volta a refletir o progresso real */
+setTimeout(()=>{
+  try{
+    if($('nextBtn')){
+      const oldNext=$('nextBtn').onclick;
+      $('nextBtn').onclick=function(e){
+        if(typeof oldNext==='function') oldNext.call(this,e);
+        syncRoadmapV18();
+      };
+    }
+    if($('prevBtn')){
+      const oldPrev=$('prevBtn').onclick;
+      $('prevBtn').onclick=function(e){
+        if(typeof oldPrev==='function') oldPrev.call(this,e);
+        syncRoadmapV18();
+      };
+    }
+  }catch(e){}
+},500);
+
+/* Chamada inicial */
+setTimeout(syncRoadmapV18,800);
+
+const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';sc.onload=()=>{html2canvasReady=true};sc.onerror=()=>toast('Não consegui carregar a biblioteca de PNG. Verifique a conexão.');document.head.appendChild(sc);renderHints();updateAll();
+
+</script></body></html>

@@ -1,0 +1,90 @@
+{
+  "name": "DBATOOLKIT",
+  "author": "Renato Barros",
+  "version": "4.0.2",
+  "topics": 35,
+  "oracle": 15,
+  "sqlserver": 7,
+  "postgresql": 7,
+  "mysql": 6,
+  "source": "captura pública fornecida pelo usuário",
+  "release": "Final Clean Enterprise Release",
+  "changes": [
+    "Painel administrativo completo para validação",
+    "Dashboard com métricas reais do conteúdo",
+    "Lista pesquisável dos 35 tópicos",
+    "Editor de rascunhos local",
+    "Perfil profissional",
+    "Exportação de conteúdo e rascunhos em JSON",
+    "Configurações demonstrativas",
+    "Nenhuma alteração no portal público"
+  ],
+  "admin_preview": {
+    "password": "DBATOOLKIT",
+    "views": [
+      "Dashboard",
+      "Conteúdo",
+      "Novo tópico",
+      "Perfil",
+      "Backup",
+      "Configurações"
+    ],
+    "storage": "localStorage",
+    "public_content_unchanged": true
+  },
+  "footer": {
+    "name": "B&B Enterprise Footer v1.0",
+    "position": "Final do conteúdo principal",
+    "enterprise_edition_label": false,
+    "specialties": [
+      "Oracle Database",
+      "SQL Server",
+      "PostgreSQL",
+      "MySQL",
+      "DBRE",
+      "Infrastructure",
+      "DevOps",
+      "Network/Security",
+      "Multi-Cloud Technologies"
+    ]
+  },
+  "terminal_simulator": {
+    "platforms": [
+      "Oracle",
+      "SQL Server",
+      "PostgreSQL",
+      "MySQL"
+    ],
+    "execution": "Fictitious read-only demonstration",
+    "trigger": "Abrir Terminal button on each command",
+    "features": [
+      "Platform-specific prompt",
+      "Command-sensitive fictional results",
+      "Tables and execution metrics",
+      "Run, replay, clear and copy",
+      "No real database connection"
+    ],
+    "rendering": {
+      "style": "Native database command-line clients",
+      "oracle": "SQL*Plus",
+      "sqlserver": "sqlcmd",
+      "postgresql": "psql",
+      "mysql": "mysql client",
+      "html_dashboard_tables": false,
+      "fixed_width_output": true
+    }
+  },
+  "identity": {
+    "project": "DBATOOLKIT",
+    "author": "Renato Barros",
+    "company": "Barros & Barros Consultoria e Suporte",
+    "portal": "https://barros.inf.br/",
+    "project_url": "https://rsbarros43.github.io/DBATOOLKIT/",
+    "email": "renato.barros@barros.inf.br"
+  },
+  "sanitization": {
+    "legacy_brand_references": 0,
+    "legacy_company_references": 0,
+    "legacy_terminal_email_references": 0
+  }
+}

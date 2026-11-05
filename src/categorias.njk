@@ -1,0 +1,18 @@
+---
+layout: layouts/pagina.njk
+title: Categorias
+kicker: Explorar
+descricao: Todos os assuntos do blog, organizados por categoria.
+permalink: /categorias/
+---
+<div class="container">
+  <div class="grade-taxonomia">
+    {% for c in collections.listaCategorias %}
+    <a class="taxo-card" href="/categorias/{{ c.slug }}/" data-cat="{{ c.slug }}">
+      <strong>{{ c.nome }}</strong>
+      <span>{{ c.posts.length }} publicação{{ "ões" if c.posts.length > 1 else "" }}</span>
+      <ul>{% for p in c.posts | limitar(3) %}<li>{{ p.data.title }}</li>{% endfor %}</ul>
+    </a>
+    {% endfor %}
+  </div>
+</div>

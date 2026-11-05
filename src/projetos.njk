@@ -1,0 +1,21 @@
+---
+layout: layouts/pagina.njk
+title: Projetos
+kicker: Portfólio técnico
+descricao: Academias, guias interativos, cheat sheets e laboratórios que eu desenvolvi e publiquei — Oracle, Exadata, Data Guard, GoldenGate, OCI, Kubernetes e mais.
+permalink: /projetos/
+---
+<div class="container">
+  <div class="filtros" role="toolbar" aria-label="Filtrar projetos">
+    <button type="button" class="filtro ativo" data-filtro="todos">Todos <b>{{ projetos.length }}</b></button>
+    {% set vistos = [] %}
+    {% for p in projetos %}{% if not (p.tipo in vistos) %}{% set vistos = (vistos.push(p.tipo), vistos) %}
+    <button type="button" class="filtro" data-filtro="{{ p.tipo | slug }}">{{ p.tipo }}</button>
+    {% endif %}{% endfor %}
+  </div>
+  <div class="grade-projetos" id="gradeProjetos">
+    {% for p in projetos %}
+    <div class="projeto-item" data-tipo="{{ p.tipo | slug }}">{% include "partials/projeto-card.njk" %}</div>
+    {% endfor %}
+  </div>
+</div>

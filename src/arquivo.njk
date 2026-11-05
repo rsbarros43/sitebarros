@@ -1,0 +1,23 @@
+---
+layout: layouts/pagina.njk
+title: Arquivo
+kicker: Todas as publicações
+descricao: Lista completa de posts e artigos, do mais recente ao mais antigo.
+permalink: /arquivo/
+---
+<div class="container container-estreito">
+  {% for grupo in collections.posts | porAno %}
+  <section class="arquivo-ano">
+    <h2>{{ grupo[0] }} <small>{{ grupo[1].length }} publicação{{ "ões" if grupo[1].length > 1 else "" }}</small></h2>
+    <ul>
+      {% for post in grupo[1] %}
+      <li>
+        <time datetime="{{ post.date | dataISO }}">{{ post.date | dataCurta }}</time>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+        <span class="selo selo-{{ post.data.tipo or 'blog' }}">{{ "Artigo" if post.data.tipo == "artigo" else "Blog" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</div>

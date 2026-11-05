@@ -1,0 +1,9 @@
+{
+  "name": "Renato Barros — Blog & Currículo",
+  "short_name": "Renato Barros",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08121f",
+  "theme_color": "#08121f",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

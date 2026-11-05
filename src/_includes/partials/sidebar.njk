@@ -1,0 +1,48 @@
+<aside class="sidebar">
+  <section class="widget widget-autor">
+    <img src="{{ site.autor.foto }}" alt="Foto de Renato Barros" width="88" height="88" loading="lazy">
+    <h3>{{ site.autor.nome }}</h3>
+    <p class="widget-cargo">{{ site.autor.cargo }}</p>
+    <p>{{ site.autor.bio }}</p>
+    {% include "partials/sociais.njk" %}
+    <a class="btn btn-sm btn-contorno" href="/sobre/">Conheça minha trajetória →</a>
+  </section>
+
+  <section class="widget">
+    <h3 class="widget-titulo">Pesquisar</h3>
+    <button class="busca-falsa" type="button" data-abrir-busca>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span>Buscar no blog…</span><kbd>Ctrl K</kbd>
+    </button>
+  </section>
+
+  {% if collections.listaCategorias.length %}
+  <section class="widget">
+    <h3 class="widget-titulo">Categorias</h3>
+    <ul class="lista-categorias">
+      {% for c in collections.listaCategorias %}
+      <li><a href="/categorias/{{ c.slug }}/"><span>{{ c.nome }}</span><b>{{ c.posts.length }}</b></a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if collections.listaTags.length %}
+  <section class="widget">
+    <h3 class="widget-titulo">Tags</h3>
+    <div class="nuvem-tags">
+      {% for t in collections.listaTags | limitar(30) %}<a href="/tags/{{ t.slug }}/">#{{ t.nome }}</a>{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="widget">
+    <h3 class="widget-titulo">Projetos em destaque</h3>
+    <ul class="lista-projetos-mini">
+      {% for p in projetos %}{% if p.destaque %}
+      <li><a href="{{ p.url }}"><small>{{ p.rotulo }}</small><span>{{ p.titulo }}</span></a></li>
+      {% endif %}{% endfor %}
+    </ul>
+    <a class="link-seta" href="/projetos/">Todos os projetos →</a>
+  </section>
+</aside>

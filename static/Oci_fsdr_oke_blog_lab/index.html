@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OCI FSDR + OKE · Blog Lab Interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05080d;--panel:#0b121b;--panel2:#101a27;--line:#203044;--text:#e8f6ff;--muted:#91a5bb;--green:#39ff88;--green2:#15c46b;--cyan:#52d7ff;--yellow:#ffd166;--orange:#ff9f43;--red:#ff5570;--purple:#bf7bff;--blue:#61a5ff;--white:#f8fafc;--ink:#111827;--shadow:0 28px 80px rgba(0,0,0,.55);--mono:'JetBrains Mono',monospace;--ui:'Sora',system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top left,rgba(57,255,136,.12),transparent 34%),radial-gradient(circle at top right,rgba(82,215,255,.10),transparent 30%),var(--bg);color:var(--text);font-family:var(--ui);line-height:1.65}code,pre,kbd,.mono{font-family:var(--mono)}a{color:var(--cyan)}
+.top{position:sticky;top:0;z-index:50;background:rgba(5,8,13,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:10px 18px}.brand{font-family:var(--mono);font-weight:800;color:var(--green);font-size:15px;white-space:nowrap}.brand span{color:var(--cyan)}.nav{display:flex;gap:6px;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:11px;font-family:var(--mono);white-space:nowrap}.nav a:hover{color:var(--green);border-color:var(--green)}
+.hero{padding:58px 18px 44px;text-align:center;border-bottom:1px solid var(--line);position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(57,255,136,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,136,.05) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(#000,transparent)}.hero>*{position:relative}.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(57,255,136,.4);background:rgba(57,255,136,.07);padding:7px 14px;border-radius:999px;color:#b9ffd5;font-family:var(--mono);font-size:12px}.hero h1{font-size:clamp(34px,7vw,78px);line-height:.95;margin:18px 0 14px;font-weight:800;letter-spacing:-2px}.hero h1 em{color:var(--green);font-style:normal;text-shadow:0 0 24px rgba(57,255,136,.35)}.sub{max-width:1000px;margin:0 auto;color:var(--muted);font-size:clamp(15px,2vw,18px)}.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:26px}.stat{background:rgba(11,18,27,.78);border:1px solid var(--line);border-radius:16px;padding:13px 18px;min-width:130px}.stat b{display:block;color:var(--green);font-family:var(--mono);font-size:25px;line-height:1}.stat small{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.8px}.prompt{margin-top:24px;color:var(--muted);font-family:var(--mono);font-size:13px}.prompt b{color:var(--green)}
+.wrap{max-width:1660px;margin:0 auto;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:18px;align-items:start}@media(max-width:1180px){.wrap{grid-template-columns:1fr}.lab-side{position:static!important}}
+.card{background:rgba(11,18,27,.86);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px}.card-h{padding:16px 18px;border-bottom:1px solid var(--line);background:rgba(16,26,39,.9);display:flex;align-items:center;justify-content:space-between;gap:12px}.card-h h2{margin:0;font-size:16px}.pill{font-family:var(--mono);font-size:10px;border:1px solid rgba(82,215,255,.35);background:rgba(82,215,255,.07);color:#baf2ff;border-radius:999px;padding:4px 9px}.content{padding:22px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:800px){.grid2{grid-template-columns:1fr}}.box{border:1px solid var(--line);border-radius:18px;background:rgba(5,8,13,.42);padding:18px}.box h3{margin:0 0 10px;color:var(--green);font-size:15px}.box p,.box li{color:#bfd3e2}.box ul,.box ol{margin:10px 0 0;padding-left:20px}.note{border-left:4px solid var(--yellow);background:rgba(255,209,102,.08);border-radius:14px;padding:14px;color:#ffecb0;margin:14px 0}.oknote{border-left:4px solid var(--green);background:rgba(57,255,136,.08);border-radius:14px;padding:14px;color:#c8ffdc;margin:14px 0}.warn{border-left:4px solid var(--orange);background:rgba(255,159,67,.08);border-radius:14px;padding:14px;color:#ffd8b0;margin:14px 0}
+.arch{padding:22px}.diagram{display:grid;grid-template-columns:1fr 110px 1fr;gap:14px;align-items:center}.region{border:1px solid rgba(57,255,136,.28);border-radius:18px;background:linear-gradient(180deg,rgba(57,255,136,.08),rgba(5,8,13,.45));padding:16px;min-height:360px}.region h3{margin:0 0 12px;color:var(--cyan)}.node{border:1px solid rgba(82,215,255,.28);background:rgba(82,215,255,.06);border-radius:14px;padding:10px 12px;margin:9px 0;font-family:var(--mono);font-size:12px;color:#dff7ff}.node.green{border-color:rgba(57,255,136,.35);background:rgba(57,255,136,.07);color:#b9ffd5}.node.yellow{border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08);color:#ffedbc}.fsdr{border-radius:50%;height:110px;width:110px;border:1px solid rgba(57,255,136,.45);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--green);font-family:var(--mono);font-weight:800;background:rgba(57,255,136,.08);box-shadow:0 0 40px rgba(57,255,136,.10)}.arrow{font-family:var(--mono);color:var(--green);text-align:center;margin:10px 0}@media(max-width:900px){.diagram{grid-template-columns:1fr}.fsdr{margin:auto}}
+.timeline{padding:18px}.step{border:1px solid var(--line);background:rgba(5,8,13,.35);border-radius:18px;padding:18px;margin-bottom:14px}.step h3{margin:0 0 8px;color:var(--green);font-size:17px}.step .meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:10px}.step p,.step li{color:#c2d3df}.step ul,.step ol{padding-left:20px}.cmdrow{display:flex;gap:8px;align-items:stretch;margin:8px 0;flex-wrap:wrap}.cmdline{flex:1;min-width:260px;border:1px solid rgba(57,255,136,.22);background:#06110c;color:#c9ffd9;border-radius:12px;padding:10px 12px;font-family:var(--mono);font-size:12px;overflow:auto}.cmdrow button,.smallbtn{border:1px solid var(--line);background:#09131e;color:var(--cyan);border-radius:10px;padding:8px 10px;cursor:pointer;font-family:var(--mono);font-size:11px}.cmdrow button:hover,.smallbtn:hover{border-color:var(--green);color:var(--green)}.console-step{border:1px solid rgba(191,123,255,.28);background:rgba(191,123,255,.07);border-radius:12px;padding:10px 12px;margin:8px 0;color:#ead8ff}.console-step b{color:#dfc6ff}.check{color:var(--green);font-family:var(--mono);font-size:12px}.tag{font-family:var(--mono);font-size:10px;color:#baf2ff;border:1px solid rgba(82,215,255,.25);padding:3px 7px;border-radius:999px;background:rgba(82,215,255,.07)}
+.lab-side{position:sticky;top:70px;display:grid;gap:14px}.terminal,.browser{background:#02070d;border:1px solid #18304b;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.termbar{height:44px;background:#07101a;border-bottom:1px solid #18304b;display:flex;align-items:center;gap:8px;padding:0 14px}.dot{width:12px;height:12px;border-radius:50%}.r{background:#ff5f56}.y{background:#ffbd2e}.g{background:#27c93f}.termbar strong{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}.termbar .badge2{font-family:var(--mono);font-size:10px;border:1px solid rgba(57,255,136,.35);border-radius:999px;padding:3px 8px;color:#b9ffd5}.screen{height:315px;overflow:auto;padding:14px;font-family:var(--mono);font-size:12px;line-height:1.55}.line{white-space:pre-wrap;word-break:break-word}.in{color:var(--green)}.out{color:#c7d8e3}.hint{color:var(--yellow)}.err{color:var(--red)}.input{display:flex;gap:8px;align-items:center;border-top:1px solid #18304b;padding:11px 12px;background:#050b12}.input label{font-family:var(--mono);font-size:12px;color:var(--green);white-space:nowrap}.input input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-family:var(--mono);font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap;padding:10px 12px;background:#050b12;border-top:1px solid #18304b}.actions button{border:1px solid #18304b;background:#08131f;color:var(--muted);border-radius:10px;padding:8px 10px;cursor:pointer;font-family:var(--mono);font-size:11px}.actions button:hover{color:var(--green);border-color:var(--green)}
+.browserbar{display:flex;gap:10px;align-items:center;padding:12px;background:#07101a;border-bottom:1px solid #18304b}.roundbtn{border:1px solid #18304b;background:#08131f;color:#b8c7d9;border-radius:14px;padding:8px 11px;cursor:pointer;font-family:var(--mono)}.url{flex:1;background:#030a12;border:1px solid #244463;color:#e8f6ff;border-radius:999px;padding:11px 16px;font-family:var(--mono);outline:none}.url:focus{border-color:var(--green)}.browserbody{height:420px;overflow:auto;background:#f8fafc;color:#111827;font-family:var(--ui)}.blank{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#64748b;background:linear-gradient(135deg,#f8fafc,#e2e8f0)}.blank code{color:#0f766e}.ghostnav{display:flex;gap:22px;align-items:center;padding:20px 22px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#4b5563}.ghostnav .logo{font-size:30px;color:#111827;margin:auto;font-weight:800}.ghosthero{margin:28px;border-radius:26px;background:linear-gradient(135deg,#211485,#ff2f92);color:white;padding:70px 28px;text-align:center}.ghosthero h1{font-size:42px;line-height:1.15}.subscribe{margin:28px auto 0;max-width:620px;border-radius:999px;background:white;padding:14px;display:flex;align-items:center;justify-content:space-between;color:#9ca3af;font-size:20px}.subscribe button{border:0;background:#ff2f92;color:#fff;border-radius:999px;padding:14px 28px;font-weight:800}.httpok{background:#e8fff2;border-top:1px solid #86efac;padding:18px 24px;color:#065f46;font-family:var(--mono)}.admin{padding:40px;background:#f9fafb;min-height:100%;text-align:center}.admin h1{font-size:38px}.form{max-width:470px;margin:20px auto;display:grid;gap:12px;text-align:left}.form label{font-size:12px;font-weight:700;color:#4b5563}.form input{padding:13px;border:1px solid #d1d5db;border-radius:8px}.form button{background:#111827;color:white;border:0;border-radius:8px;padding:14px;font-weight:800}.post{padding:40px;background:white;min-height:100%}.post-card{max-width:700px;margin:auto}.post-card h1{font-size:36px}.post-image{height:190px;background:#082631;color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:24px}.badpage{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff7ed;color:#9a3412;padding:32px}.lbstatus{font-family:var(--mono);font-size:12px;color:#065f46;margin-top:8px}
+.searchbar{display:flex;gap:10px;padding:12px;background:rgba(5,8,13,.35);border-top:1px solid var(--line);border-bottom:1px solid var(--line);flex-wrap:wrap}.searchbar input{flex:1;min-width:240px;background:#07101a;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:11px 12px;outline:none}.progress{height:10px;background:#09131e;border-radius:999px;overflow:hidden;border:1px solid var(--line)}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:.25s}.foot{padding:18px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:12px;border-top:1px solid var(--line)}.mini-pre{background:#03080f;border:1px solid #1d3551;border-left:4px solid var(--green);padding:14px;border-radius:12px;color:#d7ffe5;overflow:auto;font-size:11.5px;line-height:1.55}.runmini{border:1px solid var(--line);background:#09131e;color:var(--cyan);border-radius:10px;padding:8px 10px;cursor:pointer;font-family:var(--mono);font-size:11px}.runmini:hover{border-color:var(--green);color:#b9ffd5}
+@media(max-width:600px){.top{padding:8px}.brand{font-size:12px}.wrap{padding:10px}.screen{height:260px}.browserbody{height:350px}.hero{padding-top:34px}.stat{min-width:105px}.cmdline{min-width:100%}.ghosthero h1{font-size:28px}.subscribe{font-size:14px;display:block}.subscribe button{margin-top:12px;width:100%}}
+
+/* v5 Enterprise fixes: comandos sem corte + certificado */
+#comandos-pdf .grid2{grid-template-columns:1fr!important;}
+#comandos-pdf .box{width:100%;overflow:visible;}
+#comandos-pdf .mini-pre{white-space:pre-wrap!important;word-break:break-word!important;overflow-x:auto;max-width:100%;font-size:12px;}
+.wrap{grid-template-columns:minmax(0,1fr) 420px;}
+@media(max-width:1280px){.wrap{grid-template-columns:1fr}.lab-side{position:static!important}}
+.cert-panel{background:linear-gradient(135deg,#f8fafc,#e6eef8);color:#0f172a;border:10px solid #c9a227;border-radius:22px;padding:34px;text-align:center;box-shadow:0 28px 70px rgba(0,0,0,.45)}
+.cert-panel h2{font-size:36px;margin:10px 0;color:#0f172a}.cert-panel h3{font-size:24px;color:#0f766e;margin:14px 0}.cert-panel p{color:#334155}.cert-name{width:min(520px,100%);padding:14px 16px;border:1px solid #94a3b8;border-radius:12px;background:#fff;color:#0f172a;font-family:var(--ui);font-size:15px;text-align:center;margin:12px auto;display:block}.cert-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}.cert-btn{border:0;background:#0f172a;color:#fff;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer}.cert-btn.alt{background:#0f766e}.seal{width:96px;height:96px;border-radius:50%;border:4px solid #c9a227;background:linear-gradient(135deg,#fef3c7,#fde68a);display:flex;align-items:center;justify-content:center;margin:12px auto;font-weight:900;color:#0f172a}.quiz-options{display:grid;gap:8px;margin-top:10px}.quiz-options button{border:1px solid var(--line);background:#08131f;color:#cfe2ee;border-radius:10px;padding:10px;text-align:left;cursor:pointer}.quiz-options button.ok{border-color:var(--green);color:#b9ffd5}.quiz-options button.no{border-color:var(--red);color:#ffd0d7}
+
+
+/* v6: terminal/browser voltam para a lateral flutuante desde a área do runbook */
+.wrap{display:grid!important;grid-template-columns:minmax(0,1fr) 420px!important;align-items:start!important;}
+.lab-side{position:sticky!important;top:64px!important;align-self:start!important;z-index:20!important;display:grid!important;gap:14px!important;max-height:calc(100vh - 76px);overflow-y:auto;padding-right:2px;}
+.lab-side::-webkit-scrollbar{width:6px}.lab-side::-webkit-scrollbar-thumb{background:#18304b;border-radius:999px}
+.terminal,.browser{width:100%;}
+@media(max-width:1280px){.wrap{grid-template-columns:1fr!important}.lab-side{position:static!important;max-height:none!important;overflow:visible!important;}}
+
+/* v8: gate de identificação para liberar quiz */
+.quiz-gate{border:1px solid rgba(82,215,255,.28);background:linear-gradient(180deg,rgba(82,215,255,.08),rgba(5,8,13,.40));border-radius:18px;padding:18px;margin-bottom:16px}
+.quiz-gate h3{margin:0 0 8px;color:var(--green);font-size:16px}.quiz-gate p{margin:6px 0 14px;color:#bfd3e2}.quiz-gate-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.quiz-name-input{flex:1;min-width:260px;background:#07101a;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none;font-family:var(--ui)}.quiz-name-input:focus{border-color:var(--green)}.quiz-release-btn{border:1px solid rgba(57,255,136,.45);background:rgba(57,255,136,.12);color:#b9ffd5;border-radius:12px;padding:12px 16px;cursor:pointer;font-weight:800}.quiz-release-btn:hover{background:rgba(57,255,136,.20)}.quiz-status{font-family:var(--mono);font-size:12px;margin-top:12px;color:var(--yellow)}.quiz-status.ok{color:var(--green)}.locked-box{border:1px dashed rgba(145,165,187,.35);background:rgba(5,8,13,.35);border-radius:14px;padding:14px;color:#91a5bb;margin:10px 0;font-family:var(--mono);font-size:12px}.quiz-locked .quiz-options button{opacity:.45;cursor:not-allowed;filter:grayscale(.35)}
+
+
+
+/* v9 Enterprise Plus: dashboard, timeline, troubleshooting, interview, console simulator */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.dash-card{border:1px solid var(--line);background:rgba(5,8,13,.42);border-radius:18px;padding:16px}.dash-card h3{margin:0 0 12px;color:var(--cyan);font-size:14px}.status-row{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(32,48,68,.55);padding:8px 0;color:#c2d3df;font-size:13px}.status-row:last-child{border-bottom:0}.led{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;color:#ffd166;background:rgba(255,209,102,.08)}.led.ok{color:#b9ffd5;border-color:rgba(57,255,136,.35);background:rgba(57,255,136,.08)}.led.off{color:#ffccd5;border-color:rgba(255,85,112,.35);background:rgba(255,85,112,.08)}.led.info{color:#baf2ff;border-color:rgba(82,215,255,.35);background:rgba(82,215,255,.08)}
+.switch-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.flow-card{border:1px solid var(--line);background:rgba(5,8,13,.45);border-radius:16px;padding:14px;position:relative}.flow-card b{display:block;color:var(--green);font-family:var(--mono);font-size:12px;margin-bottom:6px}.flow-card p{margin:0;color:#b8c7d9;font-size:12px}.flow-card.done{border-color:rgba(57,255,136,.45);box-shadow:0 0 0 1px rgba(57,255,136,.15) inset}.flow-card.pending{opacity:.72}.flow-card .num{position:absolute;top:10px;right:10px;color:#60758b;font-family:var(--mono);font-size:11px}
+.console-tree{display:grid;grid-template-columns:280px 1fr;gap:14px}.console-menu{border:1px solid var(--line);background:rgba(5,8,13,.45);border-radius:18px;padding:12px}.console-item{display:block;width:100%;text-align:left;border:1px solid transparent;background:transparent;color:#c9d8e6;padding:10px 12px;border-radius:12px;cursor:pointer;font-family:var(--mono);font-size:12px}.console-item:hover,.console-item.active{border-color:rgba(82,215,255,.35);background:rgba(82,215,255,.08);color:#baf2ff}.console-view{border:1px solid var(--line);background:rgba(5,8,13,.42);border-radius:18px;padding:18px;min-height:260px}.console-view h3{margin-top:0;color:var(--green)}.console-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}.console-table td,.console-table th{border-bottom:1px solid rgba(32,48,68,.65);padding:9px;text-align:left}.console-table th{color:#baf2ff}.trouble-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.trouble-card{border:1px solid var(--line);background:rgba(5,8,13,.42);border-radius:18px;padding:16px}.trouble-card h3{margin:0 0 8px;color:var(--orange);font-size:15px}.trouble-card p{color:#c2d3df;font-size:13px}.trouble-card pre{white-space:pre-wrap;word-break:break-word;background:#03080f;border:1px solid #1d3551;border-left:4px solid var(--orange);padding:12px;border-radius:12px;color:#ffe0bd;font-size:11.5px;overflow:auto}.interview-list details{border:1px solid var(--line);background:rgba(5,8,13,.42);border-radius:14px;margin:10px 0;padding:12px}.interview-list summary{cursor:pointer;color:#baf2ff;font-weight:700}.interview-list p{color:#c2d3df}.cert-panel.enterprise-cert{background:linear-gradient(135deg,#f8fafc 0%,#e6eef8 45%,#fff7db 100%);border:12px double #b88a1d}.cert-panel.enterprise-cert h2{letter-spacing:-.5px}.cert-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}.cert-meta span{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:10px;color:#334155;font-size:12px}.cert-sign{display:flex;justify-content:space-between;gap:20px;margin-top:24px;color:#334155}.cert-sign div{border-top:1px solid #64748b;padding-top:8px;flex:1;font-size:12px}
+@media(max-width:900px){.console-tree{grid-template-columns:1fr}.cert-sign{display:block}.cert-sign div{margin-top:18px}}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">OCI<span>·FSDR·OKE</span></div><nav class="nav"><a href="#objetivo">Objetivo</a><a href="#arquitetura">Arquitetura</a><a href="#dashboard">Dashboard</a><a href="#switchover-timeline">Switchover</a><a href="#oci-console">OCI Console</a><a href="#runbook">Runbook</a><a href="#browser-test">Browser Test</a><a href="#validacao">Validação</a><a href="#comandos-pdf">Comandos</a><a href="#troubleshooting">Troubleshooting</a><a href="#interview">Interview</a><a href="#conclusao">Conclusão</a><a href="#certificado">Certificado</a></nav></header>
+<section class="hero"><div class="badge">☁️ Blog Lab Interativo · OCI Full Stack Disaster Recovery + OKE</div><h1>OCI FSDR com <em>OKE</em></h1><p class="sub">Página HTML em formato de blog técnico/laboratório, com arquitetura desenhada, descrição completa do fluxo, runbook passo a passo, terminal simulado de configuração e browser de teste para validar o Ghost Blog antes e depois do Switchover.</p><div class="stats"><div class="stat"><b>16</b><small>etapas</small></div><div class="stat"><b>2</b><small>regiões</small></div><div class="stat"><b>OKE</b><small>Kubernetes</small></div><div class="stat"><b>FSDR</b><small>switchover</small></div></div><div class="prompt">renato@oci-lab:~/fsdr-oke$ <b>runbook --configure --validate --switchover</b></div></section>
+<main class="wrap">
+<section>
+  <section class="card" id="objetivo"><div class="card-h"><h2>🎯 Objetivo do laboratório</h2><span class="pill">blog lab</span></div><div class="content grid2"><div class="box"><h3>O que será construído?</h3><p>Um cenário de Disaster Recovery para uma aplicação em Kubernetes na OCI. A aplicação Ghost Blog roda no cluster OKE primário, usa Persistent Volume baseado em Block Volume para persistência, é publicada por Ingress NGINX com Load Balancer e depois é validada no cluster standby após o Switchover.</p></div><div class="box"><h3>Componentes principais</h3><ul><li>OCI Full Stack Disaster Recovery.</li><li>OKE primário e OKE standby.</li><li>Object Storage buckets para logs do FSDR.</li><li>Volume Group com replicação cross-region.</li><li>Ghost Blog com PVC e Ingress NGINX.</li><li>Plano de Switchover planejado.</li></ul></div></div></section>
+
+  <section class="card" id="arquitetura"><div class="card-h"><h2>🧭 Arquitetura desenhada</h2><span class="pill">primary ↔ standby</span></div><div class="arch"><div class="diagram"><div class="region"><h3>Região Primária · SA-SAO PAULO-1</h3><div class="node green">VCN · subnet-api · subnet-node · subnet-lb</div><div class="node">OKE: primary-cluster</div><div class="node yellow">Ghost Blog + SQLite + PVC</div><div class="node yellow">Block Volume → Volume Group</div><div class="node">Ingress NGINX + OCI Load Balancer</div><div class="node green">Object Storage: primary-bucket</div><div class="node">DRPG: primary-oke</div><div class="arrow">Tráfego inicial → ghost.example.com</div></div><div class="fsdr">FSDR<br>Engine<br>⇄</div><div class="region"><h3>Região Standby · SA-VINHEDO-1</h3><div class="node green">VCN · subnet-api · subnet-node · subnet-lb</div><div class="node">OKE: standby-cluster</div><div class="node yellow">Ghost Blog restaurado</div><div class="node yellow">Volume Group replicado</div><div class="node">Novo Load Balancer externo</div><div class="node green">Object Storage: standby-bucket</div><div class="node">DRPG: standby-oke</div><div class="arrow">Após switchover → novo EXTERNAL-IP</div></div></div><div class="note">A ideia central é que o FSDR orquestre a movimentação ordenada dos componentes da aplicação: cluster OKE, Volume Group, dados persistentes, planos de DR e validação do serviço publicado.</div></div></section>
+
+  <section class="card" id="dashboard"><div class="card-h"><h2>📊 Dashboard de Ambiente</h2><span class="pill">status dinâmico</span></div><div class="content"><div class="dash-grid">
+    <div class="dash-card"><h3>PRIMARY REGION</h3><div class="status-row"><span>OKE Cluster</span><span class="led" id="stPrimaryOke">PENDING</span></div><div class="status-row"><span>Load Balancer</span><span class="led" id="stPrimaryLb">PENDING</span></div><div class="status-row"><span>Ghost Blog</span><span class="led" id="stPrimaryGhost">PENDING</span></div><div class="status-row"><span>PVC / Block Volume</span><span class="led" id="stPrimaryPvc">PENDING</span></div></div>
+    <div class="dash-card"><h3>STANDBY REGION</h3><div class="status-row"><span>OKE Cluster</span><span class="led" id="stStandbyOke">PENDING</span></div><div class="status-row"><span>Volume Group</span><span class="led" id="stStandbyVg">PENDING</span></div><div class="status-row"><span>Ghost Blog</span><span class="led" id="stStandbyGhost">WAITING</span></div><div class="status-row"><span>Load Balancer</span><span class="led" id="stStandbyLb">WAITING</span></div></div>
+    <div class="dash-card"><h3>DR STATUS</h3><div class="status-row"><span>Replication</span><span class="led" id="stReplication">PENDING</span></div><div class="status-row"><span>DRPG Primary</span><span class="led" id="stDrpgPrimary">PENDING</span></div><div class="status-row"><span>DRPG Standby</span><span class="led" id="stDrpgStandby">PENDING</span></div><div class="status-row"><span>Active Region</span><span class="led info" id="stActiveRegion">PRIMARY</span></div></div>
+  </div><div class="oknote">Este painel muda conforme os comandos são executados no terminal. Após <code>execute switchover-plan</code>, a região standby passa a ficar ativa.</div></div></section>
+
+  <section class="card" id="switchover-timeline"><div class="card-h"><h2>🔄 Timeline Visual do Switchover</h2><span class="pill">orquestração FSDR</span></div><div class="content"><div class="switch-flow">
+    <div class="flow-card pending" id="sw1"><span class="num">01</span><b>Stop Primary</b><p>Encerrar aplicação de forma ordenada na região primária.</p></div>
+    <div class="flow-card pending" id="sw2"><span class="num">02</span><b>Sync Volume Group</b><p>Garantir consistência dos dados persistidos.</p></div>
+    <div class="flow-card pending" id="sw3"><span class="num">03</span><b>Promote Standby</b><p>Promover recursos replicados para região standby.</p></div>
+    <div class="flow-card pending" id="sw4"><span class="num">04</span><b>Start Ghost</b><p>Inicializar Ghost Blog no cluster standby.</p></div>
+    <div class="flow-card pending" id="sw5"><span class="num">05</span><b>Update LB</b><p>Validar novo EXTERNAL-IP do Load Balancer.</p></div>
+    <div class="flow-card pending" id="sw6"><span class="num">06</span><b>Validation</b><p>Testar site, admin e post pelo browser.</p></div>
+  </div></div></section>
+
+  <section class="card" id="oci-console"><div class="card-h"><h2>🖥️ OCI Console Simulator</h2><span class="pill">navegação guiada</span></div><div class="content"><div class="console-tree"><div class="console-menu">
+    <button class="console-item active" onclick="showConsolePanel('identity',this)">Identity / IAM</button>
+    <button class="console-item" onclick="showConsolePanel('oke',this)">OKE Clusters</button>
+    <button class="console-item" onclick="showConsolePanel('storage',this)">Storage</button>
+    <button class="console-item" onclick="showConsolePanel('fsdr',this)">Disaster Recovery</button>
+    <button class="console-item" onclick="showConsolePanel('network',this)">Networking</button>
+  </div><div class="console-view" id="consoleView"></div></div></div></section>
+
+
+  <section class="card"><div class="card-h"><h2>📌 Pré-requisitos e permissões</h2><span class="pill">antes de começar</span></div><div class="content grid2"><div class="box"><h3>Acesso OCI</h3><ul><li>Permissão para gerenciar IAM Policies no tenancy.</li><li>Permissão para gerenciar VCN, OKE, FSDR e Storage no compartment.</li><li>Cloud Shell habilitado.</li><li>Duas regiões OCI para simular primário e standby.</li></ul></div><div class="box"><h3>Convenções usadas no lab</h3><ul><li><code>primary-cluster</code> e <code>standby-cluster</code>.</li><li><code>primary-bucket</code> e <code>standby-bucket</code>.</li><li><code>ghost-ns</code> como namespace da aplicação.</li><li><code>ghost.example.com</code> como hostname do teste.</li></ul></div></div></section>
+
+  <section class="card" id="runbook"><div class="card-h"><h2>🧪 Runbook completo de configuração</h2><span class="pill">passo a passo</span></div><div class="searchbar"><input id="search" placeholder="Pesquisar etapa, comando ou recurso: kubectl, bucket, DRPG, switchover..." /></div><div class="timeline" id="steps"></div><div class="foot"><div class="progress"><span id="bar"></span></div><br><span id="progText">0/0 etapas executadas</span></div></section>
+
+
+
+  <section class="card" id="comandos-pdf"><div class="card-h"><h2>🧾 Comandos e blocos de configuração do laboratório</h2><span class="pill">organizado do PDF</span></div><div class="content">
+    <p class="lead">Esta seção reúne os comandos e blocos usados no fluxo do laboratório: acesso ao OKE, instalação do Ingress NGINX, ajuste do Load Balancer flexible, deploy do Ghost Blog, validações Kubernetes, hosts local, Volume Group, DRPG e validações pós-Switchover.</p>
+    <div class="grid2">
+      <div class="box"><h3>Cloud Shell / kubeconfig</h3><pre class="mini-pre">oci -v
+mkdir -p $HOME/.kube
+oci ce cluster create-kubeconfig \
+  --cluster-id &lt;cluster_ocid&gt; \
+  --file $HOME/.kube/config \
+  --region &lt;region&gt; \
+  --token-version 2.0.0 \
+  --kube-endpoint PRIVATE_ENDPOINT
+export KUBECONFIG=$HOME/.kube/config
+kubectl get nodes</pre><button class="runmini" onclick="runBlock('cloudshell')">rodar validação completa</button></div>
+      <div class="box"><h3>Ingress NGINX</h3><pre class="mini-pre">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.3/deploy/static/provider/cloud/deploy.yaml
+kubectl get svc -n ingress-nginx</pre><button class="runmini" onclick="runBlock('ingress')">rodar validação completa</button></div>
+      <div class="box"><h3>Load Balancer flexible</h3><pre class="mini-pre">annotations:
+  service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+  service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+  service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "1000"</pre><button class="runmini" onclick="runBlock('lbflex')">ver no terminal</button></div>
+      <div class="box"><h3>Arquivo hosts</h3><pre class="mini-pre"># Linux/macOS
+/etc/hosts
+
+# Windows
+C:\Windows\System32\drivers\etc\hosts
+
+&lt;EXTERNAL-IP&gt; ghost.example.com
+163.176.210.135 ghost.example.com</pre><button class="runmini" onclick="runBlock('hosts')">simular ajuste completo</button></div>
+      <div class="box"><h3>Ghost Blog</h3><pre class="mini-pre">kubectl apply -f https://raw.githubusercontent.com/euoraf4/blog-ghost/refs/heads/main/deploy.yaml
+kubectl get all,pvc -n ghost-ns
+open http://ghost.example.com
+open http://ghost.example.com/ghost/</pre><button class="runmini" onclick="runBlock('ghost')">rodar validação completa</button></div>
+      <div class="box"><h3>Storage / PVC / Volume Group</h3><pre class="mini-pre">kubectl get pvc -n ghost-ns
+# Console OCI:
+Storage &gt; Volume Groups &gt; Create Volume Group
+Nome: volume-group-pv
+Cross region replication: Enable</pre><button class="runmini" onclick="runBlock('storage')">rodar PVC + Volume Group</button></div>
+      <div class="box"><h3>FSDR / DRPG</h3><pre class="mini-pre">DRPG Primário: primary-oke
+Bucket: primary-bucket
+Members: volume-group-pv + primary-cluster
+
+DRPG Standby: standby-oke
+Bucket: standby-bucket
+Role: Standby
+Peer DRPG: primary-oke</pre><button class="runmini" onclick="runBlock('drpg')">ver etapa completa</button></div>
+      <div class="box"><h3>Pós-Switchover</h3><pre class="mini-pre">kubectl get all,pvc -n ghost-ns --context standby-cluster
+kubectl get all -n ingress-nginx
+&lt;NOVO-EXTERNAL-IP&gt; ghost.example.com
+open http://ghost.example.com</pre><button class="runmini" onclick="runBlock('postswitchover')">validar standby completo</button></div>
+    </div>
+  </div></section>
+
+  <section class="card" id="validacao"><div class="card-h"><h2>✅ Validação final esperada</h2><span class="pill">resultado do lab</span></div><div class="content"><div class="grid2"><div class="box"><h3>Antes do Switchover</h3><ul><li><code>ghost.example.com</code> aponta para o Load Balancer da região primária.</li><li><code>kubectl get all,pvc -n ghost-ns</code> mostra pod, service, deployment e PVC.</li><li>O Ghost Blog e o painel administrativo estão acessíveis.</li></ul></div><div class="box"><h3>Depois do Switchover</h3><ul><li>O FSDR ativa os recursos na região standby.</li><li>O Volume Group passa a operar na nova região ativa.</li><li>O Ghost Blog volta a responder por um novo EXTERNAL-IP.</li><li>O navegador de teste valida <code>/</code> e <code>/ghost/</code>.</li></ul></div></div><div class="warn">Observação importante: no PDF, a etapa <b>Terminate do Volume Group</b> pode não ser executada por segurança. Essa remoção definitiva deve ser habilitada apenas quando o processo de DR estiver maduro e validado.</div></div></section>
+
+
+  <section class="card" id="troubleshooting"><div class="card-h"><h2>🛠️ Troubleshooting</h2><span class="pill">falhas comuns</span></div><div class="content"><div class="trouble-grid">
+    <div class="trouble-card"><h3>PVC não fica Bound</h3><p>Verifique se o StorageClass da OCI está disponível e se o volume foi criado corretamente.</p><pre>kubectl get pvc -n ghost-ns
+kubectl describe pvc ghost-pv-claim -n ghost-ns
+kubectl get storageclass</pre><button class="runmini" onclick="runCmd('kubectl get pvc -n ghost-ns')">testar</button></div>
+    <div class="trouble-card"><h3>Pod em CrashLoopBackOff</h3><p>Analise logs, eventos e variáveis do deployment do Ghost.</p><pre>kubectl get pods -n ghost-ns
+kubectl logs deployment/ghost -n ghost-ns
+kubectl get events -n ghost-ns</pre><button class="runmini" onclick="runCmd('kubectl logs deployment/ghost -n ghost-ns')">testar</button></div>
+    <div class="trouble-card"><h3>Load Balancer sem EXTERNAL-IP</h3><p>Confirme o serviço do Ingress NGINX e as subnets públicas configuradas para o Load Balancer.</p><pre>kubectl get svc -n ingress-nginx
+kubectl describe svc ingress-nginx-controller -n ingress-nginx</pre><button class="runmini" onclick="runCmd('kubectl get svc -n ingress-nginx')">testar</button></div>
+    <div class="trouble-card"><h3>Cluster inacessível</h3><p>Recrie o kubeconfig, valide KUBECONFIG e confirme conectividade privada do Cloud Shell.</p><pre>oci ce cluster create-kubeconfig --cluster-id &lt;cluster_ocid&gt; --file $HOME/.kube/config --region &lt;region&gt; --token-version 2.0.0 --kube-endpoint PRIVATE_ENDPOINT
+export KUBECONFIG=$HOME/.kube/config
+kubectl get nodes</pre><button class="runmini" onclick="runBlock('cloudshell')">testar bloco</button></div>
+    <div class="trouble-card"><h3>Ghost não abre no browser</h3><p>Valide hosts local, Ingress, Service e se o browser está usando o hostname correto.</p><pre>configure hosts ghost.example.com
+open http://ghost.example.com
+curl http://ghost.example.com</pre><button class="runmini" onclick="runCmd('open http://ghost.example.com')">abrir</button></div>
+    <div class="trouble-card"><h3>Switchover incompleto</h3><p>Revise o plano, DRPGs, replicação do Volume Group e status das etapas do FSDR.</p><pre>show fsdr plan
+show drpg status
+show replication status
+execute switchover-plan</pre><button class="runmini" onclick="runCmd('show fsdr plan')">ver plano</button></div>
+  </div></div></section>
+
+  <section class="card" id="interview"><div class="card-h"><h2>🎙️ Interview Mode</h2><span class="pill">perguntas técnicas</span></div><div class="content interview-list">
+    <details><summary>O que é um DR Protection Group?</summary><p>É o agrupamento lógico do FSDR que representa os recursos protegidos de uma região, como OKE Cluster, Volume Group e configurações associadas ao plano de DR.</p></details>
+    <details><summary>Qual a diferença entre Switchover e Failover?</summary><p>Switchover é uma troca planejada e ordenada entre primário e standby. Failover é usado em desastre real, quando a região primária pode estar indisponível.</p></details>
+    <details><summary>Por que usar Volume Group neste laboratório?</summary><p>Porque o Ghost usa PVC baseado em Block Volume. O Volume Group permite tratar o volume persistente como recurso replicável e gerenciável pelo FSDR.</p></details>
+    <details><summary>Por que existem dois buckets?</summary><p>Cada DR Protection Group usa um bucket dedicado para logs operacionais na sua região, mantendo separação entre primário e standby.</p></details>
+    <details><summary>Qual função do Ingress NGINX?</summary><p>Ele atua como controlador de entrada e publica o Ghost Blog por meio de um OCI Load Balancer externo.</p></details>
+    <details><summary>Por que configurar ghost.example.com no arquivo hosts?</summary><p>O hostname facilita o teste da aplicação antes e depois do Switchover, permitindo trocar apenas o EXTERNAL-IP do Load Balancer.</p></details>
+    <details><summary>O que validar antes de executar o Switchover?</summary><p>Cluster primário acessível, Ghost respondendo, PVC Bound, Ingress com EXTERNAL-IP, DRPGs configurados e Volume Group replicando.</p></details>
+    <details><summary>O que validar depois do Switchover?</summary><p>Ghost ativo na região standby, novo Load Balancer respondendo, post de teste preservado e status do plano concluído com sucesso.</p></details>
+  </div></section>
+
+  <section class="card" id="conclusao"><div class="card-h"><h2>🏁 Conclusão</h2><span class="pill">fechamento do hands-on</span></div><div class="content">
+    <div class="box"><p>Com este hands-on, demonstramos como configurar e executar um plano de Switchover utilizando o OCI Full Stack Disaster Recovery (FSDR) integrado ao Oracle Kubernetes Engine (OKE).</p>
+    <p>Durante o processo, provisionamos os clusters primário e standby, configuramos buckets e volume groups, implantamos o aplicativo de demonstração Ghost Blog e validamos seu funcionamento antes e depois do switchover. Após a execução do plano, confirmamos que o tráfego passou a ser roteado para a região standby, incluindo o post de teste, o que comprova a replicação bem-sucedida dos dados e a continuidade da aplicação.</p>
+    <p>Essa abordagem mostra, na prática, como o FSDR possibilita uma recuperação de desastres orquestrada, confiável e alinhada às necessidades de alta disponibilidade e resiliência em ambientes críticos.</p></div>
+  </div></section>
+
+
+  <section class="card" id="quiz-final"><div class="card-h"><h2>🧠 Quiz final do laboratório</h2><span class="pill" id="quizScore">0/5</span></div><div class="content"><div class="quiz-gate" id="quizGate"><h3>Identificação do aluno</h3><p>Informe nome e sobrenome para liberar as perguntas do quiz e usar o mesmo nome no certificado.</p><div class="quiz-gate-row"><input class="quiz-name-input" id="quizStudentName" placeholder="Digite nome e sobrenome"><button class="quiz-release-btn" onclick="releaseQuiz()">OK · liberar quiz</button></div><div class="quiz-status" id="quizStatus">🔒 Quiz bloqueado. Exemplo válido: Renato Barros.</div></div><div id="quizBox"></div></div></section>
+
+  <section class="card" id="certificado"><div class="card-h"><h2>🏆 Certificado de conclusão</h2><span class="pill">OCI FSDR + OKE</span></div><div class="content"><div class="cert-panel enterprise-cert" id="certPanel"><div class="seal">OCI<br>DR</div><h2>OCI Cloud Experts Academy</h2><p>Certificado corporativo de conclusão</p><h3>OCI Full Stack Disaster Recovery with Oracle Kubernetes Engine</h3><input class="cert-name" id="studentName" placeholder="Digite o nome completo do aluno"><p>Issued to</p><h3 id="certNamePreview">Nome do aluno</h3><p>Concluiu o treinamento interativo contemplando OKE, Ingress NGINX, Persistent Volume, Volume Group, DR Protection Groups, Switchover, validação do Ghost Blog, troubleshooting e entrevista técnica.</p><div class="cert-meta"><span><b>Date</b><br><span id="certDate">-</span></span><span><b>Score</b><br><span id="certScore">Quiz pendente</span></span><span><b>Hours</b><br>8 horas</span><span><b>Level</b><br>Enterprise Lab</span></div><div class="cert-sign"><div>OCI FSDR + OKE Training Center</div><div>Instructor / Technical Review</div></div><div class="cert-actions"><button class="cert-btn alt" onclick="generateCertificate()">Gerar certificado</button><button class="cert-btn" onclick="window.print()">Imprimir / salvar PDF</button></div></div></div></section>
+
+</section>
+
+<aside class="lab-side">
+  <section class="terminal" id="terminal"><div class="termbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><strong>oci-fsdr-oke-terminal</strong><span class="badge2">TERMINAL</span></div><div class="screen" id="screen"></div><div class="input"><label>renato@oci-lab:$</label><input id="cmdInput" autocomplete="off" spellcheck="false" placeholder="Digite help, list, kubectl get nodes..."/></div><div class="actions"><button onclick="runCmd('help')">help</button><button onclick="runCmd('list')">list</button><button onclick="runCmd('kubectl get nodes')">nodes</button><button onclick="runCmd('kubectl get all,pvc -n ghost-ns')">ghost</button><button onclick="runCmd('kubectl get svc -n ingress-nginx')">ingress</button><button onclick="runCmd('execute switchover-plan')">switchover</button><button onclick="runCmd('clear')">clear</button></div></section>
+  <section class="browser" id="browser-test"><div class="termbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><strong>ghost-browser-test</strong><span class="badge2">BROWSER</span></div><div class="browserbar"><button class="roundbtn" onclick="browserBack()">←</button><button class="roundbtn" onclick="browserRefresh()">↻</button><input class="url" id="browserUrl" value="" placeholder="Digite a URL para testar..." onkeydown="if(event.key==='Enter')goBrowser()"><button class="roundbtn" onclick="goBrowser()">go</button></div><div class="browserbody" id="browserBody"></div><div class="actions"><button onclick="openBrowser('http://ghost.example.com')">site</button><button onclick="openBrowser('http://ghost.example.com/ghost/')">admin</button><button onclick="openBrowser('http://ghost.example.com/ghost/#/editor/post/test')">post teste</button><button onclick="browserBlank()">limpar</button></div></section>
+</aside>
+</main>
+<script>
+const steps=[
+{cat:'IAM',title:'Criar Dynamic Group para FSDR',desc:'Permite que os recursos relacionados ao OKE/FSDR sejam reconhecidos pelas policies. Use o OCID do compartment onde os recursos do OKE estarão provisionados.',console:['Identity & Security > Domains/Identity > Dynamic Groups','Nome: DG-FSDR','Rule: All {instance.compartment.id = "<compartment_ocid>"}','Rule: All {resource.type = "computecontainerinstance"}'],cmd:'create dynamic-group DG-FSDR'},
+{cat:'IAM',title:'Criar Policy FSDR',desc:'Autoriza o Dynamic Group a gerenciar Object Storage e recursos de cluster OKE dentro do compartment.',console:['Identity & Security > Policies > Create Policy','Nome: Policy-FSDR','Allow dynamic-group DG-FSDR to manage object-family in compartment <compartment_name>','Allow dynamic-group DG-FSDR to manage cluster-family in compartment <compartment_name>'],cmd:'create policy Policy-FSDR'},
+{cat:'OKE',title:'Provisionar OKE primário e standby',desc:'Criar dois clusters OKE equivalentes, um em cada região. Cada região possui VCN com subnet-node, subnet-api e subnet-lb, sendo a subnet-lb pública para Load Balancer.',console:['Developer Services > Kubernetes Clusters (OKE) > Create Cluster','Nome: primary-cluster / standby-cluster','Kubernetes version: v1.33.1','Network Type: Flannel overlay','Load Balancer: selecionar subnet pública','Node Pool: VM.Standard.E3.Flex, 2 OCPU, 8 GB, 3 nodes'],cmd:'provision oke primary standby'},
+{cat:'Bucket',title:'Criar buckets de logs do FSDR',desc:'O FSDR usa buckets para armazenar logs de execução dos planos de DR. Crie um bucket dedicado em cada região.',console:['Object Storage > Buckets > Create Bucket','Nome: primary-bucket / standby-bucket','Storage tier: Standard','Não configurar replicação no bucket','Não configurar retention policy','Reservar exclusivamente para logs do DRPG'],cmd:'create buckets primary-bucket standby-bucket'},
+{cat:'Cloud Shell',title:'Acessar cluster primário',desc:'Abrir Cloud Shell com ephemeral private network, selecionar a VCN e a subnet associadas ao OKE, depois usar Actions > Access Cluster para gerar o kubeconfig.',console:['Cloud Shell > Network > Ephemeral private network setup','Selecionar primary-vcn e subnet-api','OKE > primary-cluster > Actions > Access Cluster','Executar comandos recomendados pelo assistente'],cmd:'kubectl get nodes'},
+{cat:'Ingress',title:'Instalar Ingress NGINX',desc:'Implantar o controlador Ingress NGINX para expor a aplicação Ghost Blog usando OCI Load Balancer.',cmd:'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.3/deploy/static/provider/cloud/deploy.yaml'},
+{cat:'Ingress',title:'Validar Ingress NGINX',desc:'Verificar se o controller e o serviço do Ingress estão em execução e identificar o EXTERNAL-IP do Load Balancer.',cmd:'kubectl get svc -n ingress-nginx'},
+{cat:'Hosts',title:'Configurar hostname ghost.example.com',desc:'Mapear o EXTERNAL-IP do Load Balancer para o hostname usado no laboratório.',console:['Linux/macOS: editar /etc/hosts','Windows: C:\\Windows\\System32\\drivers\\etc\\hosts','Exemplo: 163.176.210.135 ghost.example.com'],cmd:'configure hosts ghost.example.com'},
+{cat:'Ghost',title:'Deploy do Ghost Blog',desc:'Aplicar o manifesto do Ghost Blog. Ele cria namespace ghost-ns, PVC ghost-pv-claim, deployment ghost:5-alpine, service e ingress.',cmd:'kubectl apply -f https://raw.githubusercontent.com/euoraf4/blog-ghost/refs/heads/main/deploy.yaml'},
+{cat:'Ghost',title:'Validar recursos do Ghost',desc:'Conferir pods, service, deployment, replicaset e PVC no namespace ghost-ns.',cmd:'kubectl get all,pvc -n ghost-ns'},
+{cat:'Browser',title:'Testar acesso ao Ghost Blog',desc:'Acessar o site público do Ghost pelo hostname configurado.',cmd:'open http://ghost.example.com'},
+{cat:'Browser',title:'Configurar painel administrativo',desc:'Acessar /ghost/, preencher Site title, Full name, Email address e Password. Depois criar um post de teste.',cmd:'open http://ghost.example.com/ghost/'},
+{cat:'Storage',title:'Identificar PVC e criar Volume Group',desc:'Listar o PVC usado pelo Ghost, identificar o Block Volume correspondente e criar um Volume Group chamado volume-group-pv.',console:['Storage > Volume Groups > Create Volume Group','Nome: volume-group-pv','Add Volume: selecionar o volume associado ao PVC','Cross region replication: enable','Target region: região standby','Volume group replica name: volume-group-pv'],cmd:'kubectl get pvc -n ghost-ns'},
+{cat:'FSDR',title:'Criar DR Protection Group primário',desc:'Criar o DRPG primary-oke, adicionar Volume Group e OKE Cluster primary-cluster como membros.',console:['Migration & Disaster Recovery > DR Protection Groups > Create','Nome: primary-oke','Object Storage Bucket: primary-bucket','Role: Not configured','Add Members: Volume Group volume-group-pv','Add Members: OKE Cluster primary-cluster','Backups to retain: 2','Image replication: No','Namespaces: Include all namespaces'],cmd:'create drpg primary-oke'},
+{cat:'FSDR',title:'Criar DR Protection Group standby',desc:'Criar o DRPG standby-oke com Role Standby e associar ao DRPG primary-oke.',console:['Nome: standby-oke','Object Storage Bucket: standby-bucket','Role: Standby','Peer Region: região do cluster primário','Peer DR Protection Group: primary-oke','Add Member: OKE Cluster standby-cluster','Peer OKE Cluster: primary-cluster'],cmd:'create drpg standby-oke'},
+{cat:'Switchover',title:'Criar e executar plano de Switchover',desc:'No DRPG standby, criar o plano switchover-plan do tipo switchover planned. Validar o Ghost no primário antes de executar.',console:['DRPG standby-oke > Plans > Create Plan','Nome: switchover-plan','Plan Type: Switchover (planned)','Actions > Execute plan'],cmd:'execute switchover-plan'},
+{cat:'Standby',title:'Validar OKE standby após Switchover',desc:'Acessar o cluster standby, validar os objetos do namespace ghost-ns e confirmar o novo EXTERNAL-IP do Load Balancer.',console:['Se o Cloud Shell não alcançar a região standby, criar Remote Peering Connection entre VCNs','Repetir Access Cluster para standby-cluster','Validar namespace ghost-ns','Atualizar hosts com o novo EXTERNAL-IP'],cmd:'kubectl get all,pvc -n ghost-ns --context standby-cluster'},
+{cat:'Standby',title:'Validar Ingress na região standby',desc:'Conferir o Ingress NGINX após o Switchover e obter o novo EXTERNAL-IP do Load Balancer.',cmd:'kubectl get all -n ingress-nginx'},
+{cat:'Final',title:'Teste final no Browser',desc:'Digitar manualmente as URLs no browser simulado e validar o site e o admin do Ghost depois do Switchover.',cmd:'open http://ghost.example.com'}
+];
+let done=JSON.parse(localStorage.getItem('fsdrLabDone')||'{}');let state={primaryReady:false,ghostReady:false,switched:false,adminReady:false,hostReady:false};
+const screen=document.getElementById('screen'),cmdInput=document.getElementById('cmdInput'),stepsBox=document.getElementById('steps'),search=document.getElementById('search');
+function esc(s){return String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderSteps(){const q=(search.value||'').toLowerCase();stepsBox.innerHTML='';steps.forEach((s,i)=>{const hay=(s.cat+' '+s.title+' '+s.desc+' '+(s.cmd||'')+' '+(s.console||[]).join(' ')).toLowerCase();if(q&&!hay.includes(q))return;const div=document.createElement('div');div.className='step';div.innerHTML=`<div class="meta">ETAPA ${String(i+1).padStart(2,'0')} · ${esc(s.cat)} ${done[i]?'<span class="check">✓ executado</span>':''}</div><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p>${s.console? s.console.map(c=>`<div class="console-step"><b>OCI Console:</b> ${esc(c)}</div>`).join(''):''}<div class="cmdrow"><div class="cmdline">${esc(s.cmd||'Etapa de console')}</div><button onclick="runStep(${i})">${(s.cmd||'').startsWith('open')?'abrir':'rodar'}</button><button onclick="markDone(${i})">marcar ✓</button></div>`;stepsBox.appendChild(div)});updateProgress()}
+function updateProgress(){const total=steps.length,ok=Object.keys(done).length;document.getElementById('bar').style.width=Math.round(ok/total*100)+'%';document.getElementById('progText').textContent=`${ok}/${total} etapas executadas`}
+function markDone(i){done[i]=true;localStorage.setItem('fsdrLabDone',JSON.stringify(done));renderSteps()}
+function runStep(i){runCmd(steps[i].cmd);markDone(i)}
+search.oninput=renderSteps;renderSteps();
+function add(t,cls='out'){const d=document.createElement('div');d.className='line '+cls;d.textContent=t;screen.appendChild(d);screen.scrollTop=screen.scrollHeight}
+function help(){add('Comandos especiais: help, list, clear, reset-lab.','hint');add('Comandos principais: kubectl get nodes | kubectl get svc -n ingress-nginx | kubectl get all,pvc -n ghost-ns | open http://ghost.example.com | open http://ghost.example.com/ghost/ | execute switchover-plan | kubectl get all -n ingress-nginx | show lb annotations','hint')}
+function runCmd(c){const cmd=(c||cmdInput.value).trim();if(!cmd)return;cmdInput.value='';if(cmd==='clear'){screen.innerHTML='';return}if(cmd==='reset-lab'){done={};localStorage.removeItem('fsdrLabDone');state={primaryReady:false,ghostReady:false,switched:false,adminReady:false,hostReady:false};renderSteps();browserBlank();add('Laboratório resetado.','hint');return}add('renato@oci-lab:$ '+cmd,'in');const low=cmd.toLowerCase();if(low==='help'){help();return}if(low==='list'){add(steps.map(s=>s.cmd).join('\n'),'out');return}
+
+if(low==='oci -v'){add('3.60.0');return}
+if(low.startsWith('mkdir -p')){add('Diretório criado/validado: $HOME/.kube','hint');return}
+if(low.startsWith('oci ce cluster create-kubeconfig')){add('New config written to the Kubeconfig file $HOME/.kube/config\nKubeconfig entry generated for PRIVATE_ENDPOINT.','hint');return}
+if(low.startsWith('export kubeconfig')){add('KUBECONFIG definido para $HOME/.kube/config','hint');return}
+if(low==='show lb annotations'){add('service.beta.kubernetes.io/oci-load-balancer-shape: flexible\nservice.beta.kubernetes.io/oci-load-balancer-shape-flex-min: 10\nservice.beta.kubernetes.io/oci-load-balancer-shape-flex-max: 1000','hint');return}
+if(low==='show drpg status'){add('primary-oke  Active  Primary  peer: standby-oke\nstandby-oke  Active  Standby  peer: primary-oke','hint');return}
+if(low==='kubectl get all -n ingress-nginx'){add('NAME                                            READY   STATUS    RESTARTS\npod/ingress-nginx-controller-7f7d8c9b76-k8p2m  1/1     Running   0\n\nNAME                                       TYPE           CLUSTER-IP     EXTERNAL-IP\nservice/ingress-nginx-controller           LoadBalancer   10.96.44.30    '+(state.switched?'150.230.44.88':'163.176.210.135'),'out');return}
+
+if(low.includes('dynamic-group')){add('Dynamic Group DG-FSDR preparado com regras de compartment e compute container instance.','hint');return}
+if(low.includes('policy-fsdr')){add('Policy-FSDR criada: object-family e cluster-family liberados para o Dynamic Group.','hint');return}
+if(low.includes('provision oke')){state.primaryReady=true;add('primary-cluster e standby-cluster provisionados com Kubernetes v1.33.1, Flannel overlay e 3 workers VM.Standard.E3.Flex.','hint');return}
+if(low.includes('create buckets')){add('primary-bucket e standby-bucket criados em Storage tier Standard, dedicados para logs do DRPG.','hint');return}
+if(low==='kubectl get nodes'){state.primaryReady=true;add('NAME        STATUS   ROLES   AGE   VERSION\n10.1.2.111  Ready    node    2d    v1.33.1\n10.1.2.126  Ready    node    2d    v1.33.1\n10.1.2.7    Ready    node    2d    v1.33.1');return}
+if(low.includes('ingress-nginx')&&low.includes('apply')){add('namespace/ingress-nginx created\nserviceaccount/ingress-nginx configured\ndeployment.apps/ingress-nginx-controller configured\nservice/ingress-nginx-controller configured','hint');return}
+if(low==='kubectl get svc -n ingress-nginx'){add('NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)\ningress-nginx-controller   LoadBalancer   10.96.55.10    163.176.210.135   80:31245/TCP,443:31567/TCP');return}
+if(low.includes('configure hosts')){state.hostReady=true;add('/etc/hosts atualizado: 163.176.210.135 ghost.example.com','hint');return}
+if(low.includes('blog-ghost')||low.includes('deploy.yaml')){state.ghostReady=true;add('namespace/ghost-ns created\npersistentvolumeclaim/ghost-pv-claim created\ndeployment.apps/ghost created\nservice/ghost created\ningress.networking.k8s.io/ghost-ingress created','hint');return}
+if(low==='kubectl get all,pvc -n ghost-ns'||low.includes('--context standby-cluster')){state.ghostReady=true;const ip=state.switched?'150.230.44.88':'163.176.210.135';add('NAME                         READY   STATUS    RESTARTS   AGE\npod/ghost-5fb8859dfd-kpzxa   1/1     Running   0          3m\n\nNAME             TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)\nservice/ghost    ClusterIP   10.96.43.112  <none>        2368/TCP\n\nNAME                    READY   UP-TO-DATE   AVAILABLE\ndeployment.apps/ghost   1/1     1            1\n\nNAME                                      STATUS   VOLUME        CAPACITY   ACCESS MODES   STORAGECLASS\npersistentvolumeclaim/ghost-pv-claim     Bound    pvc-oci-vol   50Gi       RWO            oci-bv\n\nLoad Balancer ativo: '+ip);return}
+if(low==='kubectl get pvc -n ghost-ns'){add('NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS\nghost-pv-claim   Bound    csi-3495ba4d-8284-44e0-a3a0-781ca70f4ed5  50Gi      RWO            oci-bv');return}
+if(low.includes('drpg primary')){add('DR Protection Group primary-oke criado. Membros: volume-group-pv e primary-cluster.','hint');return}
+if(low.includes('drpg standby')){add('DR Protection Group standby-oke criado com role Standby e peer primary-oke.','hint');return}
+if(low.includes('switchover')){state.switched=true;add('Executing switchover-plan...\n[OK] Stop application on primary\n[OK] Activate OKE resources on standby\n[OK] Promote replicated volume group\n[OK] Start Ghost Blog on standby\n[OK] Reverse replication enabled\n[WARN] Terminate Volume Group skipped by safety policy\nSwitchover completed. Standby is now active.','hint');return}
+if(low.startsWith('open ')){openBrowser(cmd.substring(5));return}
+if(low.startsWith('curl ')){const u=cmd.substring(5).trim();if(u==='http://ghost.example.com'||u==='http://ghost.example.com/'){add('HTTP/1.1 200 OK\nServer: nginx\nX-App: Ghost Blog\nX-Region: '+(state.switched?'standby':'primary'));}else if(u==='http://ghost.example.com/ghost/'||u==='http://ghost.example.com/ghost'){add('HTTP/1.1 200 OK\nServer: nginx\nX-App: Ghost Admin');}else add('HTTP/1.1 404 Not Found','err');return}
+
+if(low==='oci -v'){add('3.66.0\nOCI CLI OK · Cloud Shell pronto para gerar kubeconfig.','hint');return}
+if(low.startsWith('mkdir -p')){add('Diretório criado: $HOME/.kube','hint');return}
+if(low.includes('oci ce cluster create-kubeconfig')){add('Kubeconfig criado com endpoint privado.\nArquivo: $HOME/.kube/config\nCluster: <cluster_ocid>\nToken version: 2.0.0','hint');return}
+if(low.startsWith('export kubeconfig')){add('KUBECONFIG definido para $HOME/.kube/config','hint');return}
+if(low==='annotations:'){add('[YAML] Início do bloco de annotations para OCI Load Balancer flexible.','hint');return}
+if(low.startsWith('service.beta.kubernetes.io/oci-load-balancer-shape')){add('[YAML] Annotation aplicada ao service do Ingress NGINX.','hint');return}
+if(low==='show lb annotations'){add('service.beta.kubernetes.io/oci-load-balancer-shape=flexible\nservice.beta.kubernetes.io/oci-load-balancer-shape-flex-min=10\nservice.beta.kubernetes.io/oci-load-balancer-shape-flex-max=1000','hint');return}
+if(low.startsWith('sudo vi /etc/hosts')){add('Abrindo /etc/hosts para edição local do hostname ghost.example.com.','hint');return}
+if(low.includes('external-ip')||low.includes('novo-external-ip')){add('Entrada de hosts preparada para mapear ghost.example.com para o Load Balancer.','hint');return}
+if(low==='kubectl get all -n ingress-nginx'){add('NAME                                           READY   STATUS    AGE\npod/ingress-nginx-controller-7f8d9f7c-k8p2m   1/1     Running   8m\n\nNAME                                       TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)\nservice/ingress-nginx-controller          LoadBalancer   10.96.55.10    150.230.44.88   80:31245/TCP,443:31567/TCP','hint');return}
+if(low==='kubectl get pods -n ghost-ns'){add('NAME                     READY   STATUS    RESTARTS   AGE\nghost-5fb8859dfd-kpzxa   1/1     Running   0          4m','hint');return}
+if(low==='kubectl logs deployment/ghost -n ghost-ns'){add('[Ghost] Server started on port 2368\n[Ghost] Database connected\n[Ghost] Site URL: http://ghost.example.com','hint');return}
+if(low==='kubectl get events -n ghost-ns'){add('Normal Scheduled pod/ghost assigned to node\nNormal Pulled ghost:5-alpine image pulled\nNormal Started container ghost','hint');return}
+if(low==='kubectl describe svc ingress-nginx-controller -n ingress-nginx'){add('Name: ingress-nginx-controller\nType: LoadBalancer\nAnnotations: oci-load-balancer-shape=flexible\nExternal IP: '+(state.switched?'150.230.44.88':'163.176.210.135'),'hint');return}
+if(low==='kubectl get storageclass'){add('NAME      PROVISIONER                       RECLAIMPOLICY\noci-bv    blockvolume.csi.oraclecloud.com   Delete','hint');return}
+if(low==='cloudshell'){runBlock('cloudshell');return}
+add('Comando não cadastrado no simulador. Use help ou clique em rodar nas etapas.','err')}
+
+function runBlock(name){
+ const blocks={
+  cloudshell:[
+   'oci -v',
+   'mkdir -p $HOME/.kube',
+   'oci ce cluster create-kubeconfig --cluster-id <cluster_ocid> --file $HOME/.kube/config --region <region> --token-version 2.0.0 --kube-endpoint PRIVATE_ENDPOINT',
+   'export KUBECONFIG=$HOME/.kube/config',
+   'kubectl get nodes'
+  ],
+  ingress:[
+   'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.3/deploy/static/provider/cloud/deploy.yaml',
+   'kubectl get svc -n ingress-nginx'
+  ],
+  lbflex:[
+   'annotations:',
+   'service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"',
+   'service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"',
+   'service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "1000"',
+   'show lb annotations'
+  ],
+  hosts:[
+   'sudo vi /etc/hosts',
+   '<EXTERNAL-IP> ghost.example.com',
+   '163.176.210.135 ghost.example.com',
+   'configure hosts ghost.example.com'
+  ],
+  ghost:[
+   'kubectl apply -f https://raw.githubusercontent.com/euoraf4/blog-ghost/refs/heads/main/deploy.yaml',
+   'kubectl get all,pvc -n ghost-ns',
+   'open http://ghost.example.com',
+   'open http://ghost.example.com/ghost/'
+  ],
+  storage:[
+   'kubectl get pvc -n ghost-ns',
+   'Storage > Volume Groups > Create Volume Group',
+   'Nome: volume-group-pv',
+   'Cross region replication: Enable'
+  ],
+  drpg:[
+   'create drpg primary-oke',
+   'create drpg standby-oke',
+   'show drpg status'
+  ],
+  postswitchover:[
+   'execute switchover-plan',
+   'kubectl get all,pvc -n ghost-ns --context standby-cluster',
+   'kubectl get all -n ingress-nginx',
+   '<NOVO-EXTERNAL-IP> ghost.example.com',
+   'open http://ghost.example.com'
+  ]
+ };
+ const list=blocks[name]||[];
+ if(!list.length){add('Bloco não encontrado: '+name,'err');return;}
+ add('### Executando bloco: '+name+' ###','hint');
+ list.forEach((cmd,idx)=>{
+   setTimeout(()=>{
+     if(cmd.includes('>') || cmd.includes('Storage >') || cmd.startsWith('Nome:') || cmd.startsWith('Cross region') || cmd.startsWith('annotations:') || cmd.startsWith('service.beta') || cmd.startsWith('<EXTERNAL-IP>') || cmd.startsWith('<NOVO-EXTERNAL-IP>') || cmd.startsWith('sudo vi')){
+       add('renato@oci-lab:$ '+cmd,'in');
+       if(cmd.startsWith('oci -v')) return;
+       if(cmd.startsWith('mkdir')) return;
+       if(cmd.startsWith('Storage >')) add('[OCI CONSOLE] Acessar Storage > Volume Groups > Create Volume Group','hint');
+       else if(cmd.startsWith('Nome:')) add('[OCI CONSOLE] Preencher nome do recurso conforme o runbook.','hint');
+       else if(cmd.startsWith('Cross region')) add('[OCI CONSOLE] Habilitar replicação cross-region para o Volume Group.','hint');
+       else if(cmd.startsWith('annotations:')) add('[YAML] Bloco de annotations do Service LoadBalancer.','hint');
+       else if(cmd.startsWith('service.beta')) add('[YAML] Annotation adicionada ao Service do Ingress NGINX.','hint');
+       else if(cmd.startsWith('<EXTERNAL-IP>') || cmd.startsWith('<NOVO-EXTERNAL-IP>')) add('[HOSTS] Entrada de hosts preparada para ghost.example.com.','hint');
+       else if(cmd.startsWith('sudo vi')) add('[HOSTS] Abrir arquivo hosts para editar o hostname local.','hint');
+     }else{
+       runCmd(cmd);
+     }
+   }, idx*220);
+ });
+}
+
+cmdInput.addEventListener('keydown',e=>{if(e.key==='Enter')runCmd()});help();
+
+function setLed(id,text,cls){const el=document.getElementById(id);if(!el)return;el.textContent=text;el.className='led '+(cls||'');}
+function updateEnterpriseWidgets(){
+  setLed('stPrimaryOke',state.primaryReady?'READY':'PENDING',state.primaryReady?'ok':'');
+  setLed('stStandbyOke',state.primaryReady?'READY':'PENDING',state.primaryReady?'ok':'');
+  setLed('stPrimaryLb',state.hostReady?'ACTIVE':'PENDING',state.hostReady?'ok':'');
+  setLed('stPrimaryGhost',state.ghostReady?(state.switched?'INACTIVE':'ACTIVE'):'PENDING',state.ghostReady?(state.switched?'off':'ok'):'');
+  setLed('stPrimaryPvc',state.ghostReady?'BOUND':'PENDING',state.ghostReady?'ok':'');
+  setLed('stStandbyVg',state.switched?'PROMOTED':(state.ghostReady?'REPLICA READY':'PENDING'),state.switched?'ok':(state.ghostReady?'info':''));
+  setLed('stStandbyGhost',state.switched?'ACTIVE':'WAITING',state.switched?'ok':'');
+  setLed('stStandbyLb',state.switched?'ACTIVE':'WAITING',state.switched?'ok':'');
+  setLed('stReplication',state.switched?'REVERSE ENABLED':(state.ghostReady?'ACTIVE':'PENDING'),state.switched?'ok':(state.ghostReady?'ok':''));
+  setLed('stDrpgPrimary',state.switched?'STANDBY':'PRIMARY',state.switched?'info':'ok');
+  setLed('stDrpgStandby',state.switched?'PRIMARY':'STANDBY',state.switched?'ok':'info');
+  setLed('stActiveRegion',state.switched?'STANDBY':'PRIMARY','info');
+  for(let i=1;i<=6;i++){const el=document.getElementById('sw'+i); if(el){el.classList.toggle('done',state.switched); el.classList.toggle('pending',!state.switched);}}
+}
+function showConsolePanel(name,btn){document.querySelectorAll('.console-item').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); const view=document.getElementById('consoleView'); if(!view)return; const panels={
+identity:`<h3>Identity / IAM</h3><table class="console-table"><tr><th>Recurso</th><th>Configuração</th></tr><tr><td>Dynamic Group</td><td>DG-FSDR</td></tr><tr><td>Rule 1</td><td>instance.compartment.id = &lt;compartment_ocid&gt;</td></tr><tr><td>Rule 2</td><td>resource.type = computecontainerinstance</td></tr><tr><td>Policy</td><td>manage object-family / manage cluster-family</td></tr></table>`,
+oke:`<h3>OKE Clusters</h3><table class="console-table"><tr><th>Cluster</th><th>Região</th><th>Status</th></tr><tr><td>primary-cluster</td><td>SA-SAO PAULO-1</td><td>${state.switched?'Standby':'Active'}</td></tr><tr><td>standby-cluster</td><td>SA-VINHEDO-1</td><td>${state.switched?'Active':'Standby Ready'}</td></tr><tr><td>Node Pool</td><td>VM.Standard.E3.Flex</td><td>3 nodes</td></tr></table>`,
+storage:`<h3>Storage</h3><table class="console-table"><tr><th>Recurso</th><th>Uso</th></tr><tr><td>primary-bucket</td><td>Logs DRPG primário</td></tr><tr><td>standby-bucket</td><td>Logs DRPG standby</td></tr><tr><td>ghost-pv-claim</td><td>PVC da aplicação</td></tr><tr><td>volume-group-pv</td><td>Cross-region replication</td></tr></table>`,
+fsdr:`<h3>Full Stack Disaster Recovery</h3><table class="console-table"><tr><th>Objeto</th><th>Status</th></tr><tr><td>primary-oke</td><td>${state.switched?'Standby':'Primary'}</td></tr><tr><td>standby-oke</td><td>${state.switched?'Primary':'Standby'}</td></tr><tr><td>switchover-plan</td><td>${state.switched?'Executed successfully':'Ready to execute'}</td></tr></table>`,
+network:`<h3>Networking</h3><table class="console-table"><tr><th>Item</th><th>Descrição</th></tr><tr><td>subnet-api</td><td>Endpoint privado do OKE</td></tr><tr><td>subnet-node</td><td>Worker nodes</td></tr><tr><td>subnet-lb</td><td>Load Balancer público</td></tr><tr><td>ghost.example.com</td><td>${state.switched?'150.230.44.88':'163.176.210.135'}</td></tr></table>`}; view.innerHTML=panels[name]||panels.identity;}
+function runAdhocBlock(block){String(block).split('\n').map(x=>x.trim()).filter(Boolean).forEach((line,idx)=>setTimeout(()=>runCmd(line),idx*350));}
+
+function browserBlank(){document.getElementById('browserUrl').value='';document.getElementById('browserBody').innerHTML='<div class="blank"><div><h2>Browser de Testes Ghost Blog</h2><p>Digite uma URL e clique em <b>go</b>.</p><p><code>http://ghost.example.com</code><br><code>http://ghost.example.com/ghost/</code></p><p>O ambiente precisa estar configurado pelo runbook/terminal para simular HTTP 200.</p></div></div>'}
+function openBrowser(url){document.getElementById('browserUrl').value=url;goBrowser()}
+function goBrowser(){const url=document.getElementById('browserUrl').value.trim();const body=document.getElementById('browserBody');if(!url){browserBlank();return}if(url==='http://ghost.example.com'||url==='http://ghost.example.com/'){if(!state.ghostReady){body.innerHTML='<div class="badpage"><div><h2>HTTP 503</h2><p>Ghost Blog ainda não foi implantado. Execute o deploy e valide o namespace ghost-ns.</p></div></div>';return}body.innerHTML=`<div class="ghostnav"><span>Home</span><span>About</span><span class="logo">Ghost</span><span>Search</span><span>Sign in</span><span style="color:#ff2f92">Subscribe</span></div><div class="ghosthero"><h1>Thoughts, stories and ideas</h1><div class="subscribe"><span>email@example.com</span><button>Subscribe</button></div></div><div class="httpok">HTTP 200 OK · Ghost Blog acessível via Load Balancer / Ingress NGINX.<div class="lbstatus">Remote Address: ${state.switched?'150.230.44.88 · Região Standby ativa':'163.176.210.135 · Região Primária ativa'}</div></div>`;return}
+if(url==='http://ghost.example.com/ghost/'||url==='http://ghost.example.com/ghost'){if(!state.ghostReady){body.innerHTML='<div class="badpage"><div><h2>HTTP 503</h2><p>Admin indisponível até o Ghost Blog estar implantado.</p></div></div>';return}body.innerHTML='<div class="admin"><h1>Welcome to Ghost.</h1><p>Crie o usuário administrador para validar persistência antes do FSDR.</p><div class="form"><label>Site title</label><input value="Teste - FSDR OKE"><label>Full name</label><input placeholder="Nome completo"><label>Email address</label><input placeholder="admin@example.com"><label>Password</label><input type="password" value="123456789"><button onclick="adminCreated()">Create account & start publishing →</button></div></div>';return}
+if(url.includes('/ghost/#/editor/post')){body.innerHTML='<div class="post"><div class="post-card"><div class="post-image">OCI Full Stack Disaster Recovery<br>Cloud Native DR for OKE</div><h1>Post Test - FSDR OKE</h1><p>Este é um post de demonstração criado para validar a implantação do Ghost Blog no Oracle Kubernetes Engine. O objetivo é garantir que a aplicação esteja acessível e pronta para o cenário de recuperação de desastres com FSDR.</p><div class="httpok">Post publicado · conteúdo persistido no PVC ghost-pv-claim.</div></div></div>';return}
+body.innerHTML='<div class="badpage"><div><h2>HTTP 404</h2><p>URL não reconhecida no laboratório.</p><p>Use http://ghost.example.com ou http://ghost.example.com/ghost/</p></div></div>'}
+function adminCreated(){state.adminReady=true;openBrowser('http://ghost.example.com/ghost/#/editor/post/test')}
+function browserRefresh(){goBrowser()}function browserBack(){browserBlank()}
+browserBlank();
+
+
+// v8 Enterprise: quiz com identificação obrigatória + certificado
+const quiz=[
+ ['Qual componente publica o Ghost Blog externamente?','Ingress NGINX / Load Balancer',['Object Storage','Ingress NGINX / Load Balancer','Dynamic Group','Cloud Shell']],
+ ['Qual recurso mantém os dados do Ghost persistidos?','Persistent Volume / Block Volume',['Persistent Volume / Block Volume','VCN','IAM Policy','Namespace kube-system']],
+ ['Onde o plano de Switchover é criado no fluxo do laboratório?','No DR Protection Group standby',['No bucket primário','No DR Protection Group standby','No node pool','No arquivo hosts']],
+ ['Qual hostname é usado para testar o blog?','ghost.example.com',['primary-oke','ghost.example.com','standby-bucket','volume-group-pv']],
+ ['Qual serviço orquestra a recuperação de desastre full stack?','OCI Full Stack Disaster Recovery',['OCI Functions','OCI Full Stack Disaster Recovery','OCI Vault','OCI Streaming']]
+];
+let qScore=0,qAnswered=0;
+let quizUnlocked=false;
+function isFullName(name){return name.trim().split(/\s+/).filter(Boolean).length>=2;}
+function renderQuiz(){const qb=document.getElementById('quizBox'); if(!qb) return; qb.innerHTML=''; if(!quizUnlocked){quiz.forEach((q,i)=>{const d=document.createElement('div');d.className='locked-box';d.textContent=`🔒 Pergunta ${i+1} bloqueada · informe nome e sobrenome para liberar o quiz.`;qb.appendChild(d)});return;} quiz.forEach((q,i)=>{const d=document.createElement('div');d.className='box';d.style.marginBottom='12px';d.innerHTML=`<h3>${i+1}. ${q[0]}</h3><div class="quiz-options">${q[2].map(a=>`<button onclick="answerQuiz(this, '${a.replaceAll("'","\\'")}', '${q[1].replaceAll("'","\\'")}')">${a}</button>`).join('')}</div>`;qb.appendChild(d)});}
+function releaseQuiz(){const input=document.getElementById('quizStudentName');const status=document.getElementById('quizStatus');const name=(input?.value||'').trim();if(!isFullName(name)){status.textContent='⚠️ Digite nome e sobrenome para liberar o quiz.';status.className='quiz-status';return;}quizUnlocked=true;localStorage.setItem('fsdrStudentName',name);localStorage.setItem('fsdrQuizUnlocked','1');const certInput=document.getElementById('studentName');if(certInput) certInput.value=name;const preview=document.getElementById('certNamePreview');if(preview) preview.textContent=name;status.textContent='✅ Aluno identificado: '+name+' · Quiz liberado.';status.className='quiz-status ok';renderQuiz();}
+function answerQuiz(btn,a,ok){if(!quizUnlocked){alert('Informe nome e sobrenome para liberar o quiz.');return;}if(btn.parentElement.dataset.done)return;btn.parentElement.dataset.done='1';qAnswered++;if(a===ok){qScore++;btn.classList.add('ok')}else{btn.classList.add('no');[...btn.parentElement.querySelectorAll('button')].find(b=>b.textContent===ok)?.classList.add('ok')}document.getElementById('quizScore').textContent=qScore+'/'+quiz.length}
+function generateCertificate(){const certInput=document.getElementById('studentName');const quizInput=document.getElementById('quizStudentName');const n=(certInput?.value||quizInput?.value||'').trim(); if(!isFullName(n)){alert('Digite nome e sobrenome para gerar o certificado.');return;} document.getElementById('certNamePreview').textContent=n; localStorage.setItem('fsdrStudentName',n); const d=new Date(); const cd=document.getElementById('certDate'); if(cd) cd.textContent=d.toLocaleDateString('pt-BR'); const cs=document.getElementById('certScore'); if(cs) cs.textContent=qScore+'/'+quiz.length; alert('Certificado gerado para: '+n);}
+document.addEventListener('DOMContentLoaded',()=>{const n=localStorage.getItem('fsdrStudentName')||''; const unlocked=localStorage.getItem('fsdrQuizUnlocked')==='1' && isFullName(n); const qi=document.getElementById('quizStudentName'); const ci=document.getElementById('studentName'); if(n){if(qi) qi.value=n;if(ci) ci.value=n; const preview=document.getElementById('certNamePreview'); if(preview) preview.textContent=n;} if(unlocked){quizUnlocked=true; const status=document.getElementById('quizStatus'); if(status){status.textContent='✅ Aluno identificado: '+n+' · Quiz liberado.';status.className='quiz-status ok';}} renderQuiz();});
+
+
+
+// v9 Enterprise Plus bootstrap
+const __originalRunCmdV9 = runCmd;
+runCmd = function(c){
+  const cmd=(c||cmdInput.value||'').trim().toLowerCase();
+  __originalRunCmdV9(c);
+  if(cmd.includes('dynamic-group')){}
+  if(cmd.includes('policy-fsdr')){}
+  if(cmd.includes('provision oke') || cmd==='kubectl get nodes') state.primaryReady=true;
+  if(cmd.includes('configure hosts')) state.hostReady=true;
+  if(cmd.includes('blog-ghost') || cmd.includes('deploy.yaml') || cmd==='kubectl get all,pvc -n ghost-ns') state.ghostReady=true;
+  if(cmd.includes('switchover')) state.switched=true;
+  updateEnterpriseWidgets();
+  showConsolePanel(document.querySelector('.console-item.active')?.textContent?.includes('OKE')?'oke':document.querySelector('.console-item.active')?.textContent?.includes('Storage')?'storage':document.querySelector('.console-item.active')?.textContent?.includes('Disaster')?'fsdr':document.querySelector('.console-item.active')?.textContent?.includes('Networking')?'network':'identity', document.querySelector('.console-item.active'));
+};
+updateEnterpriseWidgets();
+showConsolePanel('identity',document.querySelector('.console-item'));
+
+</script>
+</body>
+</html>

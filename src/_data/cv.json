@@ -1,0 +1,902 @@
+{
+  "pt": {
+    "hero": {
+      "role": "Principal Engineer Multidatabase",
+      "stack": "Oracle | SQL Server | MySQL | PostgreSQL | DBRE | SRE | Cloud | Automação",
+      "focus": "Engenharia de Bancos de Dados, Cloud e Plataformas",
+      "summary": "Mais de 25 anos projetando, implementando e operando soluções críticas em ambientes multicloud, alta disponibilidade e missão crítica."
+    },
+    "metrics": [
+      {
+        "icon": "👤",
+        "value": "25+",
+        "label": "Anos de Experiência"
+      },
+      {
+        "icon": "🏅",
+        "value": "52",
+        "label": "Certificações Oracle"
+      },
+      {
+        "icon": "🗄️",
+        "value": "4",
+        "label": "Multidatabase (Oracle, SQL Server, MySQL e PostgreSQL)"
+      },
+      {
+        "icon": "☁️",
+        "value": "4",
+        "label": "Clouds (OCI, AWS, Azure, On-premises)"
+      },
+      {
+        "icon": "🛡️",
+        "value": "24x7",
+        "label": "Ambientes Críticos Missão Crítica"
+      },
+      {
+        "icon": "⌨️",
+        "value": "9+",
+        "label": "Projetos Técnicos Publicados"
+      }
+    ],
+    "panels": [
+      {
+        "icon": "♟",
+        "title": "Principal Engineer Multidatabase",
+        "items": [
+          "Especialista em Oracle, SQL Server, MySQL e PostgreSQL",
+          "DBRE | SRE | Alta Disponibilidade | Performance",
+          "Cloud: OCI | AWS | Azure | Multicloud",
+          "Automação com Python, Terraform, Ansible e Shell Script",
+          "Infraestrutura, Redes e Segurança",
+          "Soluções de Missão Crítica e Alta Complexidade"
+        ]
+      },
+      {
+        "icon": "⌘",
+        "title": "Infraestrutura & Redes",
+        "items": [
+          "Datacenters e Ambientes Híbridos",
+          "Redes TCP/IP, VPN, VLAN e Load Balancer",
+          "Cisco (CCNA/CCNP)",
+          "Firewalls Check Point (CCSA/CCSE)",
+          "Alta Disponibilidade e Disaster Recovery",
+          "Segurança da Informação"
+        ]
+      },
+      {
+        "icon": "▣",
+        "title": "Sistemas Operacionais",
+        "items": [
+          "Red Hat Enterprise Linux (RHEL)",
+          "Oracle Linux",
+          "Ubuntu",
+          "SUSE Linux",
+          "Windows Server",
+          "Administração, Hardening e Performance"
+        ]
+      },
+      {
+        "icon": "◎",
+        "title": "Áreas de Atuação",
+        "items": [
+          "Database Administration",
+          "Performance Tuning",
+          "Alta Disponibilidade e DR",
+          "Cloud & Multicloud",
+          "DevOps & Automação",
+          "Observabilidade e Monitoramento",
+          "Oracle GoldenGate & Data Replication"
+        ]
+      }
+    ],
+    "summary_title": "Resumo Profissional",
+    "summary_intro": "Uma visão completa da trajetória, especializações e capacidade de atuação em ambientes enterprise.",
+    "summary": [
+      "Mais de 25 anos de experiência em Tecnologia da Informação, com atuação em infraestrutura, plataformas corporativas, Linux, Cloud e Oracle Database, participando da construção, operação, automação e evolução de ambientes críticos de alta disponibilidade para clientes enterprise.",
+      "Especialista em Database Reliability Engineering (DBRE), responsável por construir, operar, automatizar e evoluir plataformas Oracle de missão crítica, utilizando práticas de SRE, observabilidade, automação e Cloud.",
+      "Perfil colaborativo com atuação em liderança técnica, análise de incidentes críticos (RCA), revisão de arquitetura, definição de boas práticas e colaboração com equipes multidisciplinares em ambientes enterprise.",
+      "Experiência sólida em administração, troubleshooting avançado, performance tuning, alta disponibilidade, backup/recovery e sustentação de Oracle, PostgreSQL, SQL Server e MySQL em operações globais 24x7.",
+      "Atuação em migração, modernização e arquitetura com Oracle RAC, ASM, Data Guard, GoldenGate, OCI, Base Database Service, ExaCC, ExaCS, AWS e Azure.",
+      "Vivência em Linux Enterprise, automação com Python, Terraform, Ansible e Shell Script, containers com Docker e Kubernetes, SAP HANA, IA aplicada à operação, AWR, ASH, ADDM, SQL Tuning e projetos globais."
+    ],
+    "skills_title": "Principais Competências",
+    "skills": [
+      "Oracle Database",
+      "DBRE",
+      "SRE",
+      "OCI",
+      "AWS",
+      "Azure",
+      "Exadata",
+      "RAC",
+      "ASM",
+      "Data Guard",
+      "GoldenGate",
+      "RMAN",
+      "Performance Tuning",
+      "AWR / ASH / ADDM",
+      "Python",
+      "Terraform",
+      "Ansible",
+      "Shell Script",
+      "Kubernetes",
+      "OpenShift",
+      "Docker",
+      "Oracle Linux",
+      "RHEL",
+      "PostgreSQL",
+      "SQL Server",
+      "MySQL",
+      "SAP HANA",
+      "Incident Management",
+      "RCA",
+      "Observability",
+      "CI/CD"
+    ],
+    "domains_title": "Áreas de Especialização",
+    "domains": [
+      {
+        "title": "Cloud & Platform",
+        "text": "AWS, OCI, Azure, Docker, Kubernetes, Terraform, DevOps, Platform Engineering e Observability."
+      },
+      {
+        "title": "Automation & IaC",
+        "text": "Python, Shell Script, JavaScript, Terraform, Ansible, CI/CD e Infrastructure as Code."
+      },
+      {
+        "title": "Databases",
+        "text": "Oracle, PostgreSQL, SQL Server, MySQL, MongoDB e Cassandra em conceitos e administração."
+      },
+      {
+        "title": "DBRE & SRE",
+        "text": "Incident Management, RCA, High Availability, Disaster Recovery, automação e excelência operacional."
+      },
+      {
+        "title": "High Availability",
+        "text": "Oracle RAC, Data Guard, GoldenGate, RMAN, Disaster Recovery e Performance Tuning."
+      },
+      {
+        "title": "Oracle & AWS",
+        "text": "Oracle Database@AWS, EC2, ExaCC, ExaCS, RDS, VPC, EBS, IAM, CloudWatch e AWS Backup."
+      }
+    ],
+    "tech_kicker": "Stack profissional",
+    "tech_title": "Tecnologias em destaque",
+    "tech_intro": "Visão rápida das principais plataformas presentes na minha trajetória profissional.",
+    "tech": [
+      {
+        "code": "ORA",
+        "name": "Oracle",
+        "desc": "Database • RAC • ASM"
+      },
+      {
+        "code": "SQL",
+        "name": "SQL Server",
+        "desc": "HA • Always On"
+      },
+      {
+        "code": "PG",
+        "name": "PostgreSQL",
+        "desc": "Administração • Tuning"
+      },
+      {
+        "code": "MY",
+        "name": "MySQL",
+        "desc": "Administração • HeatWave"
+      },
+      {
+        "code": "EXA",
+        "name": "Exadata",
+        "desc": "ExaCC • ExaCS"
+      },
+      {
+        "code": "OCI",
+        "name": "OCI",
+        "desc": "Cloud • Multicloud"
+      },
+      {
+        "code": "AWS",
+        "name": "AWS",
+        "desc": "EC2 • RDS • VPC"
+      },
+      {
+        "code": "AZ",
+        "name": "Azure",
+        "desc": "Cloud • Infraestrutura"
+      },
+      {
+        "code": "LNX",
+        "name": "Linux",
+        "desc": "RHEL • OL • Ubuntu • SUSE"
+      },
+      {
+        "code": "PY",
+        "name": "Python",
+        "desc": "Automação • Diagnóstico"
+      },
+      {
+        "code": "TF",
+        "name": "Terraform",
+        "desc": "Infrastructure as Code"
+      },
+      {
+        "code": "K8S",
+        "name": "Kubernetes",
+        "desc": "Docker • OpenShift"
+      },
+      {
+        "code": "NET",
+        "name": "Networking",
+        "desc": "Cisco • Firewalls"
+      },
+      {
+        "code": "WIN",
+        "name": "Windows Server",
+        "desc": "Infraestrutura Enterprise"
+      },
+      {
+        "code": "AI",
+        "name": "Inteligência Artificial",
+        "desc": "Automação • Produtividade"
+      }
+    ],
+    "oracle": {
+      "kicker": "Experiência de maior destaque",
+      "title": "Oracle, Exadata e Ambientes de Missão Crítica",
+      "intro": "Resumo visual da atuação como Principal Engineer e Senior Oracle Database Engineer. Os detalhes completos permanecem na linha do tempo profissional.",
+      "company": "ORACLE DO BRASIL",
+      "role": "Principal Engineer",
+      "period": "Global CSS • Out/2021 – Abr/2026",
+      "note_title": "Atuação global e consultiva",
+      "note": "Suporte especializado, incidentes Sev1/Sev2, RCA, performance, arquitetura, migração e modernização.",
+      "areas_title": "Principais áreas de atuação",
+      "areas": [
+        "Oracle Database 11g a 23ai",
+        "Oracle RAC, ASM e Grid",
+        "Exadata, ExaCC e ExaCS",
+        "Data Guard e GoldenGate",
+        "RMAN e Disaster Recovery",
+        "AWR, ASH, ADDM e SQL Monitor",
+        "OCI, AWS e Azure",
+        "Oracle Database@AWS",
+        "Data Safe e SQL Firewall",
+        "Oracle AI Vector Search",
+        "Python, Shell e Ansible",
+        "Terraform e Automação"
+      ]
+    },
+    "exp_title": "Experiência Profissional Completa",
+    "exp_intro": "Clique em cada empresa para visualizar todas as responsabilidades e entregas.",
+    "jobs": [
+      {
+        "company": "ORACLE DO BRASIL",
+        "role": "Principal Engineer | Senior Oracle Database Engineer — Global CSS",
+        "period": "Out/2021 – Abr/2026",
+        "oracle": true,
+        "items": [
+          "Referência técnica global no suporte a ambientes Oracle Database de missão crítica, atendendo clientes enterprise em diferentes regiões, com foco em Oracle Database 11g, 12c, 19c, 21c e 23ai.",
+          "Suporte técnico especializado, troubleshooting avançado e análise de ambientes Oracle Database sobre Oracle Linux, Exadata, RAC, ASM, Grid Infrastructure, Data Guard, RMAN e GoldenGate, com foco em HA e DR.",
+          "Atuação em incidentes críticos Sev1/Sev2, análise de causa raiz, troubleshooting avançado e recuperação de ambientes de alta complexidade.",
+          "Performance Tuning com AWR, ASH, ADDM, SQL Monitor e SQL Tuning Advisor, otimizando CPU, memória, I/O, SQL e custos operacionais.",
+          "Estratégias de Backup & Recovery, alta disponibilidade, replicação e continuidade de negócios com RMAN, Data Guard e GoldenGate.",
+          "Projetos de migração, modernização e arquitetura para OCI, AWS e Azure, incluindo arquiteturas híbridas, Oracle Database@AWS, Amazon RDS e integração on-premises/Cloud.",
+          "Suporte aos serviços OCI: Compute, Networking, Block Storage, Marketplace e MySQL HeatWave.",
+          "Administração e troubleshooting multibanco em Oracle, SQL Server, PostgreSQL e MySQL.",
+          "Automação de administração e monitoramento com Python, Shell Script, Terraform e Ansible.",
+          "Análise consultiva de performance, capacidade e boas práticas.",
+          "Suporte a Oracle Data Safe, SQL Firewall, Oracle AI Vector Search e funcionalidades do Oracle Database 23ai."
+        ]
+      },
+      {
+        "company": "ACCENTURE DO BRASIL",
+        "role": "Cloud Mobilization Associate Manager",
+        "period": "Jul/2021 – Out/2021",
+        "oracle": false,
+        "items": [
+          "Consultoria técnica para grandes empresas no desenho de estratégias de migração Multicloud.",
+          "Liderança técnica em implementações de arquiteturas resilientes em AWS e OCI."
+        ]
+      },
+      {
+        "company": "DB MASTER INFORMÁTICA CONSULTORIA — atual Sky.One",
+        "role": "Senior DBA Consultant — Oracle & SQL Server",
+        "period": "Out/2020 – Out/2022",
+        "oracle": false,
+        "items": [
+          "Consultoria especializada em ambientes críticos Oracle e SQL Server, com foco em alta disponibilidade, performance e sustentação.",
+          "Administração Oracle Database 8i, 9i, 10g, 11g e 12c, RAC, ASM, Grid Infrastructure e Data Guard.",
+          "Backup e recovery com RMAN.",
+          "Migrações, upgrades e aplicação de patches em Oracle Database e Grid.",
+          "Performance e troubleshooting com AWR, ASH, ADDM e SQL Tuning.",
+          "Administração Oracle Exadata X5 e X7.",
+          "Automação com Shell Script e PL/SQL.",
+          "Administração SQL Server com foco em performance, segurança e alta disponibilidade.",
+          "Backup/recovery, Always On e Failover Cluster.",
+          "Atuação em ambientes corporativos de missão crítica, operações remotas e modernização."
+        ]
+      },
+      {
+        "company": "GAMA SAÚDE — GRUPO QUALICORP",
+        "role": "Consultor DevOps Sênior | Especialista de Infraestrutura",
+        "period": "Out/2014 – Jul/2021",
+        "oracle": false,
+        "items": [
+          "Arquitetura e liderança da migração end-to-end do datacenter físico para a nuvem, garantindo alta disponibilidade e escalabilidade.",
+          "Suporte e otimização de Oracle e SQL Server, com redução de 40% no tempo de resposta das aplicações.",
+          "Administração Windows e Linux, provisionamento, hardening e troubleshooting.",
+          "Gestão de networking corporativo, firewalls e equipamentos Cisco.",
+          "Implementação de práticas DevOps, automação de pipelines, integrações e suporte às equipes de desenvolvimento."
+        ]
+      }
+    ],
+    "history_title": "Histórico Profissional — Infraestrutura, Redes e Segurança",
+    "history": [
+      {
+        "company": "TIVIT DATACENTER",
+        "role": "Senior Network/Security Consultant | 2011 – 2012"
+      },
+      {
+        "company": "USS SOLUÇÕES / GAMA SAÚDE",
+        "role": "Network Analyst / Senior Security | 2005 – 2011"
+      },
+      {
+        "company": "EUROPE MOVIES",
+        "role": "Senior Network/Security Analyst | 2004 – 2005"
+      },
+      {
+        "company": "DM INDÚSTRIA FARMACÊUTICA — MONANGE",
+        "role": "Senior Network/Security Administrator | 2000 – 2004"
+      },
+      {
+        "company": "INFOGT INFORMÁTICA",
+        "role": "Senior Support Analyst | 1999 – 2000"
+      },
+      {
+        "company": "TMI TECMONTAL — BANCO BCN",
+        "role": "Analista de Suporte Sênior | 1994 – 1999"
+      },
+      {
+        "company": "JHS CONSTRUTORA E PLANEJAMENTO",
+        "role": "Micro Operador Sênior | 1991 – 1994"
+      }
+    ],
+    "spec_title": "Especialização Técnica",
+    "spec": [
+      {
+        "title": "Banco de Dados & Dados",
+        "text": "Migração Oracle para AWS, Azure e OCI; Exadata ExaCC, ExaCS e on-premises; RAC, ASM, Data Guard, GoldenGate, RMAN, AWR, ASH, ADDM, SQL Tuning, RAT, multibanco, SAP HANA, HA e arquitetura resiliente."
+      },
+      {
+        "title": "Automação & Desenvolvimento",
+        "text": "Python, Shell Script, JavaScript, Terraform, Ansible, pipelines CI/CD, diagnóstico automatizado, IA aplicada a dados, detecção de anomalias, monitoramento preditivo, Docker e Kubernetes."
+      },
+      {
+        "title": "Arquitetura & Consultoria",
+        "text": "Arquiteturas híbridas e multicloud, otimização de custos e performance, segurança, redes, firewalls, Linux Enterprise, infraestrutura como código e automação operacional."
+      }
+    ],
+    "cert_title": "Formação e Certificações",
+    "cert_intro": "52 certificações Oracle ao longo da carreira. Abaixo estão algumas das certificações de maior destaque profissional.",
+    "cert_number_label": "certificações Oracle conquistadas ao longo da carreira",
+    "cert_featured_title": "Certificações em destaque",
+    "cert_featured_text": "Oracle Database, OCI, Exadata, GoldenGate, RAC, ASM, Grid Infrastructure, Multicloud, Database@AWS, AI Vector, Linux, MySQL e outras especializações. A relação abaixo apresenta os principais destaques profissionais.",
+    "education_title": "Formação Acadêmica",
+    "education": [
+      {
+        "title": "Bacharelado em Engenharia de Software",
+        "text": "Universidade Anhanguera | 2024 – Em andamento | conclusão prevista: Junho/2027"
+      },
+      {
+        "title": "Inglês",
+        "text": "Escola UpTIME — Alphaville | Intermediário para leitura, reuniões técnicas e documentação."
+      }
+    ],
+    "network_title": "Redes & Segurança",
+    "network": [
+      "CCNA / CCNP — Cisco",
+      "CCSA / CCSE — Check Point"
+    ],
+    "certs": [
+      {
+        "title": "Oracle Database OCP",
+        "text": "19c e 23c/23ai"
+      },
+      {
+        "title": "Oracle GoldenGate",
+        "text": "12c e 19c"
+      },
+      {
+        "title": "Oracle Exadata X9M",
+        "text": "Especialização em plataforma Exadata"
+      },
+      {
+        "title": "Oracle RAC, ASM and Grid",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle Cloud Infrastructure",
+        "text": "Professional e OCI Specialist"
+      },
+      {
+        "title": "Oracle Database Migration",
+        "text": "Cloud Professional"
+      },
+      {
+        "title": "Oracle Database@AWS",
+        "text": "Architect Professional"
+      },
+      {
+        "title": "Oracle Autonomous Database",
+        "text": "Cloud Professional"
+      },
+      {
+        "title": "Oracle Multicloud",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle AI Vector",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle Linux",
+        "text": "Specialist"
+      },
+      {
+        "title": "MySQL",
+        "text": "Administrator Professional"
+      }
+    ],
+    "contact_title": "Vamos conversar?",
+    "contact_text": "Disponível para oportunidades em Oracle Database, DBRE, Cloud, Exadata, Platform Engineering, SRE, automação e ambientes de missão crítica."
+  },
+  "en": {
+    "hero": {
+      "role": "Principal Engineer Multidatabase",
+      "stack": "Oracle | SQL Server | MySQL | PostgreSQL | DBRE | SRE | Cloud | Automation",
+      "focus": "Database, Cloud & Platform Engineering",
+      "summary": "More than 25 years designing, implementing and operating critical solutions across multicloud, high-availability and mission-critical environments."
+    },
+    "metrics": [
+      {
+        "icon": "👤",
+        "value": "25+",
+        "label": "Years of Experience"
+      },
+      {
+        "icon": "🏅",
+        "value": "52",
+        "label": "Oracle Certifications"
+      },
+      {
+        "icon": "🗄️",
+        "value": "4",
+        "label": "Multidatabase (Oracle, SQL Server, MySQL and PostgreSQL)"
+      },
+      {
+        "icon": "☁️",
+        "value": "4",
+        "label": "Clouds (OCI, AWS, Azure, On-premises)"
+      },
+      {
+        "icon": "🛡️",
+        "value": "24x7",
+        "label": "Critical Environments Mission Critical"
+      },
+      {
+        "icon": "⌨️",
+        "value": "9+",
+        "label": "Published Technical Projects"
+      }
+    ],
+    "panels": [
+      {
+        "icon": "♟",
+        "title": "Principal Engineer Multidatabase",
+        "items": [
+          "Oracle, SQL Server, MySQL and PostgreSQL specialist",
+          "DBRE | SRE | High Availability | Performance",
+          "Cloud: OCI | AWS | Azure | Multicloud",
+          "Automation with Python, Terraform, Ansible and Shell Script",
+          "Infrastructure, Networking and Security",
+          "Mission-critical and highly complex solutions"
+        ]
+      },
+      {
+        "icon": "⌘",
+        "title": "Infrastructure & Networking",
+        "items": [
+          "Datacenters and Hybrid Environments",
+          "TCP/IP, VPN, VLAN and Load Balancing",
+          "Cisco (CCNA/CCNP)",
+          "Check Point Firewalls (CCSA/CCSE)",
+          "High Availability and Disaster Recovery",
+          "Information Security"
+        ]
+      },
+      {
+        "icon": "▣",
+        "title": "Operating Systems",
+        "items": [
+          "Red Hat Enterprise Linux (RHEL)",
+          "Oracle Linux",
+          "Ubuntu",
+          "SUSE Linux",
+          "Windows Server",
+          "Administration, Hardening and Performance"
+        ]
+      },
+      {
+        "icon": "◎",
+        "title": "Areas of Expertise",
+        "items": [
+          "Database Administration",
+          "Performance Tuning",
+          "High Availability and DR",
+          "Cloud & Multicloud",
+          "DevOps & Automation",
+          "Observability and Monitoring",
+          "Oracle GoldenGate & Data Replication"
+        ]
+      }
+    ],
+    "summary_title": "Professional Summary",
+    "summary_intro": "A comprehensive view of my career, specializations, and ability to operate in enterprise environments.",
+    "summary": [
+      "More than 25 years of experience in Information Technology, working with infrastructure, enterprise platforms, Linux, Cloud, and Oracle Database, contributing to the design, operation, automation, and evolution of highly available critical environments for enterprise customers.",
+      "Database Reliability Engineering (DBRE) specialist, responsible for building, operating, automating, and evolving mission-critical Oracle platforms using SRE, observability, automation, and Cloud practices.",
+      "Collaborative professional with technical leadership experience, critical incident analysis (RCA), architecture reviews, best-practice definition, and collaboration with multidisciplinary teams in enterprise environments.",
+      "Strong experience in administration, advanced troubleshooting, performance tuning, high availability, backup/recovery, and support for Oracle, PostgreSQL, SQL Server, and MySQL in global 24x7 operations.",
+      "Experience in migration, modernization, and architecture with Oracle RAC, ASM, Data Guard, GoldenGate, OCI, Base Database Service, ExaCC, ExaCS, AWS, and Azure.",
+      "Experience with Enterprise Linux, automation using Python, Terraform, Ansible, and Shell Script, containers with Docker and Kubernetes, SAP HANA, AI applied to operations, AWR, ASH, ADDM, SQL Tuning, and global projects."
+    ],
+    "skills_title": "Core Skills",
+    "skills": [
+      "Oracle Database",
+      "DBRE",
+      "SRE",
+      "OCI",
+      "AWS",
+      "Azure",
+      "Exadata",
+      "RAC",
+      "ASM",
+      "Data Guard",
+      "GoldenGate",
+      "RMAN",
+      "Performance Tuning",
+      "AWR / ASH / ADDM",
+      "Python",
+      "Terraform",
+      "Ansible",
+      "Shell Script",
+      "Kubernetes",
+      "OpenShift",
+      "Docker",
+      "Oracle Linux",
+      "RHEL",
+      "PostgreSQL",
+      "SQL Server",
+      "MySQL",
+      "SAP HANA",
+      "Incident Management",
+      "RCA",
+      "Observability",
+      "CI/CD"
+    ],
+    "domains_title": "Areas of Expertise",
+    "domains": [
+      {
+        "title": "Cloud & Platform",
+        "text": "AWS, OCI, Azure, Docker, Kubernetes, Terraform, DevOps, Platform Engineering, and Observability."
+      },
+      {
+        "title": "Automation & IaC",
+        "text": "Python, Shell Script, JavaScript, Terraform, Ansible, CI/CD, and Infrastructure as Code."
+      },
+      {
+        "title": "Databases",
+        "text": "Oracle, PostgreSQL, SQL Server, MySQL, MongoDB, and Cassandra concepts and administration."
+      },
+      {
+        "title": "DBRE & SRE",
+        "text": "Incident Management, RCA, High Availability, Disaster Recovery, automation, and operational excellence."
+      },
+      {
+        "title": "High Availability",
+        "text": "Oracle RAC, Data Guard, GoldenGate, RMAN, Disaster Recovery, and Performance Tuning."
+      },
+      {
+        "title": "Oracle & AWS",
+        "text": "Oracle Database@AWS, EC2, ExaCC, ExaCS, RDS, VPC, EBS, IAM, CloudWatch, and AWS Backup."
+      }
+    ],
+    "tech_kicker": "Professional stack",
+    "tech_title": "Featured Technologies",
+    "tech_intro": "A quick overview of the main platforms across my professional career.",
+    "tech": [
+      {
+        "code": "ORA",
+        "name": "Oracle",
+        "desc": "Database • RAC • ASM"
+      },
+      {
+        "code": "SQL",
+        "name": "SQL Server",
+        "desc": "HA • Always On"
+      },
+      {
+        "code": "PG",
+        "name": "PostgreSQL",
+        "desc": "Administration • Tuning"
+      },
+      {
+        "code": "MY",
+        "name": "MySQL",
+        "desc": "Administration • HeatWave"
+      },
+      {
+        "code": "EXA",
+        "name": "Exadata",
+        "desc": "ExaCC • ExaCS"
+      },
+      {
+        "code": "OCI",
+        "name": "OCI",
+        "desc": "Cloud • Multicloud"
+      },
+      {
+        "code": "AWS",
+        "name": "AWS",
+        "desc": "EC2 • RDS • VPC"
+      },
+      {
+        "code": "AZ",
+        "name": "Azure",
+        "desc": "Cloud • Infrastructure"
+      },
+      {
+        "code": "LNX",
+        "name": "Linux",
+        "desc": "RHEL • OL • Ubuntu • SUSE"
+      },
+      {
+        "code": "PY",
+        "name": "Python",
+        "desc": "Automation • Diagnostics"
+      },
+      {
+        "code": "TF",
+        "name": "Terraform",
+        "desc": "Infrastructure as Code"
+      },
+      {
+        "code": "K8S",
+        "name": "Kubernetes",
+        "desc": "Docker • OpenShift"
+      },
+      {
+        "code": "NET",
+        "name": "Networking",
+        "desc": "Cisco • Firewalls"
+      },
+      {
+        "code": "WIN",
+        "name": "Windows Server",
+        "desc": "Enterprise Infrastructure"
+      },
+      {
+        "code": "AI",
+        "name": "Artificial Intelligence",
+        "desc": "Automation • Productivity"
+      }
+    ],
+    "oracle": {
+      "kicker": "Key career highlight",
+      "title": "Oracle, Exadata and Mission-Critical Environments",
+      "intro": "A visual summary of my work as Principal Engineer and Senior Oracle Database Engineer. Full details remain available in the professional timeline.",
+      "company": "ORACLE BRAZIL",
+      "role": "Principal Engineer",
+      "period": "Global CSS • Oct/2021 – Apr/2026",
+      "note_title": "Global and advisory role",
+      "note": "Specialized support, Sev1/Sev2 incidents, RCA, performance, architecture, migration and modernization.",
+      "areas_title": "Main areas of expertise",
+      "areas": [
+        "Oracle Database 11g to 23ai",
+        "Oracle RAC, ASM and Grid",
+        "Exadata, ExaCC and ExaCS",
+        "Data Guard and GoldenGate",
+        "RMAN and Disaster Recovery",
+        "AWR, ASH, ADDM and SQL Monitor",
+        "OCI, AWS and Azure",
+        "Oracle Database@AWS",
+        "Data Safe and SQL Firewall",
+        "Oracle AI Vector Search",
+        "Python, Shell and Ansible",
+        "Terraform and Automation"
+      ]
+    },
+    "exp_title": "Complete Professional Experience",
+    "exp_intro": "Select each company to view all responsibilities and achievements.",
+    "jobs": [
+      {
+        "company": "ORACLE DO BRASIL",
+        "role": "Principal Engineer | Senior Oracle Database Engineer — Global CSS",
+        "period": "Oct/2021 – Apr/2026",
+        "oracle": true,
+        "items": [
+          "Global technical reference supporting mission-critical Oracle Database environments for enterprise customers across multiple regions, focusing on Oracle Database 11g, 12c, 19c, 21c, and 23ai.",
+          "Specialized technical support, advanced troubleshooting, and analysis of Oracle Database environments running on Oracle Linux, Exadata, RAC, ASM, Grid Infrastructure, Data Guard, RMAN, and GoldenGate, focused on HA and DR.",
+          "Handled critical Sev1/Sev2 incidents, root cause analysis, advanced troubleshooting, and recovery of highly complex environments.",
+          "Performance tuning using AWR, ASH, ADDM, SQL Monitor, and SQL Tuning Advisor, optimizing CPU, memory, I/O, SQL, and operating costs.",
+          "Backup & Recovery, high availability, replication, and business continuity strategies using RMAN, Data Guard, and GoldenGate.",
+          "Migration, modernization, and architecture projects for OCI, AWS, and Azure, including hybrid architectures, Oracle Database@AWS, Amazon RDS, and on-premises/Cloud integration.",
+          "Support for OCI services: Compute, Networking, Block Storage, Marketplace, and MySQL HeatWave.",
+          "Multidatabase administration and troubleshooting across Oracle, SQL Server, PostgreSQL, and MySQL.",
+          "Administration and monitoring automation using Python, Shell Script, Terraform, and Ansible.",
+          "Consultative performance, capacity, and best-practice analysis.",
+          "Support for Oracle Data Safe, SQL Firewall, Oracle AI Vector Search, and Oracle Database 23ai capabilities."
+        ]
+      },
+      {
+        "company": "ACCENTURE DO BRASIL",
+        "role": "Cloud Mobilization Associate Manager",
+        "period": "Jul/2021 – Oct/2021",
+        "oracle": false,
+        "items": [
+          "Technical consulting for large enterprises in the design of multicloud migration strategies.",
+          "Technical leadership in the implementation of resilient architectures on AWS and OCI."
+        ]
+      },
+      {
+        "company": "DB MASTER IT CONSULTING — now Sky.One",
+        "role": "Senior DBA Consultant — Oracle & SQL Server",
+        "period": "Oct/2020 – Oct/2022",
+        "oracle": false,
+        "items": [
+          "Specialized consulting for critical Oracle and SQL Server environments, focused on high availability, performance, and operations.",
+          "Administration of Oracle Database 8i, 9i, 10g, 11g, and 12c, RAC, ASM, Grid Infrastructure, and Data Guard.",
+          "Backup and recovery using RMAN.",
+          "Migrations, upgrades, and patching of Oracle Database and Grid Infrastructure.",
+          "Performance analysis and troubleshooting using AWR, ASH, ADDM, and SQL Tuning.",
+          "Administration of Oracle Exadata X5 and X7.",
+          "Automation using Shell Script and PL/SQL.",
+          "SQL Server administration focused on performance, security, and high availability.",
+          "Backup/recovery, Always On, and Failover Cluster.",
+          "Work in mission-critical enterprise environments, remote operations, and modernization initiatives."
+        ]
+      },
+      {
+        "company": "GAMA SAÚDE — GRUPO QUALICORP",
+        "role": "Senior DevOps Consultant | Infrastructure Specialist",
+        "period": "Oct/2014 – Jul/2021",
+        "oracle": false,
+        "items": [
+          "Architected and led the end-to-end migration from a physical data center to the cloud, ensuring high availability and scalability.",
+          "Supported and optimized Oracle and SQL Server environments, reducing application response time by 40%.",
+          "Windows and Linux administration, provisioning, hardening, and troubleshooting.",
+          "Management of enterprise networking, firewalls, and Cisco equipment.",
+          "Implementation of DevOps practices, pipeline automation, integrations, and support for development teams."
+        ]
+      }
+    ],
+    "history_title": "Career History — Infrastructure, Networking & Security",
+    "history": [
+      {
+        "company": "TIVIT DATACENTER",
+        "role": "Senior Network/Security Consultant | 2011 – 2012"
+      },
+      {
+        "company": "USS SOLUÇÕES / GAMA SAÚDE",
+        "role": "Network Analyst / Senior Security | 2005 – 2011"
+      },
+      {
+        "company": "EUROPE MOVIES",
+        "role": "Senior Network/Security Analyst | 2004 – 2005"
+      },
+      {
+        "company": "DM INDÚSTRIA FARMACÊUTICA — MONANGE",
+        "role": "Senior Network/Security Administrator | 2000 – 2004"
+      },
+      {
+        "company": "INFOGT INFORMÁTICA",
+        "role": "Senior Support Analyst | 1999 – 2000"
+      },
+      {
+        "company": "TMI TECMONTAL — BANCO BCN",
+        "role": "Senior Support Analyst | 1994 – 1999"
+      },
+      {
+        "company": "JHS CONSTRUTORA E PLANEJAMENTO",
+        "role": "Senior Microcomputer Operator | 1991 – 1994"
+      }
+    ],
+    "spec_title": "Technical Expertise",
+    "spec": [
+      {
+        "title": "Databases & Data",
+        "text": "Oracle migrations to AWS, Azure, and OCI; Exadata ExaCC, ExaCS, and on-premises; RAC, ASM, Data Guard, GoldenGate, RMAN, AWR, ASH, ADDM, SQL Tuning, RAT, multidatabase environments, SAP HANA, HA, and resilient architecture."
+      },
+      {
+        "title": "Automation & Development",
+        "text": "Python, Shell Script, JavaScript, Terraform, Ansible, CI/CD pipelines, automated diagnostics, AI applied to data, anomaly detection, predictive monitoring, Docker, and Kubernetes."
+      },
+      {
+        "title": "Architecture & Consulting",
+        "text": "Hybrid and multicloud architectures, cost and performance optimization, security, networking, firewalls, Enterprise Linux, infrastructure as code, and operational automation."
+      }
+    ],
+    "cert_title": "Education & Certifications",
+    "cert_intro": "52 Oracle certifications throughout my career. Below are some of the most professionally relevant certifications.",
+    "cert_number_label": "Oracle certifications earned throughout my career",
+    "cert_featured_title": "Featured certifications",
+    "cert_featured_text": "Oracle Database, OCI, Exadata, GoldenGate, RAC, ASM, Grid Infrastructure, Multicloud, Database@AWS, AI Vector, Linux, MySQL and other specializations. The list below highlights the most relevant credentials.",
+    "education_title": "Education",
+    "education": [
+      {
+        "title": "Bachelor’s Degree in Software Engineering",
+        "text": "Anhanguera University | 2024 – In progress | expected graduation: June/2027"
+      },
+      {
+        "title": "English",
+        "text": "UpTIME School — Alphaville | Intermediate proficiency for reading, technical meetings, and documentation."
+      }
+    ],
+    "network_title": "Networking & Security",
+    "network": [
+      "CCNA / CCNP — Cisco",
+      "CCSA / CCSE — Check Point"
+    ],
+    "certs": [
+      {
+        "title": "Oracle Database OCP",
+        "text": "19c and 23c/23ai"
+      },
+      {
+        "title": "Oracle GoldenGate",
+        "text": "12c and 19c"
+      },
+      {
+        "title": "Oracle Exadata X9M",
+        "text": "Exadata platform specialization"
+      },
+      {
+        "title": "Oracle RAC, ASM and Grid",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle Cloud Infrastructure",
+        "text": "Professional and OCI Specialist"
+      },
+      {
+        "title": "Oracle Database Migration",
+        "text": "Cloud Professional"
+      },
+      {
+        "title": "Oracle Database@AWS",
+        "text": "Architect Professional"
+      },
+      {
+        "title": "Oracle Autonomous Database",
+        "text": "Cloud Professional"
+      },
+      {
+        "title": "Oracle Multicloud",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle AI Vector",
+        "text": "Professional"
+      },
+      {
+        "title": "Oracle Linux",
+        "text": "Specialist"
+      },
+      {
+        "title": "MySQL",
+        "text": "Administrator Professional"
+      }
+    ],
+    "contact_title": "Let’s connect.",
+    "contact_text": "Available for opportunities in Oracle Database, DBRE, Cloud, Exadata, Platform Engineering, SRE, automation, and mission-critical environments."
+  }
+}

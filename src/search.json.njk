@@ -1,0 +1,18 @@
+---
+permalink: /search.json
+eleventyExcludeFromCollections: true
+---
+[
+{%- for post in collections.posts %}
+  {
+    "titulo": {{ post.data.title | json | safe }},
+    "url": {{ post.url | json | safe }},
+    "data": {{ (post.date | dataCurta) | json | safe }},
+    "tipo": {{ (post.data.tipo or "blog") | json | safe }},
+    "categoria": {{ (post.data.categoria or "") | json | safe }},
+    "tags": {{ (post.data.tags | semPostsTag) | json | safe }},
+    "resumo": {{ (post | resumo) | json | safe }},
+    "texto": {{ (post.content | textoPuro | truncate(4000)) | json | safe }}
+  }{% if not loop.last %},{% endif %}
+{%- endfor %}
+]

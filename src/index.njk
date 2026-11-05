@@ -1,0 +1,115 @@
+---
+layout: layouts/base.njk
+bodyClass: pagina-inicio
+---
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-texto">
+      <span class="kicker">Blog · Artigos · Projetos · Currículo</span>
+      <h1>Olá, eu sou <span class="destaque">Renato Barros</span>.</h1>
+      <p class="hero-cargo">{{ cv.pt.hero.role }} — {{ cv.pt.hero.focus }}</p>
+      <p class="hero-lead">{{ cv.pt.hero.summary }} Neste espaço eu escrevo sobre <strong>Oracle, Exadata, alta disponibilidade, Cloud e automação</strong> — o que funciona (e o que não funciona) em ambientes de missão crítica.</p>
+      <div class="hero-acoes">
+        <a class="btn btn-primario" href="/blog/">Ler o blog</a>
+        <a class="btn" href="/curriculo/">Ver currículo</a>
+        <a class="btn btn-fantasma" href="/sobre/">Sobre mim →</a>
+      </div>
+      <ul class="hero-numeros">
+        <li><strong>25+</strong><span>anos em TI</span></li>
+        <li><strong>52</strong><span>certificações Oracle</span></li>
+        <li><strong>4</strong><span>bancos: Oracle, SQL Server, MySQL, PostgreSQL</span></li>
+        <li><strong>{{ projetos.length }}</strong><span>projetos técnicos publicados</span></li>
+      </ul>
+    </div>
+    <div class="hero-foto">
+      <img src="{{ site.autor.fotoAmbiente }}" alt="Renato Barros em seu escritório" width="1086" height="1448">
+      <div class="hero-foto-tag"><span class="ponto"></span>Aberto a novas oportunidades</div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa-temas" aria-label="Temas do blog">
+  <div class="container">
+    <div class="temas-scroll">
+      {% for t in ["Oracle Database", "Exadata", "RAC & ASM", "Data Guard", "GoldenGate", "RMAN", "Performance Tuning", "OCI", "AWS & Azure", "PostgreSQL", "SQL Server", "MySQL", "Linux", "Python & Shell", "Terraform & Ansible"] %}<span>{{ t }}</span>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<div class="container layout-com-sidebar">
+  <div class="coluna-principal">
+    <div class="secao-cabecalho">
+      <h2 class="secao-titulo">Publicações recentes</h2>
+      <a class="link-seta" href="/arquivo/">Ver todas →</a>
+    </div>
+    {% set recentes = collections.posts | limitar(6) %}
+    {% if recentes.length %}
+      {% set primeiro = recentes[0] %}
+      <article class="post-destaque">
+        <a class="post-card-capa" href="{{ primeiro.url }}" tabindex="-1" aria-hidden="true">
+          {% if primeiro.data.capa %}<img src="{{ primeiro.data.capa }}" alt="">{% else %}<span class="capa-gerada grande" data-cat="{{ primeiro.data.categoria | slug }}"><span>{{ primeiro.data.categoria }}</span></span>{% endif %}
+        </a>
+        <div class="post-card-corpo">
+          <div class="post-meta">
+            <span class="selo selo-{{ primeiro.data.tipo or 'blog' }}">{{ "Artigo" if primeiro.data.tipo == "artigo" else "Blog" }}</span>
+            <span class="selo selo-novo">Mais recente</span>
+          </div>
+          <h3 class="post-card-titulo"><a href="{{ primeiro.url }}">{{ primeiro.data.title }}</a></h3>
+          <p class="post-card-resumo">{{ primeiro | resumo }}</p>
+          <div class="post-meta post-meta-rodape"><time datetime="{{ primeiro.date | dataISO }}">{{ primeiro.date | dataBR }}</time><span>·</span><span>{{ primeiro.content | tempoLeitura }} min de leitura</span></div>
+        </div>
+      </article>
+      <div class="lista-posts">
+        {% for post in recentes %}{% if not loop.first %}{% include "partials/post-card.njk" %}{% endif %}{% endfor %}
+      </div>
+    {% else %}
+      <p class="vazio">Em breve, os primeiros posts.</p>
+    {% endif %}
+
+    {% if collections.artigos.length %}
+    <div class="secao-cabecalho">
+      <h2 class="secao-titulo">Artigos técnicos</h2>
+      <a class="link-seta" href="/artigos/">Todos os artigos →</a>
+    </div>
+    <ol class="lista-artigos">
+      {% for post in collections.artigos | limitar(5) %}
+      <li>
+        <a href="{{ post.url }}">
+          <span class="artigo-num">{{ loop.index if loop.index >= 10 else "0" + loop.index }}</span>
+          <span class="artigo-info"><strong>{{ post.data.title }}</strong><small>{{ post.data.categoria }} · {{ post.date | dataCurta }} · {{ post.content | tempoLeitura }} min</small></span>
+        </a>
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+  </div>
+  {% include "partials/sidebar.njk" %}
+</div>
+
+<section class="secao-projetos">
+  <div class="container">
+    <div class="secao-cabecalho">
+      <div>
+        <span class="kicker">Portfólio</span>
+        <h2 class="secao-titulo">Projetos e materiais técnicos</h2>
+      </div>
+      <a class="link-seta" href="/projetos/">Ver os {{ projetos.length }} projetos →</a>
+    </div>
+    <div class="grade-projetos">
+      {% for p in projetos %}{% if p.destaque %}{% include "partials/projeto-card.njk" %}{% endif %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-contato">
+  <div class="container cta-grid">
+    <div>
+      <h2>Vamos conversar?</h2>
+      <p>{{ cv.pt.contact_text }}</p>
+    </div>
+    <div class="hero-acoes">
+      <a class="btn btn-primario" href="/contato/">Entrar em contato</a>
+      <a class="btn" href="/CV_Renato_Barros_2026.pdf" download>Baixar CV (PDF)</a>
+    </div>
+  </div>
+</section>

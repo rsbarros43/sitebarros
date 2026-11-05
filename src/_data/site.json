@@ -1,0 +1,29 @@
+{
+  "titulo": "Renato Barros",
+  "subtitulo": "Blog sobre Oracle, Exadata, Cloud e Engenharia de Bancos de Dados",
+  "descricao": "Blog, artigos, projetos e currículo de Renato Barros — Principal Engineer Multidatabase. Oracle, Exadata, RAC, Data Guard, GoldenGate, OCI, performance tuning e automação.",
+  "url": "https://barros.inf.br",
+  "idioma": "pt-BR",
+  "autor": {
+    "nome": "Renato Barros",
+    "cargo": "Principal Engineer Multidatabase",
+    "bio": "Mais de 25 anos em TI, com foco em Oracle Database, Exadata, alta disponibilidade, Cloud e automação. Aqui compartilho o que aprendo no dia a dia de ambientes críticos.",
+    "foto": "/assets/renato-perfil.jpg",
+    "fotoAmbiente": "/assets/renato-office-realistic.jpeg",
+    "local": "Jandira, SP — Brasil",
+    "email": "rsbarros43@hotmail.com",
+    "whatsapp": "5511970823355",
+    "linkedin": "https://www.linkedin.com/in/renatotitelecom/",
+    "github": "https://github.com/rsbarros43"
+  },
+  "menu": [
+    { "texto": "Início", "url": "/" },
+    { "texto": "Sobre mim", "url": "/sobre/" },
+    { "texto": "Blog", "url": "/blog/" },
+    { "texto": "Artigos", "url": "/artigos/" },
+    { "texto": "Projetos", "url": "/projetos/" },
+    { "texto": "Currículo", "url": "/curriculo/" },
+    { "texto": "Contato", "url": "/contato/" }
+  ],
+  "postsPorPagina": 8
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="8">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Pipelines Tekton</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(8)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>09. Pipelines Tekton</h2>
+<p>Tekton é o mecanismo de CI/CD usado pelo OpenShift Pipelines. Nesta etapa vamos entender a pipeline que clona o repositório, constrói a imagem e realiza o deploy da aplicação Flask.</p>
+<h3>O que é CI/CD, em bom português?</h3><p><b>CI</b> (Continuous Integration / Integração Contínua) é o hábito de testar e validar o código automaticamente toda vez que alguém muda algo, em vez de só descobrir problemas depois. <b>CD</b> (Continuous Delivery/Deployment / Entrega Contínua) é levar essa mudança já validada até o ambiente rodando, de forma automática, sem alguém precisando copiar arquivos ou rodar comandos manualmente a cada nova versão. Juntas, essas duas práticas formam a <b>pipeline</b>: uma esteira de etapas encadeadas (clonar código → construir imagem → publicar → atualizar a aplicação) que roda sozinha a cada mudança.</p>
+<div class="callout"><b>Pipeline principal:</b> clone-repository → build-and-push-image → deploy-to-openshift.</div>
+<h3>Componentes principais</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>Task:</b> uma unidade reutilizável de trabalho — pense nela como "uma etapa" da esteira (ex: só clonar o repositório).</div>
+<div class="lesson-item"><b>Pipeline:</b> encadeamento de tasks, na ordem em que devem rodar.</div>
+<div class="lesson-item"><b>PipelineRun:</b> execução concreta de uma pipeline — cada vez que a esteira roda de verdade, gera um PipelineRun novo, com seu próprio histórico e log.</div>
+<div class="lesson-item"><b>Workspace:</b> área compartilhada entre tasks — por exemplo, a Task que clona o código e a Task que constrói a imagem precisam acessar os mesmos arquivos, e é o Workspace que permite isso.</div>
+<div class="lesson-item"><b>Params:</b> valores passados dinamicamente, como URL do repositório e branch.</div>
+</div>
+<h3>Fluxo visual</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>1.</b> Clonar repositório GitHub.</div>
+<div class="lesson-item"><b>2.</b> Construir imagem da aplicação Flask.</div>
+<div class="lesson-item"><b>3.</b> Publicar imagem no OpenShift Internal Registry.</div>
+<div class="lesson-item"><b>4.</b> Atualizar Deployment no namespace <b>tekton-lab</b>.</div>
+</div>
+<h3>Laboratório guiado</h3>
+<p><b>1. Aplicar Tasks</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f tekton/tasks/clone-repository.yaml
+oc apply -f tekton/tasks/build-and-push-image.yaml
+oc apply -f tekton/tasks/deploy-to-openshift.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f tekton/tasks/clone-repository.yaml
+oc apply -f tekton/tasks/build-and-push-image.yaml
+oc apply -f tekton/tasks/deploy-to-openshift.yaml</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc apply -f tekton/tasks/clone-repository.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div> <button class="btn" onclick="runStep('oc apply -f tekton/tasks/build-and-push-image.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div> <button class="btn" onclick="runStep('oc apply -f tekton/tasks/deploy-to-openshift.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Aplicar Pipeline</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f tekton/pipelines/pipeline.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f tekton/pipelines/pipeline.yaml</div><div class="run-row"><button class="btn" onclick="runStep('oc apply -f tekton/pipelines/pipeline.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Criar execução manual</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc create -f tekton/pipelineruns/manual-pipelinerun.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc create -f tekton/pipelineruns/manual-pipelinerun.yaml</div><div class="run-row"><button class="btn" onclick="runStep('oc create -f tekton/pipelineruns/manual-pipelinerun.yaml',this); runPipelineViz();">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Ver logs da PipelineRun</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`tkn pipelinerun logs flask-app-run -f`)" title="Clique para enviar este comando para a linha do terminal">tkn pipelinerun logs flask-app-run -f</div><div class="run-row"><button class="btn" onclick="runStep('tkn pipelinerun logs flask-app-run -f',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<h3>Erro comum</h3>
+<div class="okbox"><b>InvalidWorkspaceBindings</b> acontece quando a Pipeline exige um workspace obrigatório, mas o PipelineRun não recebeu o binding correto.</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+crc setup
+crc start
+crc console
+oc login
+oc whoami
+oc get projects
+oc get pods
+oc get nodes
+oc get all
+oc new-project tekton-lab
+oc apply -f openshift/deployment.yaml
+tkn pipelinerun logs flask-app-run -f
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc apply -f tekton/tasks/clone-repository.yaml\')">oc apply -f tekton/tasks/clone-repository.yaml</button><button onclick="fillCommand(\'oc apply -f tekton/pipelines/pipeline.yaml\')">oc apply -f tekton/pipelines/pipeline.yaml</button><button onclick="fillCommand(\'oc create -f tekton/pipelineruns/manual-pipelinerun.yaml\')">oc create -f tekton/pipelineruns/manual-pipelinerun.yaml</button><button onclick="fillCommand(\'tkn pipelinerun logs flask-app-run -f\')">tkn pipelinerun logs flask-app-run -f</button></div></div></div>
+<div class="pipeline-viz hidden" id="pipelineViz">
+  <div class="pipeline-viz-head">PipelineRun: <b>flask-app-run</b></div>
+  <div class="pipeline-viz-row">
+    <div class="pipeline-task" id="task-clone"><div class="task-icon">○</div><div class="task-name">clone-repository</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-task" id="task-build"><div class="task-icon">○</div><div class="task-name">build-and-push-image</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-task" id="task-deploy"><div class="task-icon">○</div><div class="task-name">deploy-to-openshift</div></div>
+  </div>
+  <div class="pipeline-viz-status" id="pipelineVizStatus">Aguardando início...</div>
+</div>
+</div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

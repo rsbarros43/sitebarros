@@ -1,0 +1,19 @@
+{
+  "name": "barros-inf-br",
+  "version": "4.0.0",
+  "description": "Site pessoal, blog e currículo de Renato Barros — barros.inf.br",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "eleventy --serve --port 8080",
+    "build": "eleventy",
+    "novo-post": "node scripts/novo-post.js"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "@11ty/eleventy-plugin-rss": "^2.0.4",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "markdown-it": "^15.0.3",
+    "markdown-it-anchor": "^9.2.1"
+  }
+}

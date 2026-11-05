@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="6">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Explorando o cluster</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(6)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>07. Explorando o cluster OpenShift</h2>
+<p>Agora que o projeto existe, o próximo passo é entender como observar o cluster. Um bom profissional OpenShift precisa saber navegar por nodes, pods, deployments, services, routes, events e objetos de configuração.</p>
+<div class="callout"><b>Fundamento:</b> OpenShift adiciona experiência enterprise ao Kubernetes com Router, Console Web, Operators, SCC, Registry interno e comandos <code>oc</code>.</div>
+<h3>Mapa mental do cluster</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>Node:</b> máquina onde os workloads executam. No CRC, normalmente é um nó único.</div>
+<div class="lesson-item"><b>Pod:</b> menor unidade executável, contendo um ou mais containers.</div>
+<div class="lesson-item"><b>Deployment:</b> controla rollout, réplica e atualização da aplicação.</div>
+<div class="lesson-item"><b>Service:</b> cria acesso interno estável para pods.</div>
+<div class="lesson-item"><b>Route:</b> expõe a aplicação para acesso externo no OpenShift.</div>
+<div class="lesson-item"><b>ConfigMap:</b> armazena configuração não-sensível (variáveis de ambiente, arquivos de config) desacoplada da imagem do container.</div>
+<div class="lesson-item"><b>Secret:</b> igual ao ConfigMap, mas para dados sensíveis (senhas, tokens, certificados) — o conteúdo fica em base64 e pode ser criptografado em repouso no etcd.</div>
+<div class="lesson-item"><b>Operator:</b> uma aplicação que administra outras aplicações. Encapsula conhecimento operacional (instalar, atualizar, fazer backup) em forma de controller — é assim que o OpenShift instala coisas como Tekton, monitoramento e bancos de dados de forma automatizada.</div>
+</div>
+<h3>Tipos de Service</h3><p>O Service tem três tipos principais, e escolher o certo importa na prática:</p><div class="lesson-list"><div class="lesson-item"><b>ClusterIP</b> (padrão): expõe o serviço só dentro do cluster. É o que usamos no deploy da aplicação Flask — o Service fica interno, e quem expõe pra fora é a Route.</div><div class="lesson-item"><b>NodePort:</b> abre uma porta fixa em todos os nodes do cluster, permitindo acesso externo direto sem depender de Route/Ingress. Menos comum no OpenShift, mais usado em Kubernetes puro.</div><div class="lesson-item"><b>LoadBalancer:</b> pede um load balancer externo ao provedor de nuvem (AWS, Azure, GCP). Não se aplica ao CRC local, já que não há um cloud provider por trás.</div></div>
+<h3>Laboratório guiado</h3>
+<p><b>1. Verificar os nodes</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get nodes`)" title="Clique para enviar este comando para a linha do terminal">oc get nodes</div><div class="run-row"><button class="btn" onclick="runStep('oc get nodes',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Verificar pods do projeto atual</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get pods -o wide`)" title="Clique para enviar este comando para a linha do terminal">oc get pods -o wide</div><div class="run-row"><button class="btn" onclick="runStep('oc get pods -o wide',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Ver todos os recursos do projeto</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get all`)" title="Clique para enviar este comando para a linha do terminal">oc get all</div><div class="run-row"><button class="btn" onclick="runStep('oc get all',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Ver eventos recentes</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get events --sort-by=.lastTimestamp`)" title="Clique para enviar este comando para a linha do terminal">oc get events --sort-by=.lastTimestamp</div><div class="run-row"><button class="btn" onclick="runStep('oc get events --sort-by=.lastTimestamp',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>5. Inspecionar o node</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc describe node crc-xxxxx-master-0`)" title="Clique para enviar este comando para a linha do terminal">oc describe node crc-xxxxx-master-0</div><div class="run-row"><button class="btn" onclick="runStep('oc describe node',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<h3>Resumo operacional</h3>
+<div class="okbox">Para troubleshooting, pense nesta ordem: <b>oc get</b> para listar, <b>oc describe</b> para investigar, <b>oc logs</b> para analisar aplicação e <b>oc events</b> para entender falhas recentes.</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+crc setup
+crc start
+crc console
+oc login
+oc whoami
+oc get projects
+oc get pods
+oc get nodes
+oc get all
+oc new-project tekton-lab
+oc apply -f openshift/deployment.yaml
+tkn pipelinerun logs flask-app-run -f
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc get nodes\')">oc get nodes</button><button onclick="fillCommand(\'oc get pods -o wide\')">oc get pods -o wide</button><button onclick="fillCommand(\'oc get events --sort-by=.lastTimestamp\')">oc get events --sort-by=.lastTimestamp</button><button onclick="fillCommand(\'oc describe node\')">oc describe node</button></div></div></div></div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

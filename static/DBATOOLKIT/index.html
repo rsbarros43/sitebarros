@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DBATOOLKIT — Portal Enterprise para DBAs</title>
+  <meta name="description" content="Guia prático de comandos para DBAs. Oracle, SQL Server, PostgreSQL e MySQL — habilitar archivelog, verificar locks, backup, restore e muito mais. Exemplos prontos para copiar e usar." />
+  <meta name="keywords" content="DBA, Oracle, SQL Server, PostgreSQL, MySQL, archivelog, redo log, locks, tablespace, backup, restore, comandos DBA, banco de dados" />
+  <meta name="author" content="Renato Barros" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (WhatsApp, LinkedIn, Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rsbarros43.github.io/DBATOOLKIT/" />
+  <meta property="og:title" content="DBATOOLKIT — Comandos do Dia a Dia para DBAs" />
+  <meta property="og:description" content="Guia prático de comandos para DBAs. Oracle, SQL Server, PostgreSQL e MySQL com exemplos prontos para usar." />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- JSON-LD: informações do site para o Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DBATOOLKIT",
+    "url": "https://rsbarros43.github.io/DBATOOLKIT/",
+    "description": "Guia prático de comandos para DBAs. Oracle, SQL Server, PostgreSQL e MySQL.",
+    "inLanguage": "pt-BR",
+    "author": {
+      "@type": "Person",
+      "name": "Renato Barros",
+      "jobTitle": "DBA Sênior & CTO",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Barros & Barros Consultoria e Suporte",
+        "url": "https://barros.inf.br/"
+      }
+    }
+  }
+  </script>
+
+  <!-- JSON-LD dinâmico por tópico (atualizado via JS) -->
+  <script type="application/ld+json" id="topicSchema"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-821QH75H1Q');</script>
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=320" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.v3.2.0.css?v=320" />
+  <link rel="canonical" href="https://rsbarros43.github.io/DBATOOLKIT/" />
+</head>
+<body>
+  <header class="portal-topbar">
+    <button class="portal-brand" type="button" onclick="showWelcomeScreen()">
+      <span class="portal-brand-icon">DB</span>
+      <span class="portal-brand-copy">
+        <strong>DBATOOLKIT</strong>
+        <small>Portal Enterprise de Operações de Banco de Dados</small>
+      </span>
+    </button>
+
+    <div class="portal-topbar-actions">
+      <label class="portal-search">
+        <span>⌕</span>
+        <input type="text" id="topSearchInput" placeholder="Pesquisar comandos..." autocomplete="off">
+      </label>
+      <button class="portal-theme-button" id="portalThemeButton" type="button" aria-label="Alternar tema">◐</button>
+      <button id="themeToggle" type="button" hidden aria-hidden="true"></button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar portal-sidebar" id="sidebar">
+    <div class="sidebar-project-card">
+      <div class="sidebar-database-logo">
+        <svg width="54" height="54" viewBox="0 0 26 26" fill="none">
+          <ellipse cx="13" cy="6.5" rx="8" ry="3"/>
+          <path d="M5 6.5v13M21 6.5v13" stroke-linecap="round"/>
+          <ellipse cx="13" cy="13" rx="8" ry="3"/>
+          <ellipse cx="13" cy="19.5" rx="8" ry="3"/>
+        </svg>
+      </div>
+      <h2>DBATOOLKIT</h2>
+      <p>Guia técnico para administração, diagnóstico e performance.</p>
+      <div class="sidebar-stat">
+        <strong>35</strong>
+        <span>Tópicos técnicos</span>
+      </div>
+      <div class="sidebar-pill-row">
+        <span>DBA</span>
+        <span>DBRE</span>
+      </div>
+    </div>
+
+    <section class="sidebar-info-card">
+      <h3>SOBRE O PROJETO</h3>
+      <p>Procedimentos práticos para Oracle, SQL Server, PostgreSQL e MySQL em ambientes críticos.</p>
+    </section>
+
+    <section class="sidebar-info-card">
+      <h3>AUTOR</h3>
+      <strong>Renato Barros</strong>
+      <p>Principal Database Engineer • DBRE • Infrastructure • DevOps • Cloud</p>
+    </section>
+
+    <section class="sidebar-info-card sidebar-tech-card">
+      <h3>TECNOLOGIAS</h3>
+      <p class="sidebar-menu-help">Clique em um banco para abrir ou recolher seus tópicos.</p>
+      <nav class="nav portal-tech-nav" id="nav"></nav>
+    </section>
+
+    <div class="sidebar-functional">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar comandos..." autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
+        <button class="search-clear" id="searchClear" aria-label="Limpar busca">×</button>
+      </div>
+      <div class="search-dropdown hidden" id="searchDropdown"></div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <button class="admin-lock-btn" id="adminLockBtn" title="Acesso admin">
+        <svg id="lockIcon" width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span id="adminLockLabel">Admin</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- OVERLAY (mobile) -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+    <div class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">&#9776;</button>
+      <button class="back-btn hidden" id="backBtn">&#8592; Voltar</button>
+    </div>
+
+    <div class="content-area" id="contentArea">
+      <div class="welcome" id="welcome">
+        <div class="welcome-inner">
+          <section class="oci-style-hero">
+            <div class="hero-content">
+              <div class="hero-console-badge">dbatoolkit&gt; operations --enterprise</div>
+              <h1>DBATOOLKIT</h1>
+              <h2>Enterprise Database Operations</h2>
+              <p>
+                Um portal técnico e visual para administração, diagnóstico, performance,
+                alta disponibilidade e automação de bancos de dados. Explore procedimentos
+                para Oracle, SQL Server, PostgreSQL e MySQL em uma jornada prática e organizada.
+              </p>
+
+              <div class="hero-topic-chips">
+                <span>🗄️ Database</span>
+                <span>⚙️ DBRE</span>
+                <span>📈 Performance</span>
+                <span>🛡️ Availability</span>
+                <span>☁️ Cloud</span>
+                <span>🤖 Automation</span>
+              </div>
+
+              <button class="hero-start-button" type="button" onclick="document.getElementById('databasePlatforms').scrollIntoView({behavior:'smooth'})">
+                Começar a explorar →
+              </button>
+            </div>
+
+            <div class="hero-visual">
+              <div class="hero-visual-label">DATABASE OPERATIONS</div>
+              <div class="database-map">
+                <div class="map-node node-oracle">Oracle</div>
+                <div class="map-node node-sql">SQL</div>
+                <div class="map-node node-core">DBRE</div>
+                <div class="map-node node-postgres">PG</div>
+                <div class="map-node node-mysql">MySQL</div>
+                <span class="map-line line-one"></span>
+                <span class="map-line line-two"></span>
+                <span class="map-line line-three"></span>
+                <span class="map-line line-four"></span>
+              </div>
+              <div class="hero-mini-terminal"><span>renato.barros@barros.inf.br:~$</span> monitor --all-databases</div>
+            </div>
+          </section>
+
+          <section class="portal-info-grid">
+            <article>
+              <h3>🎯 Objetivo</h3>
+              <p>Centralizar comandos e procedimentos técnicos para acelerar diagnósticos e operações de banco de dados.</p>
+            </article>
+            <article>
+              <h3>👥 Público-alvo</h3>
+              <p>DBAs, DBREs, DevOps, SREs, profissionais de infraestrutura, cloud e estudantes.</p>
+            </article>
+            <article>
+              <h3>📚 O que você encontrará</h3>
+              <ul>
+                <li>Administração e segurança</li>
+                <li>Backup e recuperação</li>
+                <li>Performance e troubleshooting</li>
+                <li>Automação operacional</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🚀 Competências</h3>
+              <p>Investigar incidentes, operar ambientes críticos e aplicar boas práticas de disponibilidade e desempenho.</p>
+            </article>
+          </section>
+
+          <section class="database-platforms" id="databasePlatforms">
+            <div class="portal-section-title">
+              <span>PLATAFORMAS</span>
+              <h2>Escolha um banco de dados</h2>
+              <p>Selecione uma tecnologia para acessar seus tópicos, descrições e comandos.</p>
+            </div>
+            <div class="welcome-cards" id="welcomeCards"></div>
+          </section>
+
+          <div class="author-card">
+            <div class="author-avatar author-initials" aria-label="Renato Barros">RB</div>
+            <div class="author-info">
+              <div class="author-name">Renato Barros</div>
+              <div class="author-role">Principal Database Engineer · DBRE · Infrastructure · DevOps · Database &amp; Cloud Specialist</div>
+              <div class="author-bio">
+                Mais de 25 anos em Tecnologia da Informação, com atuação em Oracle Database,
+                Exadata, RAC, Data Guard, GoldenGate, OCI, automação, alta disponibilidade e performance.
+              </div>
+              <div class="certification-title">Certificações e especializações</div>
+              <div class="author-certs certification-grid">
+                <span class="author-cert cert-badge"><strong>OCP</strong> Oracle Database 19c</span>
+                <span class="author-cert cert-badge"><strong>OCP</strong> Oracle Database 23ai</span>
+                <span class="author-cert cert-badge"><strong>OCP</strong> Oracle GoldenGate</span>
+                <span class="author-cert cert-badge"><strong>OCP</strong> Exadata X9M</span>
+                <span class="author-cert cert-badge"><strong>MYSQL</strong> Administrator Professional</span>
+                <span class="author-cert cert-badge"><strong>LINUX</strong> Professional</span>
+                <span class="author-cert cert-badge cert-more"><strong>+</strong> Outras certificações</span>
+              </div>
+              <div class="author-links"></div>
+            </div>
+          </div>
+
+          <section class="terminal-demo" aria-label="Demonstração de terminal">
+            <div class="terminal-header">
+              <div class="terminal-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="terminal-title">dbatoolkit-terminal — diagnóstico e monitoramento Oracle</div>
+              <button class="terminal-replay" type="button" id="terminalReplay">Executar novamente</button>
+            </div>
+
+            <div class="terminal-body" id="terminalBody">
+              <div class="terminal-section">
+                <div class="terminal-section-label">01 · Verificação do ambiente</div>
+                <div class="terminal-line"><span class="terminal-prompt">renato.barros@barros.inf.br:~$</span> <span class="terminal-command">./check_oracle_database.sh ORCL</span></div>
+                <div class="terminal-output terminal-muted">[INFO] Iniciando diagnóstico do banco ORCL...</div>
+                <div class="terminal-output"><span class="terminal-ok">[OK]</span> Instância: OPEN · Versão: Oracle Database 19c</div>
+                <div class="terminal-output"><span class="terminal-ok">[OK]</span> Archive Log: ENABLED · FRA: 42% utilizada</div>
+                <div class="terminal-output"><span class="terminal-warn">[WARN]</span> Tablespace USERS: 82% utilizado</div>
+                <div class="terminal-output"><span class="terminal-ok">[OK]</span> Backup RMAN: concluído há 03h18min</div>
+                <div class="terminal-output terminal-summary">Diagnóstico concluído: 3 verificações OK · 1 atenção · 0 erros críticos</div>
+              </div>
+
+              <div class="terminal-section terminal-sql-report">
+                <div class="terminal-section-label">02 · Relatório visual de sessões e TOP SQL</div>
+                <div class="terminal-line"><span class="terminal-prompt">renato.barros@barros.inf.br:~$</span> <span class="terminal-command">./top_sql_monitor.sh --database ORCL --limit 5</span></div>
+                <div class="terminal-output terminal-muted">[INFO] Coletando sessões ativas, CPU, memória e comandos em execução...</div>
+
+                <div class="terminal-table-wrap">
+                  <table class="terminal-table" aria-label="Exemplo de relatório TOP SQL">
+                    <thead>
+                      <tr>
+                        <th>SQL_ID</th>
+                        <th>Usuário</th>
+                        <th>Máquina</th>
+                        <th>Comando</th>
+                        <th>CPU</th>
+                        <th>Memória</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>7g8m4k2p9z1xq</code></td>
+                        <td>APP_FIN</td>
+                        <td>app-fin-01</td>
+                        <td class="sql-command">SELECT fechamento_mensal...</td>
+                        <td><span class="metric-high">86.4%</span></td>
+                        <td>1.28 GB</td>
+                        <td><span class="status-chip running">EXECUTANDO</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>2n5d8c7v1b4ma</code></td>
+                        <td>ERP_PROD</td>
+                        <td>erp-api-03</td>
+                        <td class="sql-command">UPDATE pedidos SET...</td>
+                        <td><span class="metric-medium">48.7%</span></td>
+                        <td>742 MB</td>
+                        <td><span class="status-chip waiting">AGUARDANDO I/O</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>9q1w6e3r8t5yu</code></td>
+                        <td>BI_READ</td>
+                        <td>powerbi-gw-02</td>
+                        <td class="sql-command">SELECT vendas_por_regiao...</td>
+                        <td>27.1%</td>
+                        <td>516 MB</td>
+                        <td><span class="status-chip running">EXECUTANDO</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>4a7s2d9f6g3hj</code></td>
+                        <td>BATCH</td>
+                        <td>batch-ora-01</td>
+                        <td class="sql-command">MERGE INTO staging_clientes...</td>
+                        <td>18.5%</td>
+                        <td>388 MB</td>
+                        <td><span class="status-chip completed">CONCLUÍDO</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="terminal-report-footer">
+                  <span><strong>SQL crítico:</strong> 7g8m4k2p9z1xq</span>
+                  <span><strong>Maior consumo:</strong> 86.4% CPU</span>
+                  <span><strong>Ação sugerida:</strong> validar plano de execução e estatísticas</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <article class="topic-view hidden" id="topicView"></article>
+      <div class="search-results hidden" id="searchResults"></div>
+    </div>
+
+    <!-- B&B ENTERPRISE FOOTER -->
+    <footer class="bb-enterprise-footer" aria-label="Informações institucionais">
+      <div class="bb-footer-glow" aria-hidden="true"></div>
+
+      <div class="bb-footer-inner">
+        <div class="bb-footer-brand">
+          <div class="bb-footer-logo" aria-hidden="true">B&amp;B</div>
+          <div class="bb-footer-heading">
+            <strong>Desenvolvido por Renato Barros</strong>
+            <span>Barros &amp; Barros Consultoria e Suporte</span>
+          </div>
+        </div>
+
+        <div class="bb-footer-specialties" aria-label="Especialidades">
+          <span><i>🗄️</i> Oracle Database</span>
+          <span><i>🖥️</i> SQL Server</span>
+          <span><i>🐘</i> PostgreSQL</span>
+          <span><i>🐬</i> MySQL</span>
+          <span><i>⚙️</i> DBRE</span>
+          <span><i>🏗️</i> Infrastructure</span>
+          <span><i>🔄</i> DevOps</span>
+          <span><i>🛡️</i> Network/Security</span>
+          <span><i>☁️</i> Multi-Cloud Technologies</span>
+        </div>
+
+        <p class="bb-footer-description">
+          Plataforma desenvolvida para administração de bancos de dados, documentação técnica,
+          automação, estudos e demonstração de boas práticas em ambientes corporativos.
+        </p>
+
+        <div class="bb-footer-copyright">
+          © 2026 Barros &amp; Barros Consultoria e Suporte. Todos os direitos reservados.
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- MODAL: EDITOR DE TÓPICO -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Novo Tópico</h2>
+        <button class="modal-close-btn" id="modalCloseBtn">&#10005;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group" id="formCatGroup">
+          <label class="form-label">Banco de dados</label>
+          <select class="form-select" id="formCat"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Título</label>
+          <input type="text" class="form-input" id="formTitle" placeholder="Ex: Como criar um índice" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição curta</label>
+          <textarea class="form-textarea" id="formDesc" rows="2" placeholder="Explique em uma frase o que esse tópico faz"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tags <span class="form-hint">(separadas por vírgula)</span></label>
+          <input type="text" class="form-input" id="formTags" placeholder="Ex: índice, performance, criação" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nota de introdução <span class="form-hint">(opcional)</span></label>
+          <select class="form-select" id="formNoteType" style="max-width:220px">
+            <option value="">Sem nota</option>
+            <option value="warning">⚠️ Atenção</option>
+            <option value="info">ℹ️ Informação</option>
+            <option value="tip">💡 Dica</option>
+            <option value="result">✅ Resultado esperado</option>
+          </select>
+          <textarea class="form-textarea" id="formNoteText" rows="2" placeholder="Texto da nota..." style="display:none;margin-top:8px"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Passos</label>
+          <div id="stepsContainer"></div>
+          <button type="button" class="add-step-btn" id="addStepBtn">+ Adicionar Passo</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalCancelBtn">Cancelar</button>
+        <button class="btn-primary" id="modalSaveBtn">Salvar e Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: LOGIN ADMIN -->
+  <div class="modal-overlay hidden" id="loginModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Acesso Admin
+        </h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="Digite a senha" />
+          <div class="form-error" id="loginError"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="loginCancelBtn">Cancelar</button>
+        <button class="btn-primary" id="loginSubmitBtn">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ADMIN PREVIEW v3.2.0 -->
+  <div class="admin-preview-login hidden" id="adminPreviewLogin" aria-hidden="true">
+    <div class="admin-preview-backdrop"></div>
+    <section class="admin-login-card" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+      <div class="admin-login-head">
+        <div class="admin-login-icon">🔐</div>
+        <div>
+          <span class="admin-eyebrow">ÁREA RESTRITA</span>
+          <h2 id="adminLoginTitle">Acesso ao DBATOOLKIT Admin</h2>
+        </div>
+        <button class="admin-icon-button" id="adminPreviewLoginClose" type="button" aria-label="Fechar">×</button>
+      </div>
+      <div class="admin-login-body">
+        <label for="adminPreviewPassword">Senha de administrador</label>
+        <div class="admin-password-row">
+          <input type="password" id="adminPreviewPassword" placeholder="Digite a senha" autocomplete="current-password">
+          <button type="button" id="adminTogglePassword" aria-label="Mostrar senha">◉</button>
+        </div>
+        <div class="admin-login-error" id="adminPreviewError"></div>
+        <div class="admin-login-hint">
+          <span>Ambiente local de validação</span>
+          
+        </div>
+      </div>
+      <div class="admin-login-footer">
+        <button class="admin-btn secondary" id="adminPreviewCancel" type="button">Cancelar</button>
+        <button class="admin-btn primary" id="adminPreviewSubmit" type="button">Entrar no painel</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="admin-console hidden" id="adminConsole" aria-hidden="true">
+    <header class="admin-console-topbar">
+      <div class="admin-console-brand">
+        <span class="admin-console-logo">DB</span>
+        <div>
+          <strong>DBATOOLKIT Admin</strong>
+          <small>Content & Operations Console</small>
+        </div>
+      </div>
+      <div class="admin-console-actions">
+        <span class="admin-environment"><i></i> Ambiente local</span>
+        <button class="admin-top-button" id="adminOpenPublic" type="button">Ver portal</button>
+        <button class="admin-top-button danger" id="adminLogout" type="button">Sair</button>
+      </div>
+    </header>
+
+    <aside class="admin-console-sidebar">
+      <div class="admin-profile-mini">
+        <div class="admin-profile-avatar">RB</div>
+        <div>
+          <strong>Renato Barros</strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+
+      <nav class="admin-console-nav" id="adminConsoleNav">
+        <button class="active" data-admin-view="dashboard"><span>▦</span> Dashboard</button>
+        <button data-admin-view="content"><span>▤</span> Gerenciar conteúdo</button>
+        <button data-admin-view="new-topic"><span>＋</span> Novo tópico</button>
+        <button data-admin-view="profile"><span>◉</span> Perfil profissional</button>
+        <button data-admin-view="backup"><span>⇩</span> Backup e exportação</button>
+        <button data-admin-view="settings"><span>⚙</span> Configurações</button>
+      </nav>
+
+      <div class="admin-sidebar-status">
+        <span>Versão do painel</span>
+        <strong>v3.2.0 Preview</strong>
+      </div>
+    </aside>
+
+    <main class="admin-console-main">
+      <section class="admin-view active" data-admin-panel="dashboard">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">VISÃO GERAL</span>
+            <h1>Dashboard administrativo</h1>
+            <p>Acompanhe o conteúdo técnico e gerencie a evolução do DBATOOLKIT.</p>
+          </div>
+          <button class="admin-btn primary" type="button" data-go-admin-view="new-topic">＋ Novo tópico</button>
+        </div>
+
+        <div class="admin-stat-grid" id="adminStatGrid"></div>
+
+        <div class="admin-dashboard-grid">
+          <article class="admin-panel admin-chart-panel">
+            <div class="admin-panel-head">
+              <div>
+                <span class="admin-eyebrow">CONTEÚDO</span>
+                <h2>Tópicos por plataforma</h2>
+              </div>
+              <span class="admin-panel-badge">35 publicados</span>
+            </div>
+            <div class="admin-platform-bars" id="adminPlatformBars"></div>
+          </article>
+
+          <article class="admin-panel">
+            <div class="admin-panel-head">
+              <div>
+                <span class="admin-eyebrow">STATUS</span>
+                <h2>Saúde do portal</h2>
+              </div>
+            </div>
+            <div class="admin-health-list">
+              <div><span><i class="ok"></i> Arquivo de conteúdo</span><strong>Operacional</strong></div>
+              <div><span><i class="ok"></i> Navegação pública</span><strong>Operacional</strong></div>
+              <div><span><i class="ok"></i> Pesquisa de comandos</span><strong>Operacional</strong></div>
+              <div><span><i class="warn"></i> Publicação remota</span><strong>Modo local</strong></div>
+            </div>
+          </article>
+
+          <article class="admin-panel admin-activity-panel">
+            <div class="admin-panel-head">
+              <div>
+                <span class="admin-eyebrow">ATIVIDADE</span>
+                <h2>Últimas alterações</h2>
+              </div>
+              <button class="admin-link-button" type="button" data-go-admin-view="content">Ver conteúdo</button>
+            </div>
+            <div class="admin-activity-list">
+              <div class="admin-activity-item">
+                <span class="admin-activity-icon orange">DB</span>
+                <div><strong>Interface administrativa criada</strong><p>Painel de validação adicionado ao projeto.</p></div>
+                <time>agora</time>
+              </div>
+              <div class="admin-activity-item">
+                <span class="admin-activity-icon cyan">35</span>
+                <div><strong>Conteúdo técnico carregado</strong><p>Oracle, SQL Server, PostgreSQL e MySQL.</p></div>
+                <time>hoje</time>
+              </div>
+              <div class="admin-activity-item">
+                <span class="admin-activity-icon green">✓</span>
+                <div><strong>Recovery UI validada</strong><p>Menu e cards públicos preservados.</p></div>
+                <time>hoje</time>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-admin-panel="content">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">CONTEÚDO</span>
+            <h1>Gerenciar tópicos</h1>
+            <p>Consulte, filtre e prepare alterações no conteúdo técnico.</p>
+          </div>
+          <button class="admin-btn primary" type="button" data-go-admin-view="new-topic">＋ Novo tópico</button>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-content-toolbar">
+            <label class="admin-search-field">
+              <span>⌕</span>
+              <input id="adminContentSearch" type="text" placeholder="Pesquisar por título, descrição ou tag...">
+            </label>
+            <select id="adminContentFilter">
+              <option value="all">Todas as plataformas</option>
+              <option value="oracle">Oracle</option>
+              <option value="sqlserver">SQL Server</option>
+              <option value="postgresql">PostgreSQL</option>
+              <option value="mysql">MySQL</option>
+            </select>
+            <span class="admin-result-counter" id="adminResultCounter"></span>
+          </div>
+
+          <div class="admin-content-table-wrap">
+            <table class="admin-content-table">
+              <thead>
+                <tr>
+                  <th>Tópico</th>
+                  <th>Plataforma</th>
+                  <th>Tags</th>
+                  <th>Passos</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="adminContentRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-view" data-admin-panel="new-topic">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">EDITOR</span>
+            <h1>Novo tópico técnico</h1>
+            <p>Crie um rascunho de conteúdo para posterior publicação no portal.</p>
+          </div>
+          <span class="admin-draft-indicator">● Rascunho local</span>
+        </div>
+
+        <form class="admin-editor-layout" id="adminTopicForm">
+          <div class="admin-panel admin-editor-main">
+            <div class="admin-form-grid">
+              <label>
+                <span>Plataforma</span>
+                <select id="adminTopicPlatform" required>
+                  <option value="oracle">Oracle</option>
+                  <option value="sqlserver">SQL Server</option>
+                  <option value="postgresql">PostgreSQL</option>
+                  <option value="mysql">MySQL</option>
+                </select>
+              </label>
+              <label>
+                <span>Status</span>
+                <select id="adminTopicStatus">
+                  <option value="draft">Rascunho</option>
+                  <option value="review">Em revisão</option>
+                  <option value="published">Publicado</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              <span>Título do tópico</span>
+              <input id="adminTopicTitle" type="text" placeholder="Ex.: Verificar sessões bloqueadas" required>
+            </label>
+
+            <label>
+              <span>Descrição</span>
+              <textarea id="adminTopicDescription" rows="4" placeholder="Explique o objetivo e quando utilizar este procedimento." required></textarea>
+            </label>
+
+            <label>
+              <span>Tags</span>
+              <input id="adminTopicTags" type="text" placeholder="lock, sessão, performance, diagnóstico">
+              <small>Separe as tags por vírgulas.</small>
+            </label>
+
+            <div class="admin-step-editor">
+              <div class="admin-panel-head">
+                <div>
+                  <span class="admin-eyebrow">PROCEDIMENTO</span>
+                  <h2>Passos e comandos</h2>
+                </div>
+                <button class="admin-btn secondary small" id="adminAddStep" type="button">＋ Adicionar passo</button>
+              </div>
+              <div id="adminDraftSteps"></div>
+            </div>
+          </div>
+
+          <aside class="admin-panel admin-editor-side">
+            <span class="admin-eyebrow">PUBLICAÇÃO</span>
+            <h2>Resumo do conteúdo</h2>
+            <div class="admin-publish-summary">
+              <div><span>Plataforma</span><strong id="adminSummaryPlatform">Oracle</strong></div>
+              <div><span>Passos</span><strong id="adminSummarySteps">1</strong></div>
+              <div><span>Armazenamento</span><strong>LocalStorage</strong></div>
+            </div>
+            <div class="admin-editor-actions">
+              <button class="admin-btn secondary" id="adminClearDraft" type="button">Limpar formulário</button>
+              <button class="admin-btn primary" type="submit">Salvar rascunho</button>
+            </div>
+            <p class="admin-editor-note">Nesta versão de validação, novos tópicos são guardados como rascunhos locais e não alteram o conteúdo público.</p>
+          </aside>
+        </form>
+      </section>
+
+      <section class="admin-view" data-admin-panel="profile">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">IDENTIDADE</span>
+            <h1>Perfil profissional</h1>
+            <p>Visualize como seus dados profissionais serão administrados.</p>
+          </div>
+        </div>
+
+        <div class="admin-profile-layout">
+          <article class="admin-panel admin-profile-card-large">
+            <div class="admin-profile-avatar-large">RB</div>
+            <h2>Renato Barros</h2>
+            <p>Principal Database Engineer · DBRE · Infrastructure · DevOps · Database & Cloud Specialist</p>
+            <div class="admin-profile-tags">
+              <span>Oracle</span><span>Exadata</span><span>OCI</span><span>GoldenGate</span><span>Automation</span>
+            </div>
+          </article>
+
+          <form class="admin-panel admin-profile-form" id="adminProfileForm">
+            <label><span>Nome</span><input type="text" value="Renato Barros"></label>
+            <label><span>Título profissional</span><input type="text" value="Principal Database Engineer · DBRE · Infrastructure · DevOps"></label>
+            <label><span>Resumo</span><textarea rows="5">Mais de 25 anos em Tecnologia da Informação, com atuação em Oracle Database, Exadata, RAC, Data Guard, GoldenGate, OCI, automação, alta disponibilidade e performance.</textarea></label>
+            <button class="admin-btn primary" type="submit">Salvar perfil local</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="admin-view" data-admin-panel="backup">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">SEGURANÇA</span>
+            <h1>Backup e exportação</h1>
+            <p>Exporte o conteúdo e os rascunhos administrativos para um arquivo JSON.</p>
+          </div>
+        </div>
+
+        <div class="admin-backup-grid">
+          <article class="admin-panel admin-backup-card">
+            <span class="admin-backup-icon">⇩</span>
+            <h2>Exportar conteúdo completo</h2>
+            <p>Gera uma cópia dos 35 tópicos e de todos os comandos existentes.</p>
+            <button class="admin-btn primary" id="adminExportContent" type="button">Exportar content.json</button>
+          </article>
+          <article class="admin-panel admin-backup-card">
+            <span class="admin-backup-icon">◫</span>
+            <h2>Exportar rascunhos</h2>
+            <p>Gera uma cópia dos tópicos criados na área administrativa local.</p>
+            <button class="admin-btn secondary" id="adminExportDrafts" type="button">Exportar rascunhos</button>
+          </article>
+          <article class="admin-panel admin-backup-card">
+            <span class="admin-backup-icon">↥</span>
+            <h2>Importar backup</h2>
+            <p>Selecione um JSON exportado anteriormente para validação.</p>
+            <label class="admin-btn secondary admin-file-button">Selecionar JSON<input id="adminImportFile" type="file" accept=".json,application/json"></label>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-admin-panel="settings">
+        <div class="admin-page-heading">
+          <div>
+            <span class="admin-eyebrow">SISTEMA</span>
+            <h1>Configurações</h1>
+            <p>Opções previstas para a evolução do painel administrativo.</p>
+          </div>
+        </div>
+
+        <div class="admin-settings-grid">
+          <article class="admin-panel admin-setting-row">
+            <div><h2>Modo de publicação</h2><p>Define como alterações serão enviadas ao portal.</p></div>
+            <span class="admin-setting-value">Local / Preview</span>
+          </article>
+          <article class="admin-panel admin-setting-row">
+            <div><h2>Sessão administrativa</h2><p>Tempo de validade do acesso após autenticação.</p></div>
+            <span class="admin-setting-value">24 horas</span>
+          </article>
+          <article class="admin-panel admin-setting-row">
+            <div><h2>Confirmação para exclusão</h2><p>Exige confirmação antes de remover conteúdos.</p></div>
+            <label class="admin-switch"><input type="checkbox" checked><span></span></label>
+          </article>
+          <article class="admin-panel admin-setting-row">
+            <div><h2>Backups automáticos</h2><p>Recurso planejado para uma versão com backend.</p></div>
+            <label class="admin-switch"><input type="checkbox"><span></span></label>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="admin-toast hidden" id="adminToast"></div>
+  </section>
+
+
+  <!-- INTERACTIVE ENTERPRISE COMMAND SIMULATOR -->
+  <div class="command-terminal-overlay hidden" id="commandTerminalOverlay" aria-hidden="true">
+    <div class="command-terminal-backdrop" data-terminal-close></div>
+
+    <section class="command-terminal-window" role="dialog" aria-modal="true" aria-labelledby="commandTerminalTitle">
+      <header class="command-terminal-header">
+        <div class="command-terminal-lights" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="command-terminal-identity">
+          <strong id="commandTerminalTitle">Database Command Simulator</strong>
+          <span id="commandTerminalSubtitle">Ambiente demonstrativo</span>
+        </div>
+
+        <div class="command-terminal-status">
+          <span class="terminal-demo-badge">READ ONLY DEMO</span>
+          <span class="terminal-connected"><i></i> Connected</span>
+        </div>
+
+        <button class="command-terminal-close" type="button" data-terminal-close aria-label="Fechar terminal">×</button>
+      </header>
+
+      <div class="command-terminal-connection">
+        <span><strong>Plataforma:</strong> <b id="terminalPlatform">Oracle</b></span>
+        <span><strong>Database:</strong> <b id="terminalDatabase">ORCLPDB1</b></span>
+        <span><strong>Host:</strong> <b id="terminalHost">oracle19c.lab.local</b></span>
+        <span><strong>Sessão:</strong> <b id="terminalSession">SYSDBA</b></span>
+      </div>
+
+      <div class="command-terminal-toolbar">
+        <button type="button" id="terminalRunButton">▶ Executar</button>
+        <button type="button" id="terminalReplayButton">↻ Executar novamente</button>
+        <button type="button" id="terminalClearButton">⌫ Limpar</button>
+        <button type="button" id="terminalCopyButton">⧉ Copiar comando</button>
+      </div>
+
+      <div class="command-terminal-screen" id="commandTerminalScreen">
+        <div class="terminal-command-line">
+          <span class="terminal-runtime-prompt" id="terminalRuntimePrompt">SQL&gt;</span>
+          <pre id="terminalRuntimeCommand"></pre>
+        </div>
+
+        <div class="terminal-runtime-output" id="terminalRuntimeOutput">
+          <p class="terminal-runtime-muted">Clique em “Executar” para iniciar a simulação.</p>
+        </div>
+      </div>
+
+      <footer class="command-terminal-footer">
+        <span id="terminalExecutionStatus">READY</span>
+        <span id="terminalExecutionTime">Tempo: --</span>
+        <span id="terminalExecutionRows">Linhas: --</span>
+        <span>Execução fictícia para demonstração técnica</span>
+      </footer>
+    </section>
+  </div>
+
+  <script src="content.v3.2.0.js?v=320"></script>
+  <script src="app.v3.2.0.js?v=320"></script>
+  <script src="recovery.v3.2.0.js?v=320"></script>
+  <script src="admin.v3.2.0.js?v=320"></script>
+  <script src="terminal-simulator.v4.0.0.js?v=400"></script>
+</body>
+</html>

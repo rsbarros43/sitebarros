@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="10">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Projeto Final CI/CD</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(10)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>11. Projeto Final — Pipeline CI/CD completa</h2>
+<p>Este é o capítulo de fechamento prático. Aqui você não aprende conceito novo: você <b>integra tudo</b> o que foi visto do capítulo 6 ao 10 em um único fluxo, do jeito que aconteceria em um ambiente real de time de plataforma.</p>
+<div class="callout"><b>Fluxo completo:</b> GitHub Push → Webhook → EventListener → TriggerBinding/TriggerTemplate → PipelineRun → Task clone → Task build (Buildah) → Registry interno → Task deploy → Deployment/Service/Route atualizados.</div>
+<p><small><b>O que é o Buildah?</b> É a ferramenta que a Task de build usa por baixo dos panos para transformar o Dockerfile em uma imagem de container de verdade — o "forno" que executa a receita que vimos no capítulo 8.</small></p>
+<h3>Visão geral da arquitetura final</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>Namespace:</b> <code>tekton-lab</code> concentra aplicação, pipeline e triggers.</div>
+<div class="lesson-item"><b>Aplicação:</b> Flask exposta via Deployment, Service (ClusterIP) e Route (edge TLS).</div>
+<div class="lesson-item"><b>Pipeline:</b> 3 Tasks encadeadas (clone-repository, build-and-push-image, deploy-to-openshift).</div>
+<div class="lesson-item"><b>Triggers:</b> EventListener exposto via Route, recebendo webhook do GitHub através de um túnel ngrok (ambiente local).</div>
+<div class="lesson-item"><b>Observabilidade:</b> <code>oc get pipelinerun</code> e <code>oc get events</code> para confirmar que cada etapa terminou com sucesso.</div>
+</div>
+<h3>Checklist antes de considerar o projeto pronto</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>1.</b> Deployment, Service e Route da aplicação aplicados manualmente ao menos uma vez (baseline).</div>
+<div class="lesson-item"><b>2.</b> Tasks e Pipeline do Tekton aplicadas e visíveis com <code>tkn pipeline list</code> / <code>oc get pipeline</code>.</div>
+<div class="lesson-item"><b>3.</b> Execução manual da PipelineRun concluída com <code>Succeeded</code>.</div>
+<div class="lesson-item"><b>4.</b> RBAC, TriggerBinding, TriggerTemplate e EventListener aplicados no namespace.</div>
+<div class="lesson-item"><b>5.</b> Rota do EventListener exposta e alcançável via túnel (ngrok) para simular o webhook do GitHub.</div>
+<div class="lesson-item"><b>6.</b> Push simulado dispara uma nova PipelineRun automaticamente, sem intervenção manual.</div>
+</div>
+<h3>Execução ponta a ponta (laboratório guiado)</h3>
+<p><b>1. Baseline da aplicação</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f openshift/deployment.yaml
+oc apply -f openshift/service.yaml
+oc apply -f openshift/route.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f openshift/deployment.yaml
+oc apply -f openshift/service.yaml
+oc apply -f openshift/route.yaml</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc apply -f openshift/deployment.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div> <button class="btn" onclick="runStep('oc apply -f openshift/service.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div> <button class="btn" onclick="runStep('oc apply -f openshift/route.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Confirmar que a aplicação está de pé</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get deployment,svc,route,pods`)" title="Clique para enviar este comando para a linha do terminal">oc get deployment,svc,route,pods</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc get deployment,svc,route,pods',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Publicar Tasks, Pipeline e disparar execução manual</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f tekton/tasks/clone-repository.yaml
+oc apply -f tekton/tasks/build-and-push-image.yaml
+oc apply -f tekton/tasks/deploy-to-openshift.yaml
+oc apply -f tekton/pipelines/pipeline.yaml
+oc create -f tekton/pipelineruns/manual-pipelinerun.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f tekton/tasks/clone-repository.yaml
+oc apply -f tekton/tasks/build-and-push-image.yaml
+oc apply -f tekton/tasks/deploy-to-openshift.yaml
+oc apply -f tekton/pipelines/pipeline.yaml
+oc create -f tekton/pipelineruns/manual-pipelinerun.yaml</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc create -f tekton/pipelineruns/manual-pipelinerun.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div> <button class="btn" onclick="runStep('tkn pipelinerun logs flask-app-run -f',this)">▶ Ver logs</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Ligar os Triggers (RBAC + Binding + Template + EventListener + Route)</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f tekton/triggers/rbac.yaml
+oc apply -f tekton/triggers/triggerbinding.yaml
+oc apply -f tekton/triggers/triggertemplate.yaml
+oc apply -f tekton/triggers/eventlistener.yaml
+oc apply -f tekton/triggers/route.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f tekton/triggers/rbac.yaml
+oc apply -f tekton/triggers/triggerbinding.yaml
+oc apply -f tekton/triggers/triggertemplate.yaml
+oc apply -f tekton/triggers/eventlistener.yaml
+oc apply -f tekton/triggers/route.yaml</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc get eventlistener,triggerbinding,triggertemplate,route',this)">▶ Confirmar Triggers</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>5. Expor o EventListener publicamente (simulação do webhook real)</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc port-forward svc/el-github-eventlistener 8080:8080
+ngrok http 8080`)" title="Clique para enviar este comando para a linha do terminal">oc port-forward svc/el-github-eventlistener 8080:8080
+ngrok http 8080</div>
+<div class="run-row"><button class="btn" onclick="runStep('ngrok http 8080',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>6. Validar o disparo automático após o push</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get pipelinerun --sort-by=.metadata.creationTimestamp`)" title="Clique para enviar este comando para a linha do terminal">oc get pipelinerun --sort-by=.metadata.creationTimestamp</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc get pipelinerun --sort-by=.metadata.creationTimestamp',this); runTopologyViz();">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<h3>Critérios de aceite do projeto final</h3>
+<div class="okbox"><b>Considere o projeto concluído quando:</b> a PipelineRun automática (disparada pelo webhook) aparece como <code>Succeeded</code>, o Deployment está <code>1/1 Available</code>, a Route responde e o EventListener continua <code>Running</code> aguardando o próximo push.</div>
+<div class="callout"><b>Dica de entrevista:</b> saiba explicar por que essa arquitetura é "GitOps-friendly" — o estado desejado vive em YAML versionado, e a pipeline só reflete o que já está declarado no repositório.</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+oc get pods
+oc get pipelinerun --sort-by=.metadata.creationTimestamp
+oc get deployment,svc,route,pods
+oc get eventlistener,triggerbinding,triggertemplate,route
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc get deployment,svc,route,pods\')">oc get deployment,svc,route,pods</button><button onclick="fillCommand(\'oc get pipelinerun --sort-by=.metadata.creationTimestamp\')">oc get pipelinerun</button><button onclick="fillCommand(\'oc get eventlistener,triggerbinding,triggertemplate,route\')">oc get eventlistener,route</button><button onclick="fillCommand(\'ngrok http 8080\')">ngrok http 8080</button></div></div></div>
+<div class="topology-viz hidden" id="topologyViz">
+  <div class="topology-viz-head">Topology — Project: <b>tekton-lab</b></div>
+  <div class="topology-viz-row">
+    <div class="topo-node" id="topo-pipeline"><div class="topo-icon">⚙</div><div class="topo-label">Pipeline</div></div>
+    <div class="topo-arrow">→</div>
+    <div class="topo-node" id="topo-deploy"><div class="topo-icon">▤</div><div class="topo-label">Deployment</div></div>
+    <div class="topo-arrow">→</div>
+    <div class="topo-node" id="topo-pod"><div class="topo-icon">⬢</div><div class="topo-label">Pod</div></div>
+    <div class="topo-arrow">→</div>
+    <div class="topo-node" id="topo-svc"><div class="topo-icon">◉</div><div class="topo-label">Service</div></div>
+    <div class="topo-arrow">→</div>
+    <div class="topo-node" id="topo-route"><div class="topo-icon">⌗</div><div class="topo-label">Route</div></div>
+  </div>
+  <div class="topology-viz-status" id="topologyVizStatus">Verificando objetos...</div>
+</div>
+</div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

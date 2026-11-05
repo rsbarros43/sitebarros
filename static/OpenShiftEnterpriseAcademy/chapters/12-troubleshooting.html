@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="11">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Troubleshooting</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(11)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>12. Troubleshooting</h2>
+<p>Nem tudo funciona de primeira. Este capítulo reúne os erros mais comuns que você vai encontrar ao longo do laboratório e como diagnosticá-los, com o mesmo raciocínio que se espera de alguém administrando OpenShift em produção: <b>observar → isolar → corrigir</b>.</p>
+<div class="callout"><b>Regra de ouro:</b> quase todo problema no cluster começa com <code>oc get events --sort-by=.lastTimestamp</code> e <code>oc describe</code> no recurso suspeito.</div>
+<h3>Problemas comuns e como resolver</h3>
+<div class="chapter-grid">
+<div class="chapter"><h4>🛑 CRC não inicia</h4><p><b>Sintoma:</b> <code>crc start</code> falha ou trava em "Starting CRC VM".</p><p><b>Causa provável:</b> virtualização desabilitada na BIOS/UEFI, ou libvirt/KVM mal configurado.</p><p><b>Solução:</b> confirme suporte a virtualização, rode <code>crc setup</code> novamente e verifique se o usuário está nos grupos <code>libvirt</code> e <code>kvm</code>.</p></div>
+<div class="chapter"><h4>🛑 ImagePullBackOff</h4><p><b>Sintoma:</b> pod da aplicação fica preso sem subir.</p><p><b>Causa provável:</b> a imagem ainda não foi publicada no registry interno (a pipeline não rodou) ou a tag está errada.</p><p><b>Solução:</b> confirme se a PipelineRun terminou com <code>Succeeded</code> antes de esperar o Deployment funcionar.</p></div>
+<div class="chapter"><h4>🛑 CrashLoopBackOff</h4><p><b>Sintoma:</b> pod reinicia repetidamente.</p><p><b>Causa provável:</b> erro na aplicação Flask — porta errada, dependência faltando, exceção na inicialização.</p><p><b>Solução:</b> use <code>oc logs deployment/flask-app</code> para ver o stack trace real da aplicação.</p></div>
+<div class="chapter"><h4>🛑 Route retorna 503</h4><p><b>Sintoma:</b> a URL da aplicação responde "Application is not available".</p><p><b>Causa provável:</b> nenhum pod está <code>Ready</code>, ou o Service aponta para o selector errado.</p><p><b>Solução:</b> confira <code>oc get pods</code> e <code>oc describe route flask-app</code> para validar o roteamento.</p></div>
+<div class="chapter"><h4>🛑 InvalidWorkspaceBindings</h4><p><b>Sintoma:</b> a PipelineRun falha antes mesmo de começar a primeira Task.</p><p><b>Causa provável:</b> a Pipeline exige um workspace obrigatório, mas o PipelineRun não enviou o binding correto.</p><p><b>Solução:</b> revise o <code>manual-pipelinerun.yaml</code> e confirme que o nome do workspace bate com o definido na Pipeline.</p></div>
+<div class="chapter"><h4>🛑 Webhook não dispara a pipeline</h4><p><b>Sintoma:</b> você faz push no GitHub e nada acontece.</p><p><b>Causa provável:</b> a URL do túnel ngrok expirou/mudou e o webhook no GitHub ainda aponta para a antiga.</p><p><b>Solução:</b> gere uma nova URL com <code>ngrok http 8080</code>, atualize o webhook no GitHub e confirme que o EventListener está <code>Running</code>.</p></div>
+</div>
+<h3>Comandos de diagnóstico</h3>
+<p><b>1. Ver logs da aplicação</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc logs deployment/flask-app`)" title="Clique para enviar este comando para a linha do terminal">oc logs deployment/flask-app</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc logs deployment/flask-app',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Inspecionar detalhes do pod</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc describe pod flask-app`)" title="Clique para enviar este comando para a linha do terminal">oc describe pod flask-app</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc describe pod flask-app',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Inspecionar a Route</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc describe route flask-app`)" title="Clique para enviar este comando para a linha do terminal">oc describe route flask-app</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc describe route flask-app',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Ver o histórico de eventos do namespace</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get events --sort-by=.lastTimestamp`)" title="Clique para enviar este comando para a linha do terminal">oc get events --sort-by=.lastTimestamp</div>
+<div class="run-row"><button class="btn" onclick="runStep('oc get events --sort-by=.lastTimestamp',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<div class="okbox"><b>Dica de entrevista:</b> descreva o ciclo de vida de um Pod (Pending → ContainerCreating → Running/CrashLoopBackOff) e explique como <code>oc describe</code> e <code>oc logs</code> se complementam no diagnóstico.</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+oc logs deployment/flask-app
+oc describe pod flask-app
+oc describe route flask-app
+oc get events --sort-by=.lastTimestamp
+oc get pods
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc logs deployment/flask-app\')">oc logs deployment/flask-app</button><button onclick="fillCommand(\'oc describe pod flask-app\')">oc describe pod flask-app</button><button onclick="fillCommand(\'oc describe route flask-app\')">oc describe route flask-app</button><button onclick="fillCommand(\'oc get events --sort-by=.lastTimestamp\')">oc get events</button></div></div></div></div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

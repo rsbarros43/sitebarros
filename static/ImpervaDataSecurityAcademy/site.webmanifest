@@ -1,0 +1,16 @@
+{
+  "name": "Imperva Data Security Academy — Enterprise Edition v3.0.2",
+  "short_name": "Imperva Academy v3",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070b13",
+  "theme_color": "#090d18",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "description": "Academia interativa de Data Security, Oracle e SQL Server."
+}

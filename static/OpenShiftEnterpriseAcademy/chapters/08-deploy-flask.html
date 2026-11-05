@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>OpenShift Enterprise Academy</title><link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/terminal.css" rel="stylesheet"/>
+<link href="../css/chapters.css" rel="stylesheet"/>
+<link href="../css/quiz.css" rel="stylesheet"/>
+<link href="../css/certificate.css" rel="stylesheet"/></head>
+<body data-module="7">
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo">RH</div><div><h1>OpenShift Enterprise Academy</h1><p>Red Hat Style Training Lab</p></div></div>
+<div class="side-title">TRILHA DE MÓDULOS</div><div class="modules" id="sideModules"></div>
+<div class="progressbox"><div class="side-title">PROGRESSO GERAL</div><div class="bar"><span id="sideBar"></span></div><div class="progress-row"><span id="moduleCounter">Módulo 1 de 14</span><span id="pctText">7%</span></div></div>
+<div class="footer">© 2025 OpenShift Enterprise Academy<br/>Todos os direitos reservados.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="version"><span class="version-title" id="topTitle">Deploy da aplicação Flask</span></div><nav class="nav"><a class="active" href="../index.html">⌂ Dashboard</a><a href="../chapters/01-introducao.html">▦ Módulos</a><a href="../chapters/05-terminal-oc.html">♨ Lab</a><a href="#terminalBox">▣ Terminal</a><a href="../docs/troubleshooting.md">Ajuda</a></nav><div class="user" id="userTop">👤 Visitante</div></header>
+<section class="hero">
+<div><div class="eyebrow">V2.3.0 - OPENSHIFT PLATFORM LABS</div><h2>Aprenda OpenShift<br/>com laboratório prático,<br/>CI/CD e visão enterprise.</h2><p>Projeto inspirado no README enviado: GitHub Push → Webhook → Tekton EventListener → PipelineRun → Build → Registry interno → Deploy da aplicação Flask no OpenShift.</p><div class="hero-actions"><a class="btn" href="../chapters/01-introducao.html">▶ Iniciar treinamento ›</a><a class="btn secondary" href="../docs/architecture.md">⬡ Ver arquitetura ›</a></div></div>
+<div class="lab-card"><h3>OpenShift Local Lab</h3><div class="diagram"><div class="layer"><b>Control Plane</b><br/><small>API · Scheduler · Operators</small></div><div class="layer worker"><b>Worker</b><br/><small>Pods · Routes · Registry</small></div><div class="flow"><span class="pill">GitHub</span><span>→</span><span class="pill">Tekton</span><span>→</span><span class="pill">Deploy</span></div></div><div class="mini-grid"><div class="mini">▦ 1 VM<small>CRC / OpenShift Local</small></div><div class="mini">⌘ tekton-lab<small>Namespace principal</small></div><div class="mini">⚗ Flask<small>Aplicação exemplo</small></div><div class="mini">⌬ CI/CD<small>Pipeline automatizada</small></div></div></div>
+</section>
+<section class="content"><div class="chapter-layout"><div><div class="card"><div class="red-label">IDENTIFICAÇÃO</div><div id="guestBox"><h3>Digite seu nome para liberar a trilha</h3><p>O progresso dos módulos será liberado após a identificação do aluno.</p><div class="name-form"><input id="studentName" placeholder="Digite seu nome completo"/><button class="btn" onclick="saveName()">Liberar conteúdo</button></div></div><div class="hidden" id="loggedBox"><h3 id="helloName">Olá!</h3><p>Use a trilha de módulos para continuar seu aprendizado.</p><button class="btn outline" onclick="logout()">Sair da conta</button></div></div><div class="card" style="margin-top:10px"><h3>Progresso do capítulo</h3><p>Marque este capítulo quando terminar os estudos e validações.</p><button class="btn" onclick="markModule(7)">Concluir capítulo</button><div class="status-msg" id="doneMsg">✓ Capítulo concluído.</div></div><div class="card" style="margin-top:10px"><h3>Navegação</h3><div class="chapter-actions"><button class="btn outline" onclick="goPrev()">‹ Anterior</button><button class="btn" onclick="goNext()">Próximo ›</button></div></div><div class="card"><div class="lesson">
+<h2>08. Deploy da aplicação Flask</h2>
+<p>Neste capítulo vamos preparar a aplicação Flask containerizada. O objetivo é entender a relação entre Deployment, Service e Route, que será usada depois na pipeline Tekton.</p>
+<div class="callout"><b>Fluxo:</b> código Python Flask → imagem container → Deployment → Pod → Service → Route → usuário acessa a aplicação.</div>
+<h3>Arquivos principais</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>app/app.py:</b> aplicação Flask simples.</div>
+<div class="lesson-item"><b>app/requirements.txt:</b> dependência do Flask.</div>
+<div class="lesson-item"><b>app/Dockerfile:</b> definição da imagem container.</div>
+<div class="lesson-item"><b>openshift/deployment.yaml:</b> objeto que cria a aplicação no cluster.</div>
+<div class="lesson-item"><b>openshift/service.yaml:</b> exposição interna.</div>
+<div class="lesson-item"><b>openshift/route.yaml:</b> exposição externa via OpenShift Route.</div>
+</div>
+<h3>Antes dos manifestos: o que é uma imagem, e o que é YAML?</h3><div class="lesson-list"><div class="lesson-item"><b>Imagem de container:</b> é o "pacote fechado" com a aplicação Flask, o Python e as dependências já dentro, pronto para rodar. O <code>Dockerfile</code> é a receita que descreve como montar essa imagem; depois de construída, ela fica guardada no registry interno do OpenShift, pronta para ser usada pelo Deployment.</div><div class="lesson-item"><b>YAML:</b> é o formato de texto usado para descrever, de forma declarativa, "o que eu quero que exista" no cluster — por exemplo, "quero 1 réplica desta aplicação rodando". Você não diz passo a passo como fazer; você descreve o resultado desejado, e o OpenShift se encarrega de alcançá-lo. Indentação (espaços) importa muito em YAML — é assim que ele entende a hierarquia dos campos.</div></div>
+<h3>Manifesto exemplo: Deployment</h3>
+<div class="command-block terminal-send" onclick="fillCommand(`apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: image-registry.openshift-image-registry.svc:5000/tekton-lab/flask-app:latest
+        ports:
+        - containerPort: 8080`)" title="Clique para enviar este comando para a linha do terminal">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: image-registry.openshift-image-registry.svc:5000/tekton-lab/flask-app:latest
+        ports:
+        - containerPort: 8080</div>
+<h3>Entendendo os campos do Deployment</h3><div class="lesson-list"><div class="lesson-item"><code>replicas: 1</code> — quantas cópias (pods) do container o OpenShift deve manter rodando. Se o pod morrer, o Deployment cria outro automaticamente até bater esse número.</div><div class="lesson-item"><code>selector.matchLabels</code> — como o Deployment "reconhece" quais pods são dele. Precisa bater exatamente com os <code>labels</code> definidos no <code>template</code> logo abaixo.</div><div class="lesson-item"><code>template</code> — o "molde" do pod que será criado: define os labels, os containers, a imagem e as portas.</div><div class="lesson-item"><code>image</code> — aponta para o registry interno do OpenShift (<code>image-registry.openshift-image-registry.svc:5000</code>), no namespace <code>tekton-lab</code>, com a imagem que a pipeline Tekton vai construir e publicar.</div><div class="lesson-item"><code>containerPort: 8080</code> — a porta que a aplicação Flask escuta dentro do container. É essa porta que o Service vai apontar.</div></div>
+<h3>Manifesto exemplo: Service</h3><div class="command-block terminal-send" onclick="fillCommand(`apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app
+spec:
+  selector:
+    app: flask-app
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP`)" title="Clique para enviar este comando para a linha do terminal">apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app
+spec:
+  selector:
+    app: flask-app
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP</div>
+<div class="lesson-list"><div class="lesson-item"><code>selector: app: flask-app</code> — o Service encontra os pods certos pelo label, não pelo nome. Qualquer pod com esse label vira alvo do tráfego.</div><div class="lesson-item"><code>port</code> vs <code>targetPort</code> — <code>port</code> é a porta que o próprio Service expõe dentro do cluster; <code>targetPort</code> é a porta real do container (bate com o <code>containerPort</code> do Deployment).</div><div class="lesson-item"><code>type: ClusterIP</code> — só acessível dentro do cluster. Quem expõe para fora é a Route, no próximo manifesto.</div></div>
+<h3>Manifesto exemplo: Route</h3><div class="command-block terminal-send" onclick="fillCommand(`apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: flask-app
+spec:
+  to:
+    kind: Service
+    name: flask-app
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge`)" title="Clique para enviar este comando para a linha do terminal">apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: flask-app
+spec:
+  to:
+    kind: Service
+    name: flask-app
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge</div>
+<div class="lesson-list"><div class="lesson-item"><code>spec.to.name</code> — o nome do Service que a Route vai expor (precisa bater com o <code>metadata.name</code> do Service acima).</div><div class="lesson-item"><code>tls.termination: edge</code> — o tráfego HTTPS é decifrado no roteador do OpenShift (não no pod). É o tipo de terminação TLS mais comum para aplicações simples como esta.</div><div class="lesson-item">Route é um objeto <b>exclusivo do OpenShift</b> — não existe no Kubernetes puro, que usa Ingress para o mesmo propósito.</div></div>
+<h3>Laboratório guiado</h3>
+<p><b>1. Aplicar o Deployment</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f openshift/deployment.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f openshift/deployment.yaml</div><div class="run-row"><button class="btn" onclick="runStep('oc apply -f openshift/deployment.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>2. Aplicar o Service</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f openshift/service.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f openshift/service.yaml</div><div class="run-row"><button class="btn" onclick="runStep('oc apply -f openshift/service.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>3. Aplicar a Route</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc apply -f openshift/route.yaml`)" title="Clique para enviar este comando para a linha do terminal">oc apply -f openshift/route.yaml</div><div class="run-row"><button class="btn" onclick="runStep('oc apply -f openshift/route.yaml',this)">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<p><b>4. Confirmar que tudo subiu</b></p>
+<div class="command-block terminal-send" onclick="fillCommand(`oc get deployment,svc,route,pods`)" title="Clique para enviar este comando para a linha do terminal">oc get deployment,svc,route,pods</div><div class="run-row"><button class="btn" onclick="runStep('oc get deployment,svc,route,pods',this); openAppPreview();">▶ Executar</button><div class="status-msg">✓ Comando executado no simulador.</div></div>
+<h3>Troubleshooting rápido</h3>
+<div class="lesson-list">
+<div class="lesson-item"><b>ImagePullBackOff:</b> imagem não existe no registry ou tag incorreta.</div>
+<div class="lesson-item"><b>CrashLoopBackOff:</b> aplicação inicia e cai; validar logs.</div>
+<div class="lesson-item"><b>Route sem resposta:</b> validar Service, porta e selector.</div>
+</div>
+</div></div></div><div class="terminal-col"><div style="margin-top:12px"><div class="card terminal-card" id="terminalBox"><div class="terminal-head"><h3 class="section-title">›_ Simulador de terminal oc</h3><button class="btn outline" onclick="clearTerm()">♻ Limpar terminal</button></div><p class="sim-notice">⚠ Ambiente simulado: os comandos abaixo não se conectam a um cluster real. As respostas são pré-programadas para fins didáticos.</p><div class="terminal-input-row"><span class="terminal-dollar">$</span><input class="terminal-input" id="terminalInput" onkeydown="terminalInputKey(event)" placeholder="Digite ou cole um comando aqui. Ex: oc get pods"/><button class="btn" onclick="runTerminalInput()">Executar</button></div><div class="terminal small-terminal" id="terminal"><span class="prompt">user@openshift:~$</span> help
+Comandos disponíveis:
+crc status
+crc setup
+crc start
+crc console
+oc login
+oc whoami
+oc get projects
+oc get pods
+oc get nodes
+oc get all
+oc new-project tekton-lab
+oc apply -f openshift/deployment.yaml
+tkn pipelinerun logs flask-app-run -f
+
+<span class="prompt">user@openshift:~$</span> </div><div class="quick"><button onclick="fillCommand(\'oc apply -f openshift/deployment.yaml\')">oc apply -f openshift/deployment.yaml</button><button onclick="fillCommand(\'oc apply -f openshift/service.yaml\')">oc apply -f openshift/service.yaml</button><button onclick="fillCommand(\'oc apply -f openshift/route.yaml\')">oc apply -f openshift/route.yaml</button><button onclick="fillCommand(\'oc get deployment,svc,route,pods\')">oc get deployment,svc,route,pods</button></div></div></div>
+<div class="browser-mock hidden" id="appPreview">
+  <div class="browser-mock-bar">
+    <div class="browser-mock-dots"><span></span><span></span><span></span></div>
+    <div class="browser-mock-url">🔒 <b>https://</b>flask-app-tekton-lab.apps-crc.testing</div>
+    <button class="browser-mock-close" onclick="document.getElementById('appPreview').classList.add('hidden')" title="Fechar">✕</button>
+  </div>
+  <div class="browser-mock-body">
+    <div class="app-preview-screen">
+      <div class="app-preview-badge">✓ 200 OK</div>
+      <h2>Hello, OpenShift! 👋</h2>
+      <p>Flask app rodando no namespace <b>tekton-lab</b>, servida via Deployment + Service + Route.</p>
+      <div class="app-preview-meta">Pod: flask-app-7f9dd7d6f8-xk2bp &nbsp;|&nbsp; Porta: 8080 &nbsp;|&nbsp; TLS: edge</div>
+    </div>
+  </div>
+</div>
+</div></div></section>
+</main>
+</div>
+<script src="../js/storage.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/simulator.js"></script>
+<script src="../js/terminal.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/quiz.js"></script>
+<script src="../js/certificate.js"></script>
+<script src="../js/app.js"></script>
+</body></html>

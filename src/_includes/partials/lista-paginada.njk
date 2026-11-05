@@ -1,0 +1,14 @@
+{% if posts.length %}
+<div class="lista-posts">
+  {% for post in posts %}{% include "partials/post-card.njk" %}{% endfor %}
+</div>
+{% if pagination.pages.length > 1 %}
+<nav class="paginacao" aria-label="Paginação">
+  {% if pagination.href.previous %}<a href="{{ pagination.href.previous }}">← Mais recentes</a>{% else %}<span></span>{% endif %}
+  <span class="paginacao-info">Página {{ pagination.pageNumber + 1 }} de {{ pagination.pages.length }}</span>
+  {% if pagination.href.next %}<a href="{{ pagination.href.next }}">Mais antigos →</a>{% else %}<span></span>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p class="vazio">Nenhuma publicação por aqui ainda. Volte em breve!</p>
+{% endif %}
