@@ -235,6 +235,7 @@ html[data-tema="escuro"] .ico-sol, html[data-tema="claro"] .ico-lua { display: n
 .capa-gerada[data-cat="exadata"] { --c1: #5c0b1f; }
 .capa-gerada[data-cat="novidades"] { --c1: #34205e; }
 .capa-gerada[data-cat="cloud"], .capa-gerada[data-cat="oci"] { --c1: #0b4a4a; }
+.capa-gerada[data-cat="windows"] { --c1: #0b2f5c; }
 .capa-gerada[data-cat="automacao"], .capa-gerada[data-cat="linux"] { --c1: #3d3d0b; }
 
 /* Lista numerada de artigos */
@@ -651,3 +652,8 @@ code[class*="language-"] { font-family: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Figuras (capturas de tela nos posts) */
+.prosa figure { margin: 1.6em 0; }
+.prosa figure img { width: 100%; border: 1px solid var(--borda-forte); border-radius: var(--raio-sm); box-shadow: var(--sombra); }
+.prosa figcaption { margin-top: 8px; font-size: .86rem; color: var(--suave); text-align: center; }
