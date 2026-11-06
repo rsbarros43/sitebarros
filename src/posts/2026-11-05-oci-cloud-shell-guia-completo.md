@@ -4,7 +4,6 @@ descricao: "Guia passo a passo, com telas, do OCI Cloud Shell: como abrir, o que
 tipo: blog
 categoria: OCI
 tags: [oci, cloud shell, oci cli, linux, cloud]
-rascunho: true
 ---
 
 Quem administra banco na **Oracle Cloud Infrastructure (OCI)** conhece a rotina: abrir o console, clicar em vários menus, esperar a página carregar, copiar um OCID, abrir outro menu… Para muita coisa existe um caminho bem mais rápido — e ele já está dentro do próprio console, sem instalar nada: o **OCI Cloud Shell**.
